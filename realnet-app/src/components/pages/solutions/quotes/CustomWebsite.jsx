@@ -394,11 +394,21 @@ const CustomWebsiteQuote = () => {
                     ) : (
                       <button
                         type="submit"
-                        className="w-full sm:w-auto px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg md:rounded-xl hover:from-green-600 hover:to-emerald-600 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg shadow-green-500/25 text-sm md:text-base"
+                        disabled={isSubmitting}
+                        className="w-full sm:w-auto px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg md:rounded-xl hover:from-green-600 hover:to-emerald-600 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg shadow-green-500/25 text-sm md:text-base disabled:opacity-75 disabled:cursor-not-allowed"
                         aria-label="Submit custom website quote request"
                       >
-                        <FaCheck className="text-sm" />
-                        <span>Get Quote</span>
+                        {isSubmitting ? (
+                          <>
+                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            <span>Submitting...</span>
+                          </>
+                        ) : (
+                          <>
+                            <FaCheck className="text-sm" />
+                            <span>Get Quote</span>
+                          </>
+                        )}
                       </button>
                     )}
                   </div>

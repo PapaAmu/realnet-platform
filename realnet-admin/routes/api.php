@@ -22,6 +22,10 @@ Route::prefix('v1')->group(function () {
     Route::get('/ecommerce-website-quote/{id}', [EcommerceWebsiteQuoteController::class, 'show']);
     Route::get('/ecommerce-website-quotes', [EcommerceWebsiteQuoteController::class, 'index']);
     Route::patch('/ecommerce-website-quote/{id}/status', [EcommerceWebsiteQuoteController::class, 'updateStatus']);
+
+    // Custom Website Quotes
+    Route::post('/custom-website-quote', [CustomWebsiteQuoteController::class, 'store']);
+    Route::get('/custom-website-quote/{id}', [CustomWebsiteQuoteController::class, 'show']);
 });
 
 
