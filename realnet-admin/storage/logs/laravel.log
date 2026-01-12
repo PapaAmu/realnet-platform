@@ -98,3 +98,5 @@
 #16 /var/www/artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #17 {main}
 "} 
+[2026-01-12 13:49:28] local.ERROR: Failed to retrieve blog posts: SQLSTATE[HY000] [1045] Access denied for user 'realnet_user'@'172.18.0.3' (using password: YES) (Connection: mysql, SQL: select * from `blog_posts` where `is_published` = 1 and (`published_at` is null or `published_at` <= 2026-01-12 13:49:28) order by `published_at` desc, `created_at` desc)  
+[2026-01-12 13:49:32] local.ERROR: Failed to retrieve blog posts: SQLSTATE[HY000] [1045] Access denied for user 'realnet_user'@'172.18.0.3' (using password: YES) (Connection: mysql, SQL: select * from `blog_posts` where `is_published` = 1 and (`published_at` is null or `published_at` <= 2026-01-12 13:49:32) order by `published_at` desc, `created_at` desc)  
