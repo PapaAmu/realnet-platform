@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  realnet-admin:
+    container_name: realnet-admin
+    image: realnet-admin
+    build:
+      context: ./realnet-admin
+      dockerfile: Dockerfile
+    ports:
+      - "8009:8009"
+    volumes:
+      - ./realnet-admin:/var/www
+    depends_on:
+      - mysql
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: realnet
+      DB_USERNAME: root
+      DB_PASSWORD: RealNet1
+
+  mysql:
+    image: mysql:8.0
+    container_name: realnet_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: RealNet1
+      MYSQL_DATABASE: realnet
+
+volumes:
+  mysql_data:
