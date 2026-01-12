@@ -42,10 +42,13 @@ WORKDIR /var/www/html
 COPY composer.json composer.lock ./
 
 # Install dependencies (production optimized)
-RUN composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader
+RUN composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader --no-scripts
 
 # Copy application code
 COPY . .
+
+# Generate optimized autoload files (triggers scripts like package:discover)
+RUN composer dump-autoload --optimize
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
