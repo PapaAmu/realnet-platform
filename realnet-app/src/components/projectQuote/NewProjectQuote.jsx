@@ -411,7 +411,7 @@ const Quotation = ({ onClose }) => {
             value={formData.name}
             onChange={handleChange}
             required
-            className={`w-full px-4 py-3 rounded-xl border ${
+            className={`w-full px-4 py-3 rounded-xl border text-gray-900 bg-white ${
               formErrors.name ? "border-red-500" : "border-gray-300"
             } focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200`}
             placeholder="John Doe"
@@ -437,7 +437,7 @@ const Quotation = ({ onClose }) => {
             value={formData.email}
             onChange={handleChange}
             required
-            className={`w-full px-4 py-3 rounded-xl border ${
+            className={`w-full px-4 py-3 rounded-xl border text-gray-900 bg-white ${
               formErrors.email ? "border-red-500" : "border-gray-300"
             } focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200`}
             placeholder="john@example.com"
@@ -480,7 +480,7 @@ const Quotation = ({ onClose }) => {
             name="company"
             value={formData.company}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
             placeholder="Your Company Name"
           />
         </div>
@@ -585,7 +585,7 @@ const Quotation = ({ onClose }) => {
             required
             rows={4}
             placeholder="Please describe your project requirements, goals, and any specific features you need..."
-            className={`w-full px-4 py-3 rounded-xl border ${
+            className={`w-full px-4 py-3 rounded-xl border text-gray-900 bg-white ${
               formErrors.projectDescription ? "border-red-500" : "border-gray-300"
             } focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200`}
           />
@@ -666,7 +666,7 @@ const Quotation = ({ onClose }) => {
             name="urgency"
             value={formData.urgency}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
           >
             <option value="">How urgent is your project?</option>
             {urgencyLevels.map((level, index) => (
@@ -770,7 +770,7 @@ const Quotation = ({ onClose }) => {
             name="preferredContactMethod"
             value={formData.preferredContactMethod}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
           >
             <option value="">How would you prefer we contact you?</option>
             {preferredContactMethods.map((method, index) => (
