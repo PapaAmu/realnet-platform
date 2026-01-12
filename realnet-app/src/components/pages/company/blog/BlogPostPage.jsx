@@ -131,72 +131,77 @@ const BlogImage = ({ src, alt, className, ...props }) => {
   );
 };
 
-const BlogPostPage = () => {
+const BlogPostPage = ({ post: initialPost }) => {
   const params = useParams();
   const router = useRouter();
-  const [post, setPost] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [post, setPost] = useState(initialPost);
+  const [loading, setLoading] = useState(!initialPost);
   const [error, setError] = useState(null);
   const [relatedPosts, setRelatedPosts] = useState([]);
 
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blog/posts/${params.slug}`
-        );
-        
-        if (!response.ok) {
-          if (response.status === 404) {
-            throw new Error('Blog post not found');
-          }
-          throw new Error(`Failed to fetch blog post: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        if (data.success && data.post) {
-          setPost(data.post);
-          // Fetch related posts based on category
-          fetchRelatedPosts(data.post.category, data.post.id);
-        } else {
-          throw new Error(data.message || 'Blog post not found');
-        }
-      } catch (err) {
-        console.error('Error fetching blog post:', err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const fetchRelatedPosts = async (category, currentPostId) => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blog/posts?category=${category}`
-        );
-        
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success) {
-            // Filter out current post and limit to 3 posts
-            const related = (data.posts || [])
-              .filter(p => p.id !== currentPostId)
-              .slice(0, 3);
-            setRelatedPosts(related);
-          }
-        }
-      } catch (err) {
-        console.error('Error fetching related posts:', err);
-      }
-    };
-
-    if (params.slug) {
+    if (initialPost) {
+      setPost(initialPost);
+      setLoading(false);
+      // Fetch related posts immediately if we have the post
+      fetchRelatedPosts(initialPost.category, initialPost.id);
+    } else if (params.slug) {
       fetchPost();
     }
-  }, [params.slug]);
+  }, [initialPost, params.slug]);
+
+  const fetchPost = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blog/posts/${params.slug}`
+      );
+      
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error('Blog post not found');
+        }
+        throw new Error(`Failed to fetch blog post: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data.success && data.post) {
+        setPost(data.post);
+        // Fetch related posts based on category
+        fetchRelatedPosts(data.post.category, data.post.id);
+      } else {
+        throw new Error(data.message || 'Blog post not found');
+      }
+    } catch (err) {
+      console.error('Error fetching blog post:', err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchRelatedPosts = async (category, currentPostId) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blog/posts?category=${category}`
+      );
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          // Filter out current post and limit to 3 posts
+          const related = (data.posts || [])
+            .filter(p => p.id !== currentPostId)
+            .slice(0, 3);
+          setRelatedPosts(related);
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching related posts:', err);
+    }
+  };
 
   const safeTags = post ? parseTags(post.tags) : [];
 

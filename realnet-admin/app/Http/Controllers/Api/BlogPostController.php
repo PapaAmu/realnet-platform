@@ -38,11 +38,12 @@ class BlogPostController extends Controller
 
             $posts = $query->get();
 
-            // Ensure all image URLs are absolute
+            // Ensure all image URLs are absolute and process content images
             $posts->transform(function ($post) {
                 if ($post->image && !str_starts_with($post->image, 'http')) {
                     $post->image = url($post->image);
                 }
+                $post->content = $this->processContentImages($post->content);
                 return $post;
             });
 
@@ -77,6 +78,8 @@ class BlogPostController extends Controller
             if ($post->image && !str_starts_with($post->image, 'http')) {
                 $post->image = url($post->image);
             }
+            
+            $post->content = $this->processContentImages($post->content);
 
             return response()->json([
                 'success' => true,
@@ -112,6 +115,7 @@ class BlogPostController extends Controller
                 if ($post->image && !str_starts_with($post->image, 'http')) {
                     $post->image = url($post->image);
                 }
+                $post->content = $this->processContentImages($post->content);
                 return $post;
             });
 
@@ -160,5 +164,30 @@ class BlogPostController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    /**
+     * Helper to ensure images in content are absolute URLs.
+     */
+    private function processContentImages(?string $content): ?string
+    {
+        if (!$content) {
+            return $content;
+        }
+
+        // Replace relative paths starting with /storage/ with absolute URLs
+        $baseUrl = config('app.url');
+        
+        // Remove trailing slash from base URL if present
+        $baseUrl = rtrim($baseUrl, '/');
+
+        // Regex to find src="/storage/..." and replace with absolute URL
+        // We match src=" and then /storage/ to be specific
+        $content = str_replace('src="/storage/', 'src="' . $baseUrl . '/storage/', $content);
+        
+        // Also handle cases where it might be encoded or single quotes
+        $content = str_replace("src='/storage/", "src='" . $baseUrl . "/storage/", $content);
+
+        return $content;
     }
 }
