@@ -14,26 +14,26 @@ export default function Navbar() {
   const [activeLink, setActiveLink] = useState("home");
   const [scrolled, setScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollY = React.useRef(0);
 
   // Throttled scroll handler to prevent excessive updates
   const handleScroll = useCallback(() => {
     const currentScrollY = window.scrollY;
     
     // Only update if scroll change is significant enough to prevent jitter
-    if (Math.abs(currentScrollY - lastScrollY) > 5) {
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+    if (Math.abs(currentScrollY - lastScrollY.current) > 5) {
+      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
         // Scrolling down & past 100px - hide navbar
         setIsVisible(false);
-      } else if (currentScrollY < lastScrollY) {
+      } else if (currentScrollY < lastScrollY.current) {
         // Scrolling up - show navbar
         setIsVisible(true);
       }
       
       setScrolled(currentScrollY > 10);
-      setLastScrollY(currentScrollY);
+      lastScrollY.current = currentScrollY;
     }
-  }, [lastScrollY]);
+  }, []);
 
   useEffect(() => {
     // Set active link based on current URL
@@ -91,7 +91,7 @@ export default function Navbar() {
   return (
     <div>
       <motion.nav
-        className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 backdrop-blur-md shadow-2xl border border-black/10 rounded-md ${scrolled ? 'bg-white' : 'bg-white'} w-[calc(100%-2rem)] md:max-w-7xl`}
+        className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 backdrop-blur-md shadow-2xl border border-black/10 rounded-md bg-white/90 w-[calc(100%-2rem)] md:max-w-7xl`}
         initial={{ y: -120 }}
         animate={{ 
           y: isVisible ? 0 : -120,

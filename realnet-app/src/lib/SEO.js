@@ -100,7 +100,7 @@ export const generateStructuredData = (data = {}) => {
     title = 'REALNET WEB SOLUTIONS - Web & Mobile App Development',
     description = 'Professional web development, ecommerce solutions, mobile apps, and software development services in Johannesburg.',
     url = 'https://realnet-web.co.za',
-    image = 'https://realnet-web.co.za/og-image.jpg',
+    image = 'https://realnet-web.co.za/logo.png',
     publishedDate,
     modifiedDate,
     author = 'Themba Real Lukhele',
@@ -119,18 +119,21 @@ export const generateStructuredData = (data = {}) => {
 
   // Organization / LocalBusiness Specifics
   if (type === 'Organization' || type === 'LocalBusiness' || type === 'WebSite') {
-    baseSchema.telephone = '+27-63-038-8883';
+    baseSchema.telephone = '+27630388883';
     baseSchema.email = 'lukhele@realnet-web.co.za';
     baseSchema.address = {
       '@type': 'PostalAddress',
-      addressLocality: 'Johannesburg',
+      streetAddress: 'Matsau Street, Ivory Park',
+      addressLocality: 'Midrand',
       addressRegion: 'Gauteng',
+      postalCode: '1689',
       addressCountry: 'ZA',
     };
     baseSchema.sameAs = [
-      'https://www.linkedin.com/company/realnet-web-solutions',
-      'https://www.facebook.com/realnetwebsolutions',
-      'https://twitter.com/realnetweb',
+      'https://www.linkedin.com/company/realnet-web-solutions-pty',
+      'https://web.facebook.com/profile.php?id=61565067420433',
+      'https://instagram.com/realnet_web',
+      'https://github.com/PapaAmu'
     ];
   }
 

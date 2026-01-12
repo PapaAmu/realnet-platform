@@ -189,7 +189,7 @@ const MobileAppDevelopment = () => {
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white overflow-hidden relative">
         {/* Animated background elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          {[...Array(5)].map((_, i) => (
+          {[...Array(3)].map((_, i) => (
             <motion.div
               key={i}
               className="absolute rounded-full bg-gradient-to-r from-orange-500/10 to-pink-500/10"
@@ -198,13 +198,14 @@ const MobileAppDevelopment = () => {
                 height: Math.random() * 200 + 100,
                 top: `${Math.random() * 100}%`,
                 left: `${Math.random() * 100}%`,
+                willChange: "transform",
               }}
               animate={{
                 scale: [1, 1.2, 1],
                 rotate: [0, 180, 360],
               }}
               transition={{
-                duration: Math.random() * 10 + 10,
+                duration: Math.random() * 10 + 15,
                 repeat: Infinity,
                 ease: "linear"
               }}

@@ -67,16 +67,8 @@ const Footer = () => {
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-gray-900/97 via-gray-900/95 to-gray-800/97"></div>
       
       {/* Simplified background elements */}
-      <div className="absolute inset-0 -z-5 overflow-hidden">
-        <div className="absolute -top-40 -right-40 transform-gpu overflow-hidden blur-3xl">
-          <div
-            className="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-orange-500/5 to-pink-500/5"
-            style={{
-              clipPath:
-                "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-            }}
-          />
-        </div>
+      <div className="absolute inset-0 -z-5 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-[40rem] h-[40rem] bg-gradient-to-br from-orange-500/10 to-pink-500/10 blur-3xl rounded-full opacity-50" />
       </div>
       
       <div className="max-w-screen-xl mx-auto px-4 md:px-8 relative z-10">

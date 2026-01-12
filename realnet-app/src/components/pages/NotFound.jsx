@@ -47,10 +47,10 @@ const NotFoundComponent = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 px-4 py-8">
       <div className="absolute inset-0 overflow-hidden -z-10">
         {/* Background pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-orange-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse-slow"></div>
-          <div className="absolute top-1/2 right-1/4 w-72 h-72 bg-pink-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse-slow animation-delay-2000"></div>
-          <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-amber-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse-slow animation-delay-4000"></div>
+        <div className="absolute inset-0 opacity-30 pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-orange-400/10 rounded-full blur-xl"></div>
+          <div className="absolute top-1/2 right-1/4 w-72 h-72 bg-pink-400/10 rounded-full blur-xl"></div>
+          <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-amber-400/10 rounded-full blur-xl"></div>
         </div>
       </div>
 
