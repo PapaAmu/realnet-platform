@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import {
@@ -103,6 +103,22 @@ const Quotation = ({ onClose }) => {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [redirectTimer, setRedirectTimer] = useState(5);
+
+  // Handle redirect on success
+  useEffect(() => {
+    let interval;
+    if (submitStatus === "success") {
+      if (redirectTimer > 0) {
+        interval = setInterval(() => {
+          setRedirectTimer((prev) => prev - 1);
+        }, 1000);
+      } else {
+        router.push('/form-success?type=quotation');
+        if (onClose) onClose();
+      }
+    }
+    return () => clearInterval(interval);
+  }, [submitStatus, redirectTimer, router, onClose]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -261,19 +277,9 @@ const Quotation = ({ onClose }) => {
           urgency: "",
         });
         setSubmitStatus("success");
+        setRedirectTimer(5);
         
-        // Start redirect countdown
-        const timer = setInterval(() => {
-          setRedirectTimer((prev) => {
-            if (prev <= 1) {
-              clearInterval(timer);
-              router.push('/form-success?type=quotation');
-              if (onClose) onClose();
-              return 0;
-            }
-            return prev - 1;
-          });
-        }, 1000);
+        // Timer handled by useEffect
         
       } else {
         // Track form submission error
