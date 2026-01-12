@@ -30,7 +30,10 @@ import {
 const MobileAppDevelopment = () => {
   const [isVisible, setIsVisible] = useState(false);
 
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
+    setMounted(true);
     setIsVisible(true);
     return () => setIsVisible(false);
   }, []);
@@ -188,6 +191,7 @@ const MobileAppDevelopment = () => {
 
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white overflow-hidden relative">
         {/* Animated background elements */}
+        {mounted && (
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
           {[...Array(3)].map((_, i) => (
             <motion.div
@@ -212,6 +216,7 @@ const MobileAppDevelopment = () => {
             />
           ))}
         </div>
+        )}
 
         {/* Floating App Store Icons */}
         <motion.div 
