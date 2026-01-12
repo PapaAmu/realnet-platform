@@ -1,5 +1,6 @@
-FROM php:8.3-cli
+FROM php:8.3-apache
 
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -7,31 +8,50 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libicu-dev \
     libxml2-dev \
-  && rm -rf /var/lib/apt/lists/*
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    default-mysql-client \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-install \
+# Install PHP extensions
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install \
     pdo_mysql \
     zip \
     intl \
     xml \
-    mbstring
+    mbstring \
+    gd \
+    opcache
+
+# Enable Apache mod_rewrite
+RUN a2enmod rewrite
+
+# Configure Apache DocumentRoot to point to Laravel's public directory
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www
+WORKDIR /var/www/html
 
-# Leverage build cache for dependencies
+# Copy composer files first for caching
 COPY composer.json composer.lock ./
-RUN composer install --no-interaction --prefer-dist --no-scripts --no-dev || true
+
+# Install dependencies (production optimized)
+RUN composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader
 
 # Copy application code
 COPY . .
 
-# Ensure writable directories
-RUN mkdir -p storage bootstrap/cache && chown -R www-data:www-data storage bootstrap/cache
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-EXPOSE 8009
+# Expose port 80
+EXPOSE 80
 
-# Run Laravel's built-in server (suitable for development)
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8009"]
+# Use the default Apache CMD (apache2-foreground)

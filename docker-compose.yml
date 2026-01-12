@@ -7,18 +7,14 @@ services:
     build:
       context: ./realnet-admin
       dockerfile: Dockerfile
-    ports:
-      - "8009:8009"
-    volumes:
-      - ./realnet-admin:/var/www
-    depends_on:
-      - mysql
-    environment:
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_DATABASE: realnet
-      DB_USERNAME: root
-      DB_PASSWORD: RealNet1
+    expose:
+      - "80"
+    env_file:
+      - ./realnet-admin/.env
+    # environment:
+    #   - APP_ENV=production
+    #   - APP_DEBUG=false
+    restart: always
 
   mysql:
     image: mysql:8.0
@@ -30,6 +26,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: RealNet1
       MYSQL_DATABASE: realnet
+    restart: always
 
 volumes:
   mysql_data:
