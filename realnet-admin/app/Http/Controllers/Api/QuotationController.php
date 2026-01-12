@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Quotation;
+use App\Models\User;
+use App\Notifications\NewQuotationRequestNotification;
 use Illuminate\Http\Request;
 
 class QuotationController extends Controller
@@ -46,6 +48,16 @@ class QuotationController extends Controller
         ])->validate();
 
         $quotation = Quotation::create($validated);
+
+        // Notify Admins
+        try {
+            User::all()->each(function ($user) use ($quotation) {
+                $user->notify(new NewQuotationRequestNotification($quotation, 'General'));
+            });
+        } catch (\Exception $e) {
+            // Log error but don't fail the request
+            \Illuminate\Support\Facades\Log::error('Failed to send notification: ' . $e->getMessage());
+        }
 
         return response()->json([
             'success' => true,

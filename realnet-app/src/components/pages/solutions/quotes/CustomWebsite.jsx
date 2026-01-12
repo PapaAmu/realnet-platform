@@ -129,56 +129,101 @@ const CustomWebsiteQuote = () => {
     setCurrentStep(prev => Math.max(prev - 1, 1));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Custom website quote submitted:', formData);
-
-    // Track form submission with detailed data
-    trackServiceQuote('custom_website');
     
-    // Track detailed form submission event
-    trackEvent({
-      action: 'custom_website_quote_submitted',
-      category: 'Lead Generation',
-      label: formData.projectType,
-      value: formData.features.length
-    });
+    try {
+      // Track form submission attempt
+      trackServiceQuote('custom_website');
+      
+      // Create FormData for file upload
+      const submitData = new FormData();
+      
+      // Add form data
+      submitData.append('projectType', formData.projectType);
+      submitData.append('businessName', formData.businessName);
+      submitData.append('industry', formData.industry);
+      submitData.append('timeline', formData.timeline);
+      submitData.append('budgetRange', formData.budgetRange);
+      // Send features as JSON string as expected by controller
+      submitData.append('features', JSON.stringify(formData.features));
+      submitData.append('technicalRequirements', formData.technicalRequirements);
+      submitData.append('description', formData.description);
+      
+      // Contact details
+      submitData.append('contact_full_name', formData.contact.fullName);
+      submitData.append('contact_email', formData.contact.email);
+      submitData.append('contact_phone', formData.contact.phone);
+      submitData.append('contact_company_role', formData.contact.companyRole);
+      
+      // Add attachments
+      formData.attachments.forEach(attachment => {
+        submitData.append('attachments[]', attachment.file);
+      });
 
-    // Track budget range for analytics
-    trackEvent({
-      action: 'budget_selected',
-      category: 'Quote Form',
-      label: formData.budgetRange,
-      value: getBudgetValue(formData.budgetRange)
-    });
+      // Submit to Laravel API
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/custom-website-quote`, {
+        method: 'POST',
+        body: submitData,
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
 
-    // Show success message
-    toast.success('Thank you for your submission! We will contact you within 24 hours to discuss your project.');
-    
-    // Reset form (optional)
-    setFormData({
-      projectType: '',
-      businessName: '',
-      industry: '',
-      timeline: '',
-      budgetRange: '',
-      features: [],
-      technicalRequirements: '',
-      description: '',
-      attachments: [],
-      contact: {
-        email: '',
-        fullName: '',
-        phone: '',
-        companyRole: ''
+      const result = await response.json();
+
+      if (response.ok) {
+        // Track successful form submission
+        trackEvent({
+          action: 'custom_website_quote_submitted',
+          category: 'Lead Generation',
+          label: formData.projectType,
+          value: formData.features.length
+        });
+
+        // Track budget range for analytics
+        trackEvent({
+          action: 'budget_selected',
+          category: 'Quote Form',
+          label: formData.budgetRange,
+          value: getBudgetValue(formData.budgetRange)
+        });
+
+        // Show success message
+        toast.success('Thank you for your submission! We will contact you within 24 hours to discuss your project.');
+        
+        // Reset form
+        setFormData({
+          projectType: '',
+          businessName: '',
+          industry: '',
+          timeline: '',
+          budgetRange: '',
+          features: [],
+          technicalRequirements: '',
+          description: '',
+          attachments: [],
+          contact: {
+            email: '',
+            fullName: '',
+            phone: '',
+            companyRole: ''
+          }
+        });
+        setCurrentStep(1);
+        
+        // Redirect to success page after a short delay
+        setTimeout(() => {
+          router.push('/form-success?type=custom-website-quote');
+        }, 1500);
+      } else {
+        console.error('API Error:', result);
+        toast.error(result.message || "Something went wrong. Please try again.");
       }
-    });
-    setCurrentStep(1);
-    
-    // Redirect to success page after a short delay
-    setTimeout(() => {
-      router.push('/form-success?type=custom-website-quote');
-    }, 1500);
+    } catch (error) {
+      console.error('Submission error:', error);
+      toast.error("Network error. Please check your connection and try again.");
+    }
   };
 
   const getBudgetValue = (budgetRange) => {

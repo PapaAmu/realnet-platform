@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\EcommerceWebsiteQuote;
+use App\Models\User;
+use App\Notifications\NewQuotationRequestNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -69,6 +71,15 @@ class EcommerceWebsiteQuoteController extends Controller
                 'contact_email' => $quote->contact_email,
                 'project_type' => $quote->project_type_label,
             ]);
+
+            // Notify Admins
+            try {
+                User::all()->each(function ($user) use ($quote) {
+                    $user->notify(new NewQuotationRequestNotification($quote, 'Ecommerce Website'));
+                });
+            } catch (\Exception $e) {
+                Log::error('Failed to send notification: ' . $e->getMessage());
+            }
 
             return response()->json([
                 'success' => true,

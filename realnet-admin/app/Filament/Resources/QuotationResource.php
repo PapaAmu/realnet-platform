@@ -136,6 +136,37 @@ class QuotationResource extends Resource
                             ]),
                     ]),
 
+                Section::make('Web Request Details')
+                    ->icon('heroicon-o-globe-alt')
+                    ->description('Details submitted via website form')
+                    ->collapsible()
+                    ->collapsed(fn ($record) => $record && $record->items()->exists()) // Collapse if items exist (implies converted to formal quote)
+                    ->schema([
+                        Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('service')
+                                    ->label('Service Requested'),
+                                Forms\Components\TextInput::make('project_type')
+                                    ->label('Project Type'),
+                                Forms\Components\TextInput::make('budget')
+                                    ->label('Budget Range'),
+                                Forms\Components\TextInput::make('timeline')
+                                    ->label('Timeline'),
+                                Forms\Components\TextInput::make('urgency')
+                                    ->label('Urgency'),
+                                Forms\Components\TextInput::make('preferred_contact_method')
+                                    ->label('Preferred Contact'),
+                                Forms\Components\Textarea::make('project_description')
+                                    ->label('Project Description')
+                                    ->columnSpanFull(),
+                                Forms\Components\Textarea::make('additional_details')
+                                    ->label('Additional Details')
+                                    ->columnSpanFull(),
+                                Forms\Components\TextInput::make('reference')
+                                    ->label('Reference (How did they hear about us)'),
+                            ]),
+                    ]),
+
                 Section::make('Line Items')
                     ->icon('heroicon-o-list-bullet')
                     ->description('Add products or services to this quotation')
@@ -276,6 +307,7 @@ class QuotationResource extends Resource
                     ->copyMessageDuration(1500),
                 Tables\Columns\TextColumn::make('client.name')
                     ->label('Client')
+                    ->placeholder(fn ($record) => $record->company ?: $record->name)
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('issue_date')

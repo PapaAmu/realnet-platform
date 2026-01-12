@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\CustomWebsiteQuote;
+use App\Models\User;
+use App\Notifications\NewQuotationRequestNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -67,6 +69,15 @@ class CustomWebsiteQuoteController extends Controller
                 'business_name' => $quote->business_name,
                 'contact_email' => $quote->contact_email,
             ]);
+
+            // Notify Admins
+            try {
+                User::all()->each(function ($user) use ($quote) {
+                    $user->notify(new NewQuotationRequestNotification($quote, 'Custom Website'));
+                });
+            } catch (\Exception $e) {
+                Log::error('Failed to send notification: ' . $e->getMessage());
+            }
 
             return response()->json([
                 'success' => true,
