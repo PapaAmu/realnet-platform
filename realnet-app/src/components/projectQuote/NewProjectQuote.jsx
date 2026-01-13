@@ -417,7 +417,7 @@ const Quotation = ({ onClose }) => {
             value={formData.name}
             onChange={handleChange}
             required
-            className={`w-full px-4 py-3 rounded-xl border text-gray-900 bg-white ${
+            className={`w-full px-4 py-3 rounded-xl border text-gray-900 bg-white placeholder-gray-500 ${
               formErrors.name ? "border-red-500" : "border-gray-300"
             } focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200`}
             placeholder="John Doe"
@@ -443,7 +443,7 @@ const Quotation = ({ onClose }) => {
             value={formData.email}
             onChange={handleChange}
             required
-            className={`w-full px-4 py-3 rounded-xl border text-gray-900 bg-white ${
+            className={`w-full px-4 py-3 rounded-xl border text-gray-900 bg-white placeholder-gray-500 ${
               formErrors.email ? "border-red-500" : "border-gray-300"
             } focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200`}
             placeholder="john@example.com"
@@ -468,7 +468,7 @@ const Quotation = ({ onClose }) => {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white placeholder-gray-500 focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
             placeholder="+27 12 345 6789"
           />
         </div>
@@ -486,7 +486,7 @@ const Quotation = ({ onClose }) => {
             name="company"
             value={formData.company}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white placeholder-gray-500 focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
             placeholder="Your Company Name"
           />
         </div>
@@ -535,7 +535,7 @@ const Quotation = ({ onClose }) => {
             value={formData.service}
             onChange={handleChange}
             required
-            className={`w-full px-4 py-3 rounded-xl border ${
+            className={`w-full px-4 py-3 rounded-xl border text-gray-900 bg-white ${
               formErrors.service ? "border-red-500" : "border-gray-300"
             } focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200`}
           >
@@ -565,7 +565,7 @@ const Quotation = ({ onClose }) => {
             name="projectType"
             value={formData.projectType}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
           >
             <option value="">Select project type</option>
             {projectTypes.map((type, index) => (
@@ -591,7 +591,7 @@ const Quotation = ({ onClose }) => {
             required
             rows={4}
             placeholder="Please describe your project requirements, goals, and any specific features you need..."
-            className={`w-full px-4 py-3 rounded-xl border text-gray-900 bg-white ${
+            className={`w-full px-4 py-3 rounded-xl border text-gray-900 bg-white placeholder-gray-500 ${
               formErrors.projectDescription ? "border-red-500" : "border-gray-300"
             } focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200`}
           />
@@ -614,13 +614,13 @@ const Quotation = ({ onClose }) => {
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <FaDollarSign className="text-gray-400" />
               </div>
-              <select
-                id="budget"
-                name="budget"
-                value={formData.budget}
-                onChange={handleChange}
-                className="w-full pl-10 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
-              >
+          <select
+            id="budget"
+            name="budget"
+            value={formData.budget}
+            onChange={handleChange}
+            className="w-full pl-10 px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
+          >
                 <option value="">Select budget range</option>
                 {budgetRanges.map((range, index) => (
                   <option key={index} value={range}>
@@ -642,13 +642,13 @@ const Quotation = ({ onClose }) => {
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <FaCalendarAlt className="text-gray-400" />
               </div>
-              <select
-                id="timeline"
-                name="timeline"
-                value={formData.timeline}
-                onChange={handleChange}
-                className="w-full pl-10 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
-              >
+          <select
+            id="timeline"
+            name="timeline"
+            value={formData.timeline}
+            onChange={handleChange}
+            className="w-full pl-10 px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
+          >
                 <option value="">Select timeline</option>
                 {timelineOptions.map((option, index) => (
                   <option key={index} value={option}>
@@ -694,15 +694,15 @@ const Quotation = ({ onClose }) => {
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <FaFileAlt className="text-gray-400" />
             </div>
-            <input
-              type="url"
-              id="reference"
-              name="reference"
-              value={formData.reference}
-              onChange={handleChange}
-              placeholder="https://example.com"
-              className="w-full pl-10 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
-            />
+          <input
+            type="url"
+            id="reference"
+            name="reference"
+            value={formData.reference}
+            onChange={handleChange}
+            placeholder="https://example.com"
+            className="w-full pl-10 px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white placeholder-gray-500 focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
+          />
           </div>
         </div>
 
@@ -720,7 +720,7 @@ const Quotation = ({ onClose }) => {
             onChange={handleChange}
             rows={3}
             placeholder="Any other details you'd like to share, special requirements, etc."
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white placeholder-gray-500 focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
           />
         </div>
       </div>
