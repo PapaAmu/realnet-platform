@@ -1,5 +1,6 @@
 // app/sitemap.js
 import { getStaticRoutes } from '@/lib/SEO';
+import { getApiBaseUrl } from '@/lib/api-config';
 
 const baseUrl = 'https://realnet-web.co.za';
 
@@ -10,7 +11,7 @@ export default async function sitemap() {
   // Fetch blog posts for dynamic sitemap entries
   let blogPosts = [];
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blog/posts`, {
+    const response = await fetch(`${getApiBaseUrl()}/api/blog/posts`, {
       next: { revalidate: 3600 } // Revalidate every hour
     });
 

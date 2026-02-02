@@ -4,6 +4,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CgMenuHotdog } from "react-icons/cg";
+import { useTheme } from "next-themes";
+import { FiSun, FiMoon } from "react-icons/fi";
 import MobileMenu from "./MobileMenu";
 
 export default function Navbar() {
@@ -88,10 +90,35 @@ export default function Navbar() {
     transition: { duration: 0.1 }
   };
 
+  const ThemeToggle = () => {
+    const { theme, setTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => setMounted(true), []);
+
+    if (!mounted) return <div className="w-9 h-9" />; // Placeholder to avoid layout shift
+
+    return (
+      <motion.button
+        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+        className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        aria-label="Toggle Theme"
+      >
+        {theme === 'dark' ? (
+          <FiSun className="w-5 h-5 text-yellow-500" />
+        ) : (
+          <FiMoon className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+        )}
+      </motion.button>
+    );
+  };
+
   return (
     <div>
       <motion.nav
-        className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 backdrop-blur-md shadow-2xl border border-black/10 rounded-md bg-white/90 w-[calc(100%-2rem)] md:max-w-7xl`}
+        className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 backdrop-blur-md shadow-2xl border border-black/10 rounded-md bg-white/90 dark:bg-black/90 dark:border-white/10 w-[calc(100%-2rem)] md:max-w-7xl`}
         initial={{ y: -120 }}
         animate={{ 
           y: isVisible ? 0 : -120,
@@ -130,10 +157,12 @@ export default function Navbar() {
               setActiveLink={setActiveLink}
               hoverEffect={hoverEffect}
               tapEffect={tapEffect}
+              ThemeToggle={ThemeToggle}
             />
 
             {/* Mobile Menu Button */}
-            <div className="md:hidden flex items-center">
+            <div className="md:hidden flex items-center gap-2">
+              <ThemeToggle />
               <motion.button
                 onClick={toggleMenu}
                 className="text-black focus:outline-none p-2"
@@ -195,13 +224,14 @@ const DesktopMenu = ({
   setIsCompanyDropdownOpen,
   setActiveLink,
   hoverEffect,
-  tapEffect
+  tapEffect,
+  ThemeToggle
 }) => (
   <>
-    <div className="hidden md:flex space-x-8 text-black font-medium relative">
+    <div className="hidden md:flex space-x-8 text-black dark:text-white font-medium relative items-center">
       <motion.a
         href="/"
-        className={`relative py-2 transition ${activeLink === 'home' ? 'text-orange-700' : 'hover:text-orange-700'}`}
+        className={`relative py-2 transition ${activeLink === 'home' ? 'text-orange-700 dark:text-orange-400' : 'hover:text-orange-700 dark:hover:text-orange-400'}`}
         whileHover={hoverEffect}
         whileTap={tapEffect}
         onClick={() => setActiveLink('home')}
@@ -333,6 +363,10 @@ const DesktopMenu = ({
           />
         )}
       </motion.a>
+
+      <div className="ml-2">
+        <ThemeToggle />
+      </div>
     </div>
 
     {/* Desktop Button */}
@@ -343,9 +377,8 @@ const DesktopMenu = ({
     >
       <motion.a
         href="/new-project/request-quotation"
-        className="px-6 py-1 bg-gradient-to-r from-orange-500 to-pink-500 rounded-md text-white font-semibold flex items-center shadow-lg"
+        className="px-6 py-2 bg-[var(--color-primary)] rounded-full text-white font-semibold flex items-center shadow-lg transition-colors hover:bg-[var(--color-primary)]/90"
         whileHover={{
-          background: "linear-gradient(to right, #ec4899, #f97316)",
           scale: 1.05,
           transition: { duration: 0.3 }
         }}

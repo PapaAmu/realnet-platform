@@ -1,11 +1,12 @@
 // app/updates/blogs/[slug]/page.jsx
 import { generateSEO, generateStructuredData, parseTags } from "@/lib/SEO";
 import BlogPostPageComponent from "@/components/pages/company/blog/BlogPostPage";
+import { getApiBaseUrl } from "@/lib/api-config";
 
 // Mock function - replace with your actual data fetching
 async function getBlogPost(slug) {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blog/posts/${slug}`, {
+    const response = await fetch(`${getApiBaseUrl()}/api/blog/posts/${slug}`, {
       next: { revalidate: 3600 } // Revalidate every hour
     });
     
@@ -24,7 +25,7 @@ async function getBlogPost(slug) {
 // Generate static params for blog posts (for SSG)
 export async function generateStaticParams() {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blog/posts`);
+    const response = await fetch(`${getApiBaseUrl()}/api/blog/posts`);
     
     if (!response.ok) {
       return [];

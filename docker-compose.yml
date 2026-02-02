@@ -3,18 +3,37 @@ version: '3.8'
 services:
   realnet-admin:
     container_name: realnet-admin
-    image: realnet-admin
     build:
       context: ./realnet-admin
       dockerfile: Dockerfile
-    expose:
-      - "80"
+    ports:
+      - "8009:80"
+    volumes:
+      - ./realnet-admin:/var/www/html
+      - /var/www/html/vendor
     env_file:
       - ./realnet-admin/.env
-    # environment:
-    #   - APP_ENV=production
-    #   - APP_DEBUG=false
-    restart: always
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+    networks:
+      - realnet-network
+
+  # realnet-app:
+  #   container_name: realnet-app
+  #   build:
+  #     context: ./realnet-app
+  #     dockerfile: Dockerfile
+  #   expose:
+  #     - "3000"
+  #   environment:
+  #     - NODE_ENV=production
+  #     - INTERNAL_API_URL=http://realnet-admin
+  #     # Public URL for client-side fetches (must be provided at runtime or build time depending on usage)
+  #     - NEXT_PUBLIC_API_BASE_URL=https://admin.realnet-web.co.za
+  #   restart: always
+  #   networks:
+  #     - realnet-network
 
   mysql:
     image: mysql:8.0
@@ -26,7 +45,12 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: RealNet1
       MYSQL_DATABASE: realnet
-    restart: always
+    networks:
+      - realnet-network
 
 volumes:
   mysql_data:
+
+networks:
+  realnet-network:
+    driver: bridge

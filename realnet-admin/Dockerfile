@@ -11,7 +11,6 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
-    default-mysql-client \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
@@ -60,4 +59,9 @@ RUN chown -R www-data:www-data /var/www/html \
 # Expose port 80
 EXPOSE 80
 
-# Use the default Apache CMD (apache2-foreground)
+# Copy entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Use the entrypoint script
+ENTRYPOINT ["docker-entrypoint.sh"]

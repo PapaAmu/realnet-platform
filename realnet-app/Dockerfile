@@ -3,35 +3,46 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk add --no-cache libc6-compat
+
 # Copy dependency files
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
 # Copy project files
 COPY . .
 
 # Build the Next.js app (skip linting)
+ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
 # === 2. Production stage ===
-FROM node:20-alpine AS production
+FROM node:20-alpine AS runner
 
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
-# Copy necessary files from builder
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/.next ./.next
+# Don't run as root
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Copy public folder
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.mjs ./
-COPY --from=builder /app/node_modules ./node_modules
 
-# Expose the Next.js port
+# Copy standalone build
+# https://nextjs.org/docs/pages/api-reference/next-config-js/output
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
 EXPOSE 3000
 
-# Run Next.js
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
