@@ -1,8 +1,9 @@
 // components/ServicesSummaryCompact.jsx
 'use client';
 
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import Link from 'next/link';
+import { motion, useInView } from 'framer-motion';
 import { 
   FaCode, 
   FaMobileAlt, 
@@ -10,165 +11,296 @@ import {
   FaServer, 
   FaShoppingCart, 
   FaArrowRight,
+  FaArrowLeft,
   FaRocket
 } from 'react-icons/fa';
 
 const ServicesSummaryCompact = () => {
+  const containerRef = useRef(null);
+  const scrollRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const [activeIndex, setActiveIndex] = useState(0);
+
   const services = [
     {
-      icon: <FaCode className="text-2xl" />,
+      id: "01",
+      icon: FaCode,
       title: "Website Development",
-      description: "Custom, responsive websites built with modern technologies",
+      description: "Custom, responsive websites built with modern technologies. High-performance, SEO-optimized, and designed for conversion.",
       href: "/solutions/web-development",
-      gradient: "from-blue-500 to-cyan-500",
-      bgGradient: "from-blue-50/80 to-cyan-50/80",
-      borderColor: "border-blue-200/50"
+      stack: ["Next.js", "React", "Tailwind"]
     },
     {
-      icon: <FaMobileAlt className="text-2xl" />,
+      id: "02",
+      icon: FaMobileAlt,
       title: "Mobile Apps",
-      description: "iOS & Android applications for your business",
+      description: "Native iOS & Android applications with seamless user experiences. From concept to App Store deployment.",
       href: "/solutions/mobile-app-development",
-      gradient: "from-green-500 to-emerald-500",
-      bgGradient: "from-green-50/80 to-emerald-50/80",
-      borderColor: "border-green-200/50"
+      stack: ["React Native", "Flutter", "Swift"]
     },
     {
-      icon: <FaLaptopCode className="text-2xl" />,
+      id: "03",
+      icon: FaLaptopCode,
       title: "Software Solutions",
-      description: "Custom business software and systems",
+      description: "Enterprise-grade custom software tailored to your business processes. Scalable architecture, robust security.",
       href: "/solutions/software-development",
-      gradient: "from-purple-500 to-violet-500",
-      bgGradient: "from-purple-50/80 to-violet-50/80",
-      borderColor: "border-purple-200/50"
+      stack: ["Node.js", "Python", "PostgreSQL"]
     },
     {
-      icon: <FaShoppingCart className="text-2xl" />,
+      id: "04",
+      icon: FaShoppingCart,
       title: "Ecommerce Stores",
-      description: "Complete online store development",
+      description: "Complete online store solutions with payment integration, inventory management, and analytics dashboard.",
       href: "/solutions/web-development/e-commerce-quote-request",
-      gradient: "from-red-500 to-pink-500",
-      bgGradient: "from-red-50/80 to-pink-50/80",
-      borderColor: "border-red-200/50"
+      stack: ["Shopify", "WooCommerce", "Stripe"]
     },
     {
-      icon: <FaServer className="text-2xl" />,
+      id: "05",
+      icon: FaServer,
       title: "Hosting & Emails",
-      description: "Reliable hosting and business email solutions",
+      description: "Reliable cloud hosting with 99.9% uptime guarantee. Business email solutions and managed infrastructure.",
       href: "/solutions/email-and-hosting",
-      gradient: "from-indigo-500 to-blue-500",
-      bgGradient: "from-indigo-50/80 to-blue-50/80",
-      borderColor: "border-indigo-200/50"
+      stack: ["AWS", "Vercel", "Cloudflare"]
     }
   ];
 
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = 400;
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const scrollLeft = scrollRef.current.scrollLeft;
+      const cardWidth = 380;
+      const newIndex = Math.round(scrollLeft / cardWidth);
+      setActiveIndex(Math.min(newIndex, services.length - 1));
+    }
+  };
+
   return (
-    <section className="relative py-20 bg-gradient-to-br from-gray-50 via-white to-gray-100 overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-r from-orange-400/10 to-pink-400/10 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-r from-cyan-400/10 to-blue-400/10 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-purple-400/5 to-violet-400/5 rounded-full blur-3xl"></div>
+    <section 
+      ref={containerRef}
+      className="relative py-24 lg:py-32   bg-white dark:bg-[#050505] overflow-hidden"
+    >
+      {/* Ambient Background */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        
+        {/* Gradient Orbs */}
+        <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-cyan-600/10 rounded-full blur-3xl" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-full px-6 py-3 mb-6 shadow-lg">
-            <FaRocket className="text-orange-500 text-lg" />
-            <span className="text-sm font-semibold text-gray-700">Our Digital Solutions</span>
-          </div>
-          <h2 className="text-4xl lg:text-5xl font-black text-gray-900 mb-6">
-            Transform Your <span className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">Digital Presence</span>
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Comprehensive digital solutions designed to elevate your business with cutting-edge technology and innovative design
-          </p>
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
+        
+        {/* Header - Asymmetric Layout */}
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-16 gap-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-2xl"
+          >
+            <span className="inline-flex items-center gap-2 text-sm text-violet-400 font-medium tracking-wider uppercase mb-4">
+              <FaRocket className="w-4 h-4" />
+              Our Services
+            </span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white tracking-tight leading-tight">
+              Digital Solutions<br />
+              <span className="text-gray-400 dark:text-white/40">For Modern Business</span>
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-center gap-4"
+          >
+            <button
+              onClick={() => scroll('left')}
+              className="w-12 h-12 rounded-full border border-gray-200 dark:border-white/10 flex items-center justify-center text-gray-600 dark:text-white/60 hover:bg-gray-100 dark:hover:bg-white/5 hover:border-gray-300 dark:hover:border-white/20 transition-all duration-300"
+              aria-label="Previous service"
+            >
+              <FaArrowLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => scroll('right')}
+              className="w-12 h-12 rounded-full bg-white dark:bg-white text-black dark:text-black flex items-center justify-center hover:scale-105 transition-transform duration-300 shadow-lg shadow-violet-500/20"
+              aria-label="Next service"
+            >
+              <FaArrowRight className="w-4 h-4" />
+            </button>
+          </motion.div>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
-          {services.map((service, index) => (
-            <Link
-              key={index}
-              href={service.href}
-              className="group relative"
-            >
-              {/* Glassmorphism Card */}
-              <div className="relative bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-white/40 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-2">
-                {/* Gradient Border Effect */}
-                <div className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${service.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}></div>
-                
-                {/* Animated Background */}
-                <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${service.bgGradient} opacity-0 group-hover:opacity-100 transition-all duration-500`}></div>
-                
-                {/* Content */}
-                <div className="relative z-10">
-                  {/* Icon Container */}
-                  <div className={`w-16 h-16 bg-gradient-to-r ${service.gradient} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                    <div className="text-white">
-                      {service.icon}
+        {/* Horizontal Scroll Container */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="relative"
+        >
+          {/* Fade Edges */}
+          <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-white dark:from-[#050505] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white dark:from-[#050505] to-transparent z-10 pointer-events-none" />
+
+          <div
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-8 -mx-6 px-6"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {services.map((service, index) => (
+              <motion.div
+                key={service.id}
+                initial={{ opacity: 0, y: 40 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ 
+                  duration: 0.6, 
+                  delay: 0.4 + index * 0.1,
+                  ease: [0.22, 1, 0.36, 1]
+                }}
+                className="snap-start shrink-0 w-[340px] md:w-[380px]"
+              >
+                <Link href={service.href} className="group block h-full">
+                  <div className="relative h-full bg-gray-50/50 dark:bg-white/[0.02] backdrop-blur-sm border border-gray-200 dark:border-white/[0.06] rounded-2xl p-8 hover:bg-white dark:hover:bg-white/[0.04] hover:border-gray-300 dark:hover:border-white/[0.12] transition-all duration-500 overflow-hidden">
+                    
+                    {/* Hover Gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-violet-500/0 via-transparent to-cyan-500/0 group-hover:from-violet-500/5 group-hover:to-cyan-500/5 transition-all duration-700" />
+                    
+                    {/* Number */}
+                    <div className="absolute top-6 right-6 text-6xl font-bold text-gray-200 dark:text-white/[0.03] select-none">
+                      {service.id}
                     </div>
+
+                    {/* Content */}
+                    <div className="relative z-10">
+                      {/* Icon */}
+                      <div className="w-14 h-14 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:border-violet-500/30 transition-all duration-300">
+                        <service.icon className="w-6 h-6 text-gray-700 dark:text-white/70 group-hover:text-violet-500 dark:group-hover:text-violet-400 transition-colors duration-300" />
+                      </div>
+
+                      {/* Title */}
+                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-300">
+                        {service.title}
+                      </h3>
+
+                      {/* Description */}
+                      <p className="text-gray-600 dark:text-white/50 text-sm leading-relaxed mb-6 line-clamp-3">
+                        {service.description}
+                      </p>
+
+                      {/* Tech Stack */}
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {service.stack.map((tech) => (
+                          <span 
+                            key={tech}
+                            className="text-xs px-3 py-1 rounded-full bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-white/40 border border-gray-200 dark:border-white/5"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Link */}
+                      <div className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white/80 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-300">
+                        <span>Learn more</span>
+                        <FaArrowRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" />
+                      </div>
+                    </div>
+
+                    {/* Corner Accent */}
+                    <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-violet-500/10 to-transparent rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+
+            {/* View All Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="snap-start shrink-0 w-[340px] md:w-[380px]"
+            >
+              <Link href="/services" className="group block h-full">
+                <div className="relative h-full min-h-[400px] bg-gradient-to-br from-violet-600 to-cyan-600 rounded-2xl p-8 flex flex-col justify-between overflow-hidden hover:shadow-2xl hover:shadow-violet-500/25 transition-all duration-500">
+                  
+                  {/* Background Pattern */}
+                  <div className="absolute inset-0 opacity-10">
+                    <div className="absolute inset-0" style={{
+                      backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
+                      backgroundSize: '24px 24px'
+                    }} />
                   </div>
 
-                  {/* Text Content */}
-                  <h3 className="font-black text-gray-900 text-lg mb-3 text-center group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-gray-900 group-hover:to-gray-700 group-hover:bg-clip-text transition-all duration-300">
-                    {service.title}
-                  </h3>
-                  
-                  <p className="text-gray-600 text-sm leading-relaxed text-center mb-4 group-hover:text-gray-700 transition-colors">
-                    {service.description}
-                  </p>
+                  <div className="relative z-10">
+                    <div className="w-14 h-14 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-6">
+                      <FaRocket className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white mb-2">
+                      View All Services
+                    </h3>
+                    <p className="text-white/70 text-sm">
+                      Explore our complete range of digital solutions
+                    </p>
+                  </div>
 
-                  {/* Animated Arrow */}
-                  <div className="flex justify-center">
-                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-110">
-                      <FaArrowRight className={`text-xs text-transparent bg-gradient-to-r ${service.gradient} bg-clip-text group-hover:translate-x-0.5 transition-transform`} />
+                  <div className="relative z-10 flex items-center gap-2 text-white font-medium">
+                    <span>Get Started</span>
+                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-violet-600 transition-all duration-300">
+                      <FaArrowRight className="w-4 h-4" />
                     </div>
                   </div>
                 </div>
-
-                {/* Hover Border */}
-                <div className={`absolute inset-0 rounded-2xl border-2 ${service.borderColor} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
-              </div>
-
-              {/* Floating Particles (on hover) */}
-              <div className="absolute -top-2 -right-2 w-4 h-4 bg-gradient-to-r from-orange-400 to-pink-400 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping transition-opacity duration-500"></div>
-              <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping transition-opacity duration-500 delay-150"></div>
-            </Link>
-          ))}
-        </div>
-
-        {/* Enhanced CTA */}
-        <div className="text-center relative">
-          {/* Animated Background for CTA */}
-          <div className="absolute inset-0 flex justify-center">
-            <div className="w-48 h-48 bg-gradient-to-r from-orange-400/20 to-pink-400/20 rounded-full blur-2xl animate-pulse"></div>
+              </Link>
+            </motion.div>
           </div>
-          
-          <Link
-            href="/services"
-            className="relative inline-flex items-center bg-gradient-to-r from-orange-500 to-pink-500 text-white px-4 py-2 rounded-md font-black text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 group/btn shadow-lg"
-          >
-           
-            
-            {/* Button Content */}
-            <span className="relative z-10">Explore All Services</span>
-            <FaArrowRight className="ml-3 relative z-10 group-hover/btn:translate-x-2 transition-transform duration-300" />
-            
-            {/* Border Animation */}
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-orange-500 to-pink-500 opacity-0 group-hover/btn:opacity-100 animate-pulse"></div>
-            <div className="absolute inset-0 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 m-0.5"></div>
-          </Link>
 
-          {/* Supporting Text */}
-          <p className="text-gray-500 text-sm mt-6 font-medium">
-            Trusted by businesses across South Africa
+          {/* Progress Indicator */}
+          <div className="flex justify-center gap-2 mt-8">
+            {services.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  if (scrollRef.current) {
+                    scrollRef.current.scrollTo({
+                      left: index * 380,
+                      behavior: 'smooth'
+                    });
+                  }
+                }}
+                className={`h-1 rounded-full transition-all duration-300 ${
+                  index === activeIndex 
+                    ? 'w-8 bg-violet-500' 
+                    : 'w-2 bg-gray-300 dark:bg-white/20 hover:bg-gray-400 dark:hover:bg-white/40'
+                }`}
+                aria-label={`Go to service ${index + 1}`}
+              />
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Bottom Text */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.9 }}
+          className="mt-16 text-center"
+        >
+          <p className="text-gray-500 dark:text-white/30 text-sm">
+            Trusted by businesses across South Africa • Enterprise-grade solutions
           </p>
-        </div>
+        </motion.div>
       </div>
-
-      {/* Bottom Gradient Border */}
     </section>
   );
 };

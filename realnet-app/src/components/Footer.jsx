@@ -9,11 +9,9 @@ import {
   FaLinkedin, 
   FaGithub,
   FaArrowRight,
-  FaHeart,
+  FaSignInAlt,
   FaPhone,
-  FaMapMarkerAlt,
-  FaClock,
-  FaSignInAlt
+  FaMapMarkerAlt
 } from "react-icons/fa";
 
 const Footer = () => {
@@ -25,7 +23,6 @@ const Footer = () => {
     if (email) {
       setIsSubscribed(true);
       setEmail("");
-      // Here you would typically send the email to your backend
       console.log("Subscribed email:", email);
     }
   };
@@ -34,7 +31,6 @@ const Footer = () => {
     window.open("https://admin.realnet-web.co.za", "_blank");
   };
 
-  // Animation variants
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
@@ -44,275 +40,211 @@ const Footer = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
+      transition: { staggerChildren: 0.1 }
     }
   };
 
+  const footerLinks = {
+    resources: [
+      { label: "Support", href: "/contact-us" },
+      { label: "POPIA", href: "/popia-act" },
+      { label: "Admin Login", href: "#", onClick: handleAdminLogin, icon: FaSignInAlt },
+    ],
+    quotes: [
+      { label: "Starter Website", href: "/solutions/web-development/starter-website-quote-request" },
+      { label: "Ecommerce", href: "/solutions/web-development/e-commerce-quote-request" },
+      { label: "Custom Dev", href: "/solutions/web-development/custom-website-quote-request" },
+    ],
+    explore: [
+      { label: "Web Development", href: "/solutions/web-development" },
+      { label: "Mobile Apps", href: "/solutions/mobile-app-development" },
+      { label: "Software", href: "/solutions/software-development" },
+      { label: "Hosting", href: "/solutions/email-and-hosting" },
+    ],
+    company: [
+      { label: "About", href: "/about-us" },
+      { label: "Projects", href: "/projects" },
+      { label: "Contact", href: "/contact-us" },
+      { label: "Resources", href: "/resources" },
+    ]
+  };
+
+  const socialLinks = [
+    { icon: FaInstagram, href: "https://www.instagram.com/realnet_web/", label: "Instagram" },
+    { icon: FaFacebook, href: "https://web.facebook.com/profile.php?id=61565067420433", label: "Facebook" },
+    { icon: FaLinkedin, href: "https://www.linkedin.com/company/realnet-web-solutions-pty", label: "LinkedIn" },
+    { icon: FaGithub, href: "https://github.com/PapaAmu", label: "GitHub" },
+  ];
+
   return (
-    <footer className="pt-16 relative overflow-hidden">
-      {/* Background Image with Dark Overlay */}
-      <div 
-        className="absolute inset-0 -z-20 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(https://i.pinimg.com/736x/56/76/5f/56765fd8f4d40b2550b4ad70de14f41f.jpg)`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat"
-        }}
-      />
+    <footer className="relative bg-[#050505] dark:bg-[#050505] overflow-hidden">
+      {/* Subtle top border */}
+      <div className="absolute top-0 left-0 w-full h-px bg-white/10" />
       
-      {/* Enhanced Dark Overlay */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-gray-900/97 via-gray-900/95 to-gray-800/97"></div>
-      
-      {/* Simplified background elements */}
-      <div className="absolute inset-0 -z-5 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-[40rem] h-[40rem] bg-gradient-to-br from-orange-500/10 to-pink-500/10 blur-3xl rounded-full opacity-50" />
-      </div>
-      
-      <div className="max-w-screen-xl mx-auto px-4 md:px-8 relative z-10">
-        {/* Newsletter Section */}
-        <motion.div 
-          className="text-center mb-16"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeIn}
-        >
-          <div className="bg-gray-800/40 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50 max-w-2xl mx-auto">
-            <h3 className="text-white text-2xl font-bold mb-3">
-              Stay <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-pink-400">Updated</span> with Our Latest Offers
+      {/* Background glow */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-violet-900/10 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20">
+        
+        {/* Top Section - Newsletter & Info */}
+        <div className="grid lg:grid-cols-2 gap-16 mb-20">
+          {/* Newsletter */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeIn}
+          >
+            <h3 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
+              Stay <span className="text-violet-400">Updated</span>
             </h3>
-            <p className="text-gray-300 mb-6">Get exclusive web development tips and special offers delivered to your inbox</p>
+            <p className="text-white/50 mb-8 max-w-md">
+              Get exclusive web development tips, industry insights, and special offers delivered to your inbox.
+            </p>
             
             {isSubscribed ? (
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-xl p-4"
+                className="flex items-center gap-3 px-6 py-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400"
               >
-                <p className="text-green-400 font-semibold">🎉 Thank you for subscribing!</p>
-                <p className="text-green-300 text-sm mt-1">We've sent a welcome email to your inbox.</p>
+                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="font-medium">Thanks for subscribing! Check your inbox.</span>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <div className="relative w-full sm:w-80">
-                  <FaEnvelope className="w-5 h-5 text-gray-400 absolute left-3 inset-y-0 my-auto" />
+              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4">
+                <div className="relative flex-1 max-w-sm">
+                  <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
-                    className="w-full pl-10 pr-4 py-3 text-white bg-gray-700/80 backdrop-blur-sm outline-none border border-gray-600 focus:border-orange-500 shadow-sm rounded-xl transition-all duration-300"
+                    className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-violet-500/50 transition-colors"
                     required
                   />
                 </div>
-                <motion.button 
+                <motion.button
                   type="submit"
-                  className="py-3 px-6 font-medium text-white bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 rounded-xl shadow-lg flex items-center gap-2 transition-all duration-300 whitespace-nowrap"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="group flex items-center justify-center gap-2 px-8 py-4 bg-white text-black rounded-xl font-medium hover:bg-white/90 transition-colors"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  Subscribe <FaArrowRight className="text-xs" />
+                  Subscribe
+                  <FaArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </motion.button>
               </form>
             )}
-          </div>
-        </motion.div>
+          </motion.div>
 
-        {/* Links Grid - All original columns included */}
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-4 gap-8 sm:gap-12 justify-between mb-16"
+          {/* Contact Info */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeIn}
+            className="lg:text-right"
+          >
+            <div className="inline-flex flex-col items-start lg:items-end gap-6">
+              <div className="flex items-center gap-3 text-white/60">
+                <FaMapMarkerAlt className="w-5 h-5 text-violet-400" />
+                <span>Matsau Str, Midrand, South Africa</span>
+              </div>
+              <div className="flex items-center gap-3 text-white/60">
+                <FaPhone className="w-5 h-5 text-violet-400" />
+                <span>+27 (0) 64 038 8883 | +27 (0) 71 002 0008</span>
+              </div>
+              <div className="flex items-center gap-3 text-white/60">
+                <FaEnvelope className="w-5 h-5 text-violet-400" />
+                <span>lukhele@realnet-web.co.za</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Links Grid */}
+        <motion.div
+          className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 mb-20"
           variants={staggerChildren}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true }}
         >
-          {/* Resources Column */}
-          <motion.div className="space-y-4 text-gray-300" variants={fadeIn}>
-            <h4 className="text-orange-400 font-semibold pb-2 text-lg">Resources</h4>
-            <div className="space-y-4">
-              <a
-                href="/contact-us"
-                className="duration-150 hover:text-orange-400 flex items-center gap-1 group"
-              >
-                <span className="group-hover:translate-x-1 transition-transform duration-200">Support</span>
-              </a>
-              <a
-                href="/popia-act"
-                className="duration-150 hover:text-orange-400 flex items-center gap-1 group "
-              >
-                <span className="group-hover:translate-x-1 transition-transform duration-200">POPIA</span>
-              </a>
-              <motion.button
-                onClick={handleAdminLogin}
-                className="duration-150 hover:text-orange-400 flex items-center gap-2 group w-full text-left"
-                whileHover={{ x: 5 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <FaSignInAlt className="text-sm text-gray-400 group-hover:text-orange-400 transition-colors" />
-                <span className="group-hover:translate-x-1 transition-transform duration-200">Admin Login</span>
-              </motion.button>
-            </div>
-          </motion.div>
-          
-          {/* Quick Quotes Column */}
-          <motion.ul className="space-y-4 text-gray-300" variants={fadeIn}>
-            <h4 className="text-orange-400 font-semibold pb-2 text-lg">Quick Quotes</h4>
-            <li>
-              <a
-                href="/solutions/web-development/starter-website-quote-request"
-                className="duration-150 hover:text-orange-400 flex items-center gap-1 group"
-              >
-                <span className="group-hover:translate-x-1 transition-transform duration-200">Starter Business Website</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="/solutions/web-development/e-commerce-quote-request"
-                className="duration-150 hover:text-orange-400 flex items-center gap-1 group"
-              >
-                <span className="group-hover:translate-x-1 transition-transform duration-200">Ecommerce Website</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="/solutions/web-development/custom-website-quote-request"
-                className="duration-150 hover:text-orange-400 flex items-center gap-1 group"
-              >
-                <span className="group-hover:translate-x-1 transition-transform duration-200">Custom Website Dev</span>
-              </a>
-            </li>
-          </motion.ul>
-          
-          {/* Explore Column */}
-          <motion.ul className="space-y-4 text-gray-300" variants={fadeIn}>
-            <h4 className="text-orange-400 font-semibold pb-2 text-lg">Explore</h4>
-            <li>
-              <a
-                href="/solutions/web-development"
-                className="duration-150 hover:text-orange-400 flex items-center gap-1 group"
-              >
-                <span className="group-hover:translate-x-1 transition-transform duration-200">Website Development</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="/solutions/mobile-app-development"
-                className="duration-150 hover:text-orange-400 flex items-center gap-1 group"
-              >
-                <span className="group-hover:translate-x-1 transition-transform duration-200">Mobile App Development</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="/solutions/software-development"
-                className="duration-150 hover:text-orange-400 flex items-center gap-1 group"
-              >
-                <span className="group-hover:translate-x-1 transition-transform duration-200">Software Development</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="/solutions/email-and-hosting"
-                className="duration-150 hover:text-orange-400 flex items-center gap-1 group"
-              >
-                <span className="group-hover:translate-x-1 transition-transform duration-200">Hosting & Business Emails</span>
-              </a>
-            </li>
-          </motion.ul>
-          
-          {/* Company Column */}
-          <motion.ul className="space-y-4 text-gray-300" variants={fadeIn}>
-            <h4 className="text-orange-400 font-semibold pb-2 text-lg">Company</h4>
-            <li>
-              <a
-                href="/about-us"
-                className="duration-150 hover:text-orange-400 flex items-center gap-1 group"
-              >
-                <span className="group-hover:translate-x-1 transition-transform duration-200">About Us</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="/projects"
-                className="duration-150 hover:text-orange-400 flex items-center gap-1 group"
-              >
-                <span className="group-hover:translate-x-1 transition-transform duration-200">Projects</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="/contact-us"
-                className="duration-150 hover:text-orange-400 flex items-center gap-1 group"
-              >
-                <span className="group-hover:translate-x-1 transition-transform duration-200">Contact Us</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="/resources"
-                className="duration-150 hover:text-orange-400 flex items-center gap-1 group"
-              >
-                <span className="group-hover:translate-x-1 transition-transform duration-200">Resources</span>
-              </a>
-            </li>
-          </motion.ul>
+          {Object.entries(footerLinks).map(([category, links]) => (
+            <motion.div key={category} variants={fadeIn}>
+              <h4 className="text-white font-semibold mb-6 uppercase text-sm tracking-wider">
+                {category}
+              </h4>
+              <ul className="space-y-4">
+                {links.map((link) => (
+                  <li key={link.label}>
+                    {link.onClick ? (
+                      <button
+                        onClick={link.onClick}
+                        className="group flex items-center gap-2 text-white/50 hover:text-violet-400 transition-colors text-sm"
+                      >
+                        {link.icon && <link.icon className="w-4 h-4" />}
+                        <span className="group-hover:translate-x-1 transition-transform">
+                          {link.label}
+                        </span>
+                      </button>
+                    ) : (
+                      <a
+                        href={link.href}
+                        className="group inline-flex items-center gap-2 text-white/50 hover:text-violet-400 transition-colors text-sm"
+                      >
+                        <span className="group-hover:translate-x-1 transition-transform">
+                          {link.label}
+                        </span>
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
         </motion.div>
 
         {/* Bottom Bar */}
-        <motion.div 
-          className="py-6 border-t border-gray-700/50 flex items-center justify-between flex-col sm:flex-row gap-4 text-center sm:text-left"
+        <motion.div
+          className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={fadeIn}
-        >  
-          <div className="flex items-center gap-4 flex-col sm:flex-row">
-            <div className="flex items-center gap-3">
-              <img src="/logo.png" className="h-8 invert" alt="RealNet Web Solutions" />
+        >
+          {/* Logo & Copyright */}
+          <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+            <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
+              <img src="/logo.png" alt="" />            </div>
+            <div>
+              <p className="text-white/80 font-medium">RealNet Web Solutions (PTY)LTD</p>
+              <p className="text-white/40 text-sm">
+                © {new Date().getFullYear()} All rights reserved.
+              </p>
             </div>
-            <p className="text-gray-400 text-sm">
-              © 2024 - {new Date().getFullYear()} RealNet Web Solutions PTY. All rights reserved.
-            </p>
           </div>
 
-          <div className="flex items-center gap-4 flex-col sm:flex-row">
-            <p className="text-orange-400 text-sm flex items-center gap-1">
-              "Empowering Businesses with Dignity and Digital Excellence"
-            </p>
-            
-            <div className="flex items-center gap-5 text-gray-400">
-              <motion.a 
-                href="https://www.instagram.com/realnet_web/" 
-                className="hover:text-orange-500 transition-colors duration-300"
-                whileHover={{ y: -3 }}
+          {/* Tagline */}
+          <p className="text-white/30 text-sm italic text-center">
+            "Empowering Businesses with Dignity & Digital Excellence"
+          </p>
+
+          {/* Social Links */}
+          <div className="flex items-center gap-2">
+            {socialLinks.map((social) => (
+              <motion.a
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-violet-400 hover:border-violet-500/30 transition-all"
+                whileHover={{ y: -2 }}
+                aria-label={social.label}
               >
-                <FaInstagram className="w-5 h-5" />
+                <social.icon className="w-4 h-4" />
               </motion.a>
-              <motion.a 
-                href="https://web.facebook.com/profile.php?id=61565067420433" 
-                className="hover:text-orange-500 transition-colors duration-300"
-                whileHover={{ y: -3 }}
-              >
-                <FaFacebook className="w-5 h-5" />
-              </motion.a>
-              <motion.a 
-                href="https://www.linkedin.com/company/realnet-web-solutions-pty" 
-                className="hover:text-orange-500 transition-colors duration-300"
-                whileHover={{ y: -3 }}
-              >
-                <FaLinkedin className="w-5 h-5" />
-              </motion.a>
-              <motion.a 
-                href="https://github.com/PapaAmu" 
-                className="hover:text-orange-500 transition-colors duration-300"
-                whileHover={{ y: -3 }}
-              >
-                <FaGithub className="w-5 h-5" />
-              </motion.a>
-            </div>
+            ))}
           </div>
         </motion.div>
       </div>

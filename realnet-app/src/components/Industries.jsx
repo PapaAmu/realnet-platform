@@ -1,158 +1,283 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useRef } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-
-const MotionLink = motion(Link);
+import { 
+  FaShoppingCart, 
+  FaHeartbeat, 
+  FaGraduationCap, 
+  FaHome, 
+  FaLandmark, 
+  FaUtensils, 
+  FaIndustry, 
+  FaRocket,
+  FaArrowRight
+} from "react-icons/fa";
 
 const Industries = () => {
-  const [hoveredIndustry, setHoveredIndustry] = useState(null);
+  const [activeIndustry, setActiveIndustry] = useState(0);
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 
   const industries = [
-    { id: 1, name: "E-Commerce", description: "Custom online stores with secure payment integration and inventory management.", stats: "300% average growth" },
-    { id: 2, name: "Healthcare", description: "HIPAA-compliant solutions for clinics, telehealth, and medical records management.", stats: "40% faster patient processing" },
-    { id: 3, name: "Education", description: "E-learning platforms, student management systems, and virtual classroom solutions.", stats: "60% engagement increase" },
-    { id: 4, name: "Real Estate", description: "Property listing platforms, virtual tours, and agent management systems.", stats: "2x more leads generated" },
-    { id: 5, name: "Finance", description: "Fintech applications, banking solutions, and financial data visualization tools.", stats: "99.9% uptime guarantee" },
-    { id: 6, name: "Hospitality", description: "Booking systems, hotel management, and customer experience platforms.", stats: "45% booking increase" },
-    { id: 7, name: "Manufacturing", description: "Supply chain management, inventory tracking, and production monitoring systems.", stats: "30% efficiency improvement" },
-    { id: 8, name: "Startups", description: "MVP development, scalable architecture, and investor-ready applications.", stats: "50% faster to market" },
+    { 
+      id: 1, 
+      name: "E-Commerce", 
+      description: "Custom online stores with secure payment integration, inventory management, and conversion optimization.",
+      stats: "300% avg growth",
+      icon: FaShoppingCart,
+      color: "blue"
+    },
+    { 
+      id: 2, 
+      name: "Healthcare", 
+      description: "HIPAA-compliant solutions for clinics, telehealth platforms, and electronic medical records.",
+      stats: "40% faster processing",
+      icon: FaHeartbeat,
+      color: "emerald"
+    },
+    { 
+      id: 3, 
+      name: "Education", 
+      description: "E-learning platforms, student management systems, and virtual classroom solutions.",
+      stats: "60% engagement increase",
+      icon: FaGraduationCap,
+      color: "violet"
+    },
+    { 
+      id: 4, 
+      name: "Real Estate", 
+      description: "Property listing platforms, virtual tours, CRM systems, and agent management tools.",
+      stats: "2x more leads",
+      icon: FaHome,
+      color: "amber"
+    },
+    { 
+      id: 5, 
+      name: "Finance", 
+      description: "Fintech applications, secure banking solutions, and real-time financial data visualization.",
+      stats: "99.9% uptime",
+      icon: FaLandmark,
+      color: "cyan"
+    },
+    { 
+      id: 6, 
+      name: "Hospitality", 
+      description: "Booking engines, hotel management systems, and customer experience platforms.",
+      stats: "45% booking increase",
+      icon: FaUtensils,
+      color: "rose"
+    },
+    { 
+      id: 7, 
+      name: "Manufacturing", 
+      description: "Supply chain management, IoT monitoring, and production efficiency systems.",
+      stats: "30% efficiency gain",
+      icon: FaIndustry,
+      color: "orange"
+    },
+    { 
+      id: 8, 
+      name: "Startups", 
+      description: "MVP development, scalable architecture, and investor-ready applications.",
+      stats: "50% faster to market",
+      icon: FaRocket,
+      color: "indigo"
+    },
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { delayChildren: 0.3, staggerChildren: 0.2 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1 },
-  };
-
-  const IconWrapper = ({ children, isHovered }) => (
-    <div
-      className={`p-3 rounded-lg transition-all duration-300 ${
-        isHovered
-          ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white"
-          : "bg-gray-100 text-gray-600"
-      }`}
-    >
-      {children}
-    </div>
-  );
-
   return (
-    <div className="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header Section */}
+    <section 
+      ref={containerRef}
+      className="relative py-24 lg:py-32 bg-white dark:bg-[#050505] overflow-hidden transition-colors duration-300"
+    >
+      {/* Background */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-0 w-full h-px bg-gray-200 dark:bg-white/10" />
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gray-200 dark:bg-white/10" />
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-gray-50 dark:from-white/[0.02] to-transparent" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
+        {/* Header */}
         <motion.div
-          className="text-center mb-20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-3xl mb-16"
         >
-          <h2 className="text-4xl font-bold text-gray-900 sm:text-5xl">
-            Industries We <span className="text-orange-500">Serve</span>
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-600 dark:text-white/60 font-medium mb-6">
+            <FaIndustry className="w-4 h-4 text-blue-600 dark:text-violet-400" />
+            Industry Expertise
+          </span>
+          
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white tracking-tight leading-tight">
+            Solutions For Every
+            <br />
+            <span className="text-blue-600 dark:text-violet-400">
+              Industry Vertical
+            </span>
           </h2>
-          <p className="mt-6 max-w-3xl text-xl text-gray-600 mx-auto leading-relaxed">
-            Delivering cutting-edge digital solutions across diverse sectors,
-            driving innovation and measurable business growth through
-            technology.
+          
+          <p className="mt-6 text-lg text-gray-600 dark:text-white/50 leading-relaxed">
+            We bring deep domain expertise across diverse sectors, delivering 
+            tailored digital solutions that drive measurable business outcomes.
           </p>
         </motion.div>
 
-        {/* Industries Grid */}
+        {/* Horizontal Accordion */}
         <motion.div
-          className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className="flex flex-col lg:flex-row gap-4 h-auto lg:h-[500px]"
         >
-          {industries.map((industry) => (
+          {industries.map((industry, index) => (
             <motion.div
               key={industry.id}
-              className="group cursor-pointer"
-              variants={itemVariants}
-              onMouseEnter={() => setHoveredIndustry(industry.id)}
-              onMouseLeave={() => setHoveredIndustry(null)}
+              onClick={() => setActiveIndustry(index)}
+              onMouseEnter={() => setActiveIndustry(index)}
+              className={`relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                activeIndustry === index 
+                  ? "lg:flex-[3] flex-1" 
+                  : "lg:flex-1 flex-none h-20 lg:h-auto"
+              }`}
             >
-              <div
-                className={`bg-white rounded-2xl p-8 h-full transition-all duration-500 border-2 ${
-                  hoveredIndustry === industry.id
-                    ? "border-orange-500 shadow-2xl scale-105"
-                    : "border-gray-100 shadow-lg hover:shadow-xl"
-                }`}
-              >
-                <div className="mb-6">
-                  <IconWrapper isHovered={hoveredIndustry === industry.id}>
-                    <div className="w-6 h-6 bg-current rounded-full opacity-90"></div>
-                  </IconWrapper>
+              {/* Background */}
+              <div className={`absolute inset-0 transition-colors duration-500 ${
+                activeIndustry === index
+                  ? "bg-gray-900 dark:bg-white/[0.03]"
+                  : "bg-gray-100 dark:bg-white/[0.02] hover:bg-gray-200 dark:hover:bg-white/[0.04]"
+              }`} />
+              
+              {/* Border */}
+              <div className={`absolute inset-0 rounded-2xl border transition-colors duration-500 ${
+                activeIndustry === index
+                  ? "border-blue-500/30 dark:border-violet-500/30"
+                  : "border-gray-200 dark:border-white/[0.06]"
+              }`} />
+
+              {/* Content Container */}
+              <div className="relative h-full p-6 flex flex-col justify-between">
+                
+                {/* Collapsed State (Mobile/Inactive) */}
+                <div className={`flex lg:flex-col items-center lg:items-start gap-4 transition-all duration-500 ${
+                  activeIndustry === index ? "opacity-0 lg:opacity-100" : "opacity-100"
+                }`}>
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-300 ${
+                    activeIndustry === index 
+                      ? "bg-blue-500/10 dark:bg-violet-500/10" 
+                      : "bg-white dark:bg-white/5"
+                  }`}>
+                    <industry.icon className={`w-6 h-6 transition-colors duration-300 ${
+                      activeIndustry === index 
+                        ? "text-blue-600 dark:text-violet-400" 
+                        : "text-gray-600 dark:text-white/60"
+                    }`} />
+                  </div>
+                  
+                  <h3 className={`text-lg font-semibold whitespace-nowrap transition-colors duration-300 ${
+                    activeIndustry === index 
+                      ? "text-white" 
+                      : "text-gray-900 dark:text-white/80"
+                  }`}>
+                    {industry.name}
+                  </h3>
                 </div>
 
-                <h3
-                  className={`text-xl font-semibold mb-4 transition-colors duration-300 ${
-                    hoveredIndustry === industry.id ? "text-orange-500" : "text-gray-900"
-                  }`}
-                >
-                  {industry.name}
-                </h3>
+                {/* Expanded Content */}
+                <AnimatePresence mode="wait">
+                  {activeIndustry === index && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.4, delay: 0.1 }}
+                      className="mt-6 lg:mt-0"
+                    >
+                      <p className="text-gray-400 dark:text-white/50 text-sm lg:text-base leading-relaxed mb-6">
+                        {industry.description}
+                      </p>
+                      
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="px-4 py-2 rounded-full bg-white/10 dark:bg-white/5 border border-white/10">
+                          <span className="text-2xl font-bold text-white dark:text-white">
+                            {industry.stats}
+                          </span>
+                        </div>
+                      </div>
 
-                <p className="text-gray-600 leading-relaxed mb-6 text-sm">
-                  {industry.description}
-                </p>
+                      <Link 
+                        href={`/industries/${industry.name.toLowerCase().replace(/ /g, '-')}`}
+                        className="inline-flex items-center gap-2 text-sm font-medium text-blue-400 dark:text-violet-400 hover:text-blue-300 dark:hover:text-violet-300 transition-colors"
+                      >
+                        View Solutions
+                        <FaArrowRight className="w-4 h-4" />
+                      </Link>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
-                <div className="pt-4 border-t border-gray-100">
-                  <p className="text-xs font-semibold text-gray-500 tracking-wide uppercase">
-                    {industry.stats}
-                  </p>
+                {/* Index Number */}
+                <div className={`absolute bottom-6 right-6 text-6xl font-bold transition-all duration-500 ${
+                  activeIndustry === index 
+                    ? "text-white/10 dark:text-white/5" 
+                    : "text-gray-200 dark:text-white/[0.02]"
+                }`}>
+                  {String(index + 1).padStart(2, '0')}
                 </div>
-
-                <div
-                  className={`mt-4 h-1 w-12 rounded-full transition-all duration-300 ${
-                    hoveredIndustry === industry.id ? "bg-gradient-to-r from-orange-500 to-pink-500 w-16" : "bg-gray-200"
-                  }`}
-                />
               </div>
+
+              {/* Active Indicator Line */}
+              <div className={`absolute bottom-0 left-0 right-0 h-1 bg-blue-500 dark:bg-violet-500 transition-transform duration-500 origin-left ${
+                activeIndustry === index ? "scale-x-100" : "scale-x-0"
+              }`} />
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Bottom CTA */}
+        {/* Bottom Stats */}
         <motion.div
-          className="mt-20 text-center"
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.3 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 py-8 border-t border-gray-200 dark:border-white/10"
         >
-          <MotionLink
+          {[
+            { value: "8+", label: "Industries Served" },
+            { value: "150+", label: "Projects Delivered" },
+            { value: "95%", label: "Client Retention" },
+            { value: "10+", label: "Years Experience" }
+          ].map((stat, index) => (
+            <div key={index} className="text-center">
+              <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+                {stat.value}
+              </div>
+              <div className="text-sm text-gray-500 dark:text-white/40 uppercase tracking-wider">
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="mt-16 text-center"
+        >
+          <Link
             href="/contact-us"
-            className="inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-orange-500 to-pink-500 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className="group inline-flex items-center gap-3 px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-black rounded-full font-medium hover:shadow-2xl hover:shadow-gray-900/20 dark:hover:shadow-white/10 transition-all duration-300"
           >
-            Start Your Project
-            <motion.svg
-              className="ml-2 w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              animate={{ x: [0, 4, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </motion.svg>
-          </MotionLink>
+            <span>Discuss Your Industry</span>
+            <FaArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          </Link>
         </motion.div>
       </div>
-    </div>
+    </section>
   );
 };
 

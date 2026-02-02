@@ -1,140 +1,251 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { FaApple, FaGooglePlay, FaRocket, FaStar, FaDownload, FaCheck } from "react-icons/fa";
 
 const Advert = () => {
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const phoneY = useTransform(scrollYProgress, [0, 1], ["10%", "-10%"]);
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+
+  const features = [
+    { icon: FaStar, text: "App Store Optimized" },
+    { icon: FaDownload, text: "Play Store Ready" },
+    { icon: FaRocket, text: "Launch Support" }
+  ];
+
   return (
-    <div
+    <section
+      ref={containerRef}
       id="pricing"
-      className="relative bg-cover bg-center bg-no-repeat py-28 px-6 md:px-16 overflow-hidden"
-      style={{
-        backgroundImage: `url('/bg_image.png')`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
+      className="relative py-32 lg:py-40 bg-gray-50 dark:bg-[#050505] overflow-hidden transition-colors duration-300"
     >
-      {/* Subtle overlay to enhance text readability */}
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-100/20 to-pink-100/20"></div>
+      {/* Dynamic Background */}
+      <div className="absolute inset-0">
+        {/* Gradient Orbs */}
+        <motion.div 
+          className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-400/10 dark:bg-violet-600/10 rounded-full blur-3xl"
+          style={{ y: backgroundY }}
+        />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-cyan-400/10 dark:bg-cyan-600/10 rounded-full blur-3xl" />
+        
+        {/* Grid Pattern */}
+        <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.02]">
+          <div className="h-full w-full" style={{
+            backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.5) 1px, transparent 1px),
+                             linear-gradient(to bottom, rgba(0,0,0,0.5) 1px, transparent 1px)`,
+            backgroundSize: '80px 80px'
+          }} />
+        </div>
 
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-72 h-72 bg-white-400/20 rounded-full -translate-x-1/2 -translate-y-1/2 filter blur-xl"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-pink-400/20 rounded-full translate-x-1/3 translate-y-1/3 filter blur-xl"></div>
+        {/* Top Border */}
+        <div className="absolute top-0 left-0 w-full h-px bg-gray-200 dark:bg-white/10" />
+      </div>
 
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
-        {/* Left Side Text */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-gray-800 max-w-2xl bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-orange-200/50"
-        >
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6 bg-gradient-to-r from-orange-400 to-pink-600 bg-clip-text text-transparent">
-            Professional Apps <br /> For App Stores 🚀
-          </h1>
-          <p className="text-sm text-gray-700 mb-8 leading-relaxed">
-            We develop high-quality mobile applications tailored for your
-            business and publish them directly to app stores. From concept to
-            deployment, we deliver world-class solutions that your customers can
-            download and enjoy.
-          </p>
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          
+          {/* Left Content */}
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="space-y-8"
+          >
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 backdrop-blur-sm">
+              <FaRocket className="w-4 h-4 text-blue-600 dark:text-violet-400" />
+              <span className="text-sm text-gray-600 dark:text-white/60 font-medium">Mobile Development</span>
+            </div>
 
-          {/* App Store badges */}
-          <div className="mb-8">
-            <div className="bg-gradient-to-r from-orange-400 to-pink-500 text-white rounded-xl mb-4 p-4 text-center">
-              <p className="font-medium">
-                We ensure your app meets all store guidelines for successful
-                publication
+            {/* Headline - Solid Colors Only */}
+            <div className="space-y-4">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-[1.1] tracking-tight">
+                Native Apps for
+                <br />
+                <span className="text-blue-600 dark:text-violet-400">
+                  iOS & Android
+                </span>
+              </h2>
+              
+              <p className="text-lg text-gray-600 dark:text-white/50 max-w-lg leading-relaxed">
+                We build and deploy production-ready mobile applications that meet 
+                store guidelines and delight users. From concept to App Store publication.
               </p>
             </div>
-            <div className="flex flex-wrap gap-4">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-black text-white rounded-xl p-3 flex items-center gap-2 cursor-pointer shadow-md"
-              >
-                <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                  {/* App Store icon */}
-                  <img src="/appstore.svg" alt="App Store" className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs">Download on the</div>
-                  <div className="text-xl font-semibold">App Store</div>
-                </div>
-              </motion.div>
 
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-green-700 text-white rounded-xl p-3 flex items-center gap-2 cursor-pointer shadow-md"
-              >
-                <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                  {/* Play Store icon */}
-                  <img src="/playstore.svg" alt="Google Play" className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs">GET IT ON</div>
-                  <div className="text-xl font-semibold">Google Play</div>
-                </div>
-              </motion.div>
+            {/* Feature Pills */}
+            <div className="flex flex-wrap gap-3">
+              {features.map((feature, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-700 dark:text-white/70"
+                >
+                  <feature.icon className="w-4 h-4 text-blue-600 dark:text-violet-400" />
+                  {feature.text}
+                </motion.div>
+              ))}
             </div>
-          </div>
-        </motion.div>
 
-        {/* Right Side - Glassy Device Mockup */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="hidden lg:block relative"
-        >
-          <div className="w-80 h-96 bg-gradient-to-br from-orange-50/80 to-pink-50/80 backdrop-blur-md rounded-3xl p-6 shadow-2xl border-2 border-orange-200/50 transform rotate-3">
-            {/* Screen content */}
-            <div className="bg-gradient-to-br from-orange-50 to-pink-50 h-full rounded-2xl overflow-hidden border border-orange-200/50 shadow-inner">
-              <div className="p-5">
-                <div className="flex justify-between items-center mb-6">
-                  <div className="w-16 h-4 bg-orange-300/50 rounded-full"></div>
-                  <div className="w-6 h-6 bg-pink-300/50 rounded-full"></div>
+            {/* Store Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="flex flex-col sm:flex-row gap-4 pt-4"
+            >
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="group flex items-center gap-3 px-6 py-4 bg-gray-900 dark:bg-white text-white dark:text-black rounded-xl font-medium transition-all duration-300 hover:shadow-2xl hover:shadow-gray-900/20 dark:hover:shadow-white/10"
+              >
+                <FaApple className="w-8 h-8" />
+                <div className="text-left">
+                  <div className="text-xs opacity-70">Download on the</div>
+                  <div className="text-lg font-semibold -mt-0.5">App Store</div>
                 </div>
+              </motion.button>
 
-                <div className="space-y-4">
-                  <div className="w-3/4 h-4 bg-orange-300/40 rounded-full"></div>
-                  <div className="w-full h-4 bg-pink-300/40 rounded-full"></div>
-                  <div className="w-5/6 h-4 bg-orange-300/40 rounded-full"></div>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="group flex items-center gap-3 px-6 py-4 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-white/10 transition-all duration-300"
+              >
+                <FaGooglePlay className="w-7 h-7" />
+                <div className="text-left">
+                  <div className="text-xs text-gray-500 dark:text-white/50">Get it on</div>
+                  <div className="text-lg font-semibold -mt-0.5">Google Play</div>
                 </div>
+              </motion.button>
+            </motion.div>
 
-                <div className="mt-8 grid grid-cols-2 gap-3">
-                  <div className="h-20 bg-gradient-to-br from-orange-100 to-orange-200/70 rounded-xl border border-orange-200/50"></div>
-                  <div className="h-20 bg-gradient-to-br from-pink-100 to-pink-200/70 rounded-xl border border-pink-200/50"></div>
-                  <div className="h-20 bg-gradient-to-br from-amber-100 to-amber-200/70 rounded-xl border border-amber-200/50"></div>
-                  <div className="h-20 bg-gradient-to-br from-rose-100 to-rose-200/70 rounded-xl border border-rose-200/50"></div>
+            {/* Trust Indicator */}
+            {/* <motion.div
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.6, delay: 0.7 }}
+              className="flex items-center gap-4 pt-4 text-sm text-gray-500 dark:text-white/40"
+            >
+              <div className="flex -space-x-2">
+                {[1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gradient-to-br dark:from-violet-500 dark:to-cyan-500 border-2 border-gray-50 dark:border-[#050505] flex items-center justify-center text-xs text-gray-600 dark:text-white font-medium"
+                  >
+                    {String.fromCharCode(64 + i)}
+                  </div>
+                ))}
+              </div>
+              <span>Trusted by 50+ published apps</span>
+            </motion.div> */}
+          </motion.div>
+
+          {/* Right Side - Phone Mockup */}
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="relative flex justify-center lg:justify-end"
+          >
+            <motion.div 
+              className="relative"
+              style={{ y: phoneY }}
+            >
+              {/* Phone Frame */}
+              <div className="relative w-[300px] h-[600px] bg-gray-800 dark:bg-gray-900 rounded-[3rem] border-8 border-gray-300 dark:border-gray-800 shadow-2xl shadow-gray-900/20 dark:shadow-violet-500/20 overflow-hidden">
+                {/* Notch */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-gray-300 dark:bg-gray-800 rounded-b-2xl z-20" />
+                
+                {/* Screen Content */}
+                <div className="relative h-full bg-white dark:bg-[#0a0a0a] overflow-hidden transition-colors duration-300">
+                  {/* App UI */}
+                  <div className="p-6 pt-12 space-y-6">
+                    {/* Header */}
+                    <div className="flex items-center justify-between">
+                      <div className="w-10 h-10 rounded-full bg-blue-500 dark:bg-gradient-to-br dark:from-violet-500 dark:to-cyan-500" />
+                      <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-white/10" />
+                    </div>
+
+                    {/* Welcome Text */}
+                    <div className="space-y-2">
+                      <div className="h-3 w-20 bg-gray-200 dark:bg-white/20 rounded-full" />
+                      <div className="h-6 w-32 bg-gray-100 dark:bg-white/10 rounded-full" />
+                    </div>
+
+                    {/* Cards */}
+                    <div className="space-y-3">
+                      <div className="h-24 rounded-2xl bg-blue-50 dark:bg-gradient-to-br dark:from-violet-500/20 dark:to-transparent border border-gray-100 dark:border-white/10 p-4">
+                        <div className="w-8 h-8 rounded-lg bg-blue-200 dark:bg-violet-500/30 mb-2" />
+                        <div className="h-2 w-24 bg-gray-200 dark:bg-white/20 rounded-full" />
+                      </div>
+                      <div className="h-24 rounded-2xl bg-cyan-50 dark:bg-gradient-to-br dark:from-cyan-500/20 dark:to-transparent border border-gray-100 dark:border-white/10 p-4">
+                        <div className="w-8 h-8 rounded-lg bg-cyan-200 dark:bg-cyan-500/30 mb-2" />
+                        <div className="h-2 w-20 bg-gray-200 dark:bg-white/20 rounded-full" />
+                      </div>
+                    </div>
+
+                    {/* Bottom Nav */}
+                    <div className="absolute bottom-6 left-6 right-6 h-16 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 flex items-center justify-around">
+                      <div className="w-6 h-6 rounded-full bg-blue-500/50 dark:bg-violet-500/50" />
+                      <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-white/10" />
+                      <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-white/10" />
+                    </div>
+                  </div>
+
+                  {/* Glow Effect */}
+                  <div className="absolute -top-20 -right-20 w-40 h-40 bg-blue-400/20 dark:bg-violet-500/30 rounded-full blur-3xl" />
+                  <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-cyan-400/20 dark:bg-cyan-500/20 rounded-full blur-3xl" />
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* Floating elements */}
-          <div className="absolute -top-4 -right-4 w-16 h-16 bg-orange-400/30 rounded-xl rotate-12 border border-orange-300/50 shadow-lg"></div>
-          <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-pink-400/30 rounded-full border border-pink-300/50 shadow-lg"></div>
-        </motion.div>
+              {/* Floating Elements */}
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -top-4 -right-4 w-20 h-20 rounded-2xl bg-gray-900 dark:bg-gradient-to-br dark:from-violet-500 dark:to-purple-600 flex items-center justify-center shadow-xl shadow-gray-900/20 dark:shadow-violet-500/30"
+              >
+                <FaApple className="w-8 h-8 text-white" />
+              </motion.div>
+
+              <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                className="absolute -bottom-4 -left-4 w-16 h-16 rounded-full bg-blue-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-blue-600 flex items-center justify-center shadow-xl shadow-blue-900/20 dark:shadow-cyan-500/30"
+              >
+                <FaGooglePlay className="w-6 h-6 text-white" />
+              </motion.div>
+
+              {/* Notification Badge */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.5, delay: 0.8 }}
+                className="absolute top-20 -left-8 px-3 py-2 rounded-lg bg-white dark:bg-white/10 backdrop-blur-md border border-gray-200 dark:border-white/20 shadow-lg text-xs text-gray-700 dark:text-white"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  Live on Store
+                </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </div>
       </div>
 
-      {/* Bottom wave divider */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden">
-        <svg
-          viewBox="0 0 1200 120"
-          preserveAspectRatio="none"
-          className="relative block w-full h-16"
-        >
-          <path
-            d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V56.44Z"
-            className="fill-white/90"
-          ></path>
-        </svg>
-      </div>
-    </div>
+      {/* Bottom Gradient */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white dark:from-[#050505] to-transparent pointer-events-none" />
+    </section>
   );
 };
 

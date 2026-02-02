@@ -137,7 +137,7 @@ const deploy = async () => {
                 backDelay={2000}
                 showCursor={true}
                 cursorChar="_"
-                className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-white tracking-tighter leading-[0.9]"
+                className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-transparent bg-clip-text bg-primary tracking-tighter leading-[0.9]"
               />
             </motion.div>
 
