@@ -93,7 +93,7 @@ const BackToTop = () => {
       
       {/* Outer ring */}
       <motion.div
-        className="absolute -inset-2 rounded-full border border-violet-500/30"
+        className="absolute -inset-1.5 rounded-full border border-violet-500/30"
         animate={{
           scale: isHovering ? 1.1 : 1,
           opacity: isHovering ? 1 : 0,
@@ -102,7 +102,7 @@ const BackToTop = () => {
       />
       
       {/* Button */}
-      <div className="relative w-14 h-14 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black flex items-center justify-center shadow-2xl shadow-black/20 dark:shadow-white/10 overflow-hidden transition-colors duration-300">
+      <div className="relative w-10 h-10 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black flex items-center justify-center shadow-2xl shadow-black/20 dark:shadow-white/10 overflow-hidden transition-colors duration-300">
         
         {/* Background fill on hover */}
         <motion.div
@@ -113,21 +113,21 @@ const BackToTop = () => {
         />
         
         {/* Icon container */}
-        <div className="relative z-10 overflow-hidden h-5">
+        <div className="relative z-10 overflow-hidden h-3.5">
           <motion.div
-            animate={{ y: isHovering ? -20 : 0 }}
+            animate={{ y: isHovering ? -14 : 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col"
           >
-            <FaArrowUp className="w-5 h-5 mb-5" />
-            <FaArrowUp className="w-5 h-5 text-white" />
+            <FaArrowUp className="w-3.5 h-3.5 mb-3.5" />
+            <FaArrowUp className="w-3.5 h-3.5 text-white" />
           </motion.div>
         </div>
       </div>
 
       {/* Tooltip */}
       <motion.div
-        className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-gray-900 dark:bg-white text-white dark:text-black text-xs font-medium whitespace-nowrap pointer-events-none"
+        className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-md bg-gray-900 dark:bg-white text-white dark:text-black text-[10px] font-medium whitespace-nowrap pointer-events-none"
         initial={{ opacity: 0, x: 10 }}
         animate={{ 
           opacity: isHovering ? 1 : 0, 
@@ -137,12 +137,12 @@ const BackToTop = () => {
       >
         Back to top
         {/* Arrow */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 w-1.5 h-1.5 bg-gray-900 dark:bg-white rotate-45" />
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 w-1 h-1 bg-gray-900 dark:bg-white rotate-45" />
       </motion.div>
 
       {/* Progress ring (optional visual flair) */}
       <svg
-        className="absolute -inset-3 w-20 h-20 -rotate-90 pointer-events-none"
+        className="absolute -inset-2 w-14 h-14 -rotate-90 pointer-events-none"
         viewBox="0 0 100 100"
       >
         <circle
