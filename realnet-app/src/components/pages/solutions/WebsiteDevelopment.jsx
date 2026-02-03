@@ -1,464 +1,475 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import {
-  FaDesktop,
-  FaShoppingCart,
-  FaSearch,
-  FaRocket,
-  FaTools,
-  FaMobile,
-  FaGlobe,
-  FaCogs,
-  FaChartLine,
-  FaCrown,
-  FaStar,
-  FaCheck,
+import { 
   FaArrowRight,
+  FaCheck,
+  FaQuoteRight,
+  FaClock,
+  FaShieldAlt,
+  FaHeadset
 } from "react-icons/fa";
 
 const WebsiteDevelopment = () => {
-  // Animation variants
-  const fadeIn = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  const heroRef = useRef(null);
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 0.5], [0, 100]);
+
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
   };
 
-  const staggerChildren = {
+  const staggerContainer = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
   };
 
-
-  // Services data
   const services = [
     {
-      title: "Responsive Web Design",
-      description: "Websites that look beautiful and function perfectly on all devices, from desktops to smartphones with mobile-first approach.",
-      icon: <FaDesktop className="text-3xl" />,
+      title: "Custom Design",
+      description: "Unique, brand-aligned interfaces that differentiate you from competitors and convert visitors.",
+      features: ["UI/UX Design", "Brand Integration", "Responsive Layouts"]
     },
     {
-      title: "E-Commerce Solutions",
-      description: "Complete online stores with secure payment processing, inventory management, and customer accounts for South African businesses.",
-      icon: <FaShoppingCart className="text-3xl" />,
+      title: "E-Commerce",
+      description: "Full-featured online stores with secure payments, inventory management, and customer dashboards.",
+      features: ["Payment Integration", "Stock Management", "Order Tracking"]
     },
     {
-      title: "SEO Optimization",
-      description: "Websites built with search engine optimization to help you rank higher in Google search results across South Africa.",
-      icon: <FaSearch className="text-3xl" />,
-    },
-    {
-      title: "Starter Websites",
-      description: "Affordable, professional websites perfect for small businesses and startups in Johannesburg and Pretoria areas.",
-      icon: <FaRocket className="text-3xl" />,
-    },
-    {
-      title: "Performance Optimization",
-      description: "Lightning-fast websites with optimized loading times and smooth performance for better user experience.",
-      icon: <FaChartLine className="text-3xl" />,
-    },
-    {
-      title: "Maintenance & Support",
-      description: "Ongoing updates, security patches, and technical support to keep your website running smoothly 24/7.",
-      icon: <FaTools className="text-3xl" />,
-    },
+      title: "Web Applications",
+      description: "Complex platforms with user accounts, dashboards, and business logic tailored to your workflows.",
+      features: ["User Management", "Data Visualization", "API Integration"]
+    }
   ];
 
-  // Pricing packages
-  const pricingPackages = [
+  const process = [
+    { step: "01", title: "Discovery", desc: "We understand your business, goals, and target audience to define project scope." },
+    { step: "02", title: "Design", desc: "Wireframes and visual designs refined through collaborative feedback sessions." },
+    { step: "03", title: "Development", desc: "Clean, scalable code with regular updates and milestone demonstrations." },
+    { step: "04", title: "Launch", desc: "Deployment, performance optimization, and handover with training." }
+  ];
+
+  const packages = [
     {
-      name: "Starter Business Website",
-      price: "R3,499 - R5,999",
-      description: "Perfect for small businesses and personal brands in South Africa",
-      popular: false,
-      features: [
-        "Up to 8 pages",
-        "Responsive design",
-        "Basic Google SEO setup",
-        "Managed Hosting for 1 year",
-        "Support & Maintenance",
-        "Social media integration",
-        "Email Accounts",
-      ],
-      icon: <FaRocket className="text-2xl" />,
-      url: "/solutions/web-development/starter-website-quote-request",
+      name: "Starter",
+      price: "R3,499",
+      description: "Professional presence for small businesses",
+      features: ["Up to 5 pages", "Mobile responsive", "Basic SEO", "1 year hosting", "Email setup"],
+      cta: "Get Started",
+      popular: false
     },
     {
-      name: "E-Commerce Store",
-      price: "R6,000 - R19,999",
-      description: "Complete online store with payment processing for South African market",
-      popular: true,
-      features: [
-        "Up to 200 products",
-        "Secure payment gateway",
-        "Inventory management",
-        "Customer accounts",
-        "Order tracking",
-        "Support & Maintenance",
-        "SEO optimized",
-        "Social media integration",
-        "Dashboard/Login Panel",
-      ],
-      icon: <FaShoppingCart className="text-2xl" />,
-      url: "/solutions/web-development/e-commerce-quote-request",
+      name: "Business",
+      price: "R8,999",
+      description: "Growth-focused with advanced features",
+      features: ["Up to 15 pages", "CMS integration", "Advanced SEO", "Analytics setup", "Priority support"],
+      cta: "Most Popular",
+      popular: true
     },
     {
-      name: "Advanced Custom",
-      price: "R10,000+",
-      description: "Fully custom website with advanced functionality for growing businesses",
-      popular: false,
-      features: [
-        "Completely custom design",
-        "Advanced functionality",
-        "Premium SEO package",
-        "Content management system",
-        "Support & Maintenance",
-        "Performance optimization",
-        "Priority development",
-        "SSL Certificate",
-      ],
-      icon: <FaCrown className="text-2xl" />,
-      url: "/solutions/web-development/custom-website-quote-request",
+      name: "Enterprise",
+      price: "Custom",
+      description: "Complex solutions for larger organizations",
+      features: ["Unlimited pages", "Custom functionality", "Dedicated server", "SLA guarantee", "24/7 support"],
+      cta: "Contact Us",
+      popular: false
+    }
+  ];
+
+  const testimonials = [
+    {
+      quote: "Our website traffic increased 340% within three months of launch. The investment paid for itself in weeks.",
+      author: "Operations Director",
+      company: "Industrial Services Firm"
     },
+    {
+      quote: "Professional process from start to finish. They understood our technical requirements and delivered flawlessly.",
+      author: "CTO",
+      company: "Technology Startup"
+    }
   ];
 
   return (
-    <>
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white overflow-hidden">
-        {/* Hero Section */}
-        <section 
-          className="relative py-20 lg:py-32 overflow-hidden pt-8"
-          data-section="hero"
-          itemScope
-          itemType="https://schema.org/WebPage"
-        >
-          <div className="absolute inset-0 z-0 opacity-10">
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-pink-500/10"></div>
-            <div className="absolute inset-0 bg-[url(https://i.pinimg.com/1200x/b8/05/35/b80535a7d8dabb5eb080ba7ab8d619f0.jpg)] bg-cover bg-center mix-blend-overlay"></div>
-          </div>
+    <div className="min-h-screen bg-[#050505] text-white">
+      
+      {/* Hero Section */}
+      <section ref={heroRef} className="relative min-h-screen flex items-center pt-20">
+        <motion.div className="absolute inset-0 z-0" style={{ opacity: heroOpacity }}>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,_rgba(139,92,246,0.15),transparent_50%)]" />
+          <div className="absolute top-0 left-0 w-full h-px bg-white/10" />
+        </motion.div>
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <motion.div 
-                initial="hidden" 
-                animate="visible" 
-                variants={fadeIn}
-                itemScope
-                itemType="https://schema.org/Service"
-              >
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                  Professional{" "}
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-pink-400">
-                    Websites
-                  </span>{" "}
-                  That Convert
-                </h1>
-                <p className="text-xl text-gray-300 mb-8">
-                  We create stunning, high-performance websites that convert visitors into customers and help your business grow online across South Africa.
-                </p>
-                <div className="flex flex-wrap gap-4">
-                  <Link href="#pricing" aria-label="View our website development pricing packages">
-                    <button className="px-6 py-3 bg-gradient-to-r from-orange-500 to-pink-500 text-white font-semibold rounded-lg shadow-lg hover:from-orange-600 hover:to-pink-600 transition-all duration-300 transform hover:-translate-y-1">
-                      Check Our Prices
-                    </button>
-                  </Link>
-
-                  <Link href="/solutions/web-development/live-projects" aria-label="View our web development portfolio and projects">
-                    <button className="px-6 py-3 border border-orange-500 text-orange-300 font-semibold rounded-lg shadow-sm hover:bg-orange-500/10 transition-all duration-300">
-                      View Our Projects
-                    </button>
-                  </Link>
-                </div>
-              </motion.div>
-
+        <div className="relative z-10 max-w-7xl mx-auto px-6 py-20">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <motion.div style={{ y: heroY, opacity: heroOpacity }}>
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.7, delay: 0.3 }}
-                className="relative"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6"
               >
-                <div className="bg-gradient-to-br from-gray-800 to-gray-900 p-1 rounded-2xl shadow-2xl transform rotate-3 border border-orange-500/20">
-                  <div className="bg-gray-800 rounded-2xl p-4">
-                    <div className="flex gap-2 mb-4">
-                      <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                      <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                      <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                    </div>
-                    <div className="font-mono text-sm">
-                      <div className="text-orange-400">
-                        function{" "}
-                        <span className="text-pink-400">createWebsite</span>(){" "}
-                        {"{"}
-                      </div>
-                      <div className="ml-4 text-green-400">
-                        // Beautiful, functional websites
-                      </div>
-                      <div className="ml-4 text-blue-400">const</div>
-                      <div className="ml-8 text-yellow-200">design</div>
-                      <div className="ml-8 text-yellow-200">functionality</div>
-                      <div className="ml-8 text-yellow-200">results</div>
-                      <div className="text-orange-400">{"}"}</div>
-                    </div>
-                  </div>
-                </div>
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-violet-400">
+                  Web Development Services
+                </span>
+              </motion.div>
+              
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-8"
+              >
+                Websites That
+                <br />
+                <span className="text-violet-400">Drive Revenue</span>
+              </motion.h1>
+              
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="text-xl text-white/50 leading-relaxed mb-10 max-w-lg"
+              >
+                Strategic design and robust development for South African businesses 
+                ready to compete in the digital economy.
+              </motion.p>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="flex flex-col sm:flex-row gap-4"
+              >
+                <Link
+                  href="/new-project/request-quotation"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors"
+                >
+                  Start Your Project <FaArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  href="/features/web-development/live-projects"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full font-medium hover:bg-white/10 transition-colors"
+                >
+                  View Portfolio
+                </Link>
+              </motion.div>
 
-                <div className="absolute -bottom-6 -left-6 bg-gradient-to-br from-orange-500 to-pink-500 p-1 rounded-xl shadow-lg transform -rotate-6 z-10">
-                  <div className="bg-gray-800 rounded-lg p-2">
-                    <FaGlobe className="text-4xl text-orange-300" aria-label="Web Development Icon" />
-                  </div>
+              {/* Trust Indicators */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="flex items-center gap-8 mt-12 pt-12 border-t border-white/10"
+              >
+                <div>
+                  <div className="text-3xl font-bold text-white">150+</div>
+                  <div className="text-sm text-white/40">Sites Launched</div>
                 </div>
-
-                <div className="absolute -top-6 -right-6 bg-gradient-to-br from-pink-500 to-orange-500 p-1 rounded-xl shadow-lg transform rotate-6 z-10">
-                  <div className="bg-gray-800 rounded-lg p-2">
-                    <FaMobile className="text-4xl text-pink-300" aria-label="Mobile Responsive Icon" />
-                  </div>
+                <div className="h-12 w-px bg-white/10" />
+                <div>
+                  <div className="text-3xl font-bold text-white">98%</div>
+                  <div className="text-sm text-white/40">Client Retention</div>
+                </div>
+                <div className="h-12 w-px bg-white/10" />
+                <div>
+                  <div className="text-3xl font-bold text-white">B-BBEE 1</div>
+                  <div className="text-sm text-white/40">Certified</div>
                 </div>
               </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* Services Section */}
-        <section 
-          className="relative py-20 lg:py-28"
-          data-section="services"
-          aria-labelledby="services-heading"
-        >
-          <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-orange-500/5 to-transparent"></div>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <motion.div
-              className="text-center mb-16"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeIn}
-            >
-              <h2 id="services-heading" className="text-3xl md:text-4xl font-bold mb-4">
-                Our{" "}
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-pink-400">
-                  Website
-                </span>{" "}
-                Services
-              </h2>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                Comprehensive website development solutions for businesses of all sizes across South Africa.
-              </p>
             </motion.div>
 
+            {/* Hero Visual */}
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-              variants={staggerChildren}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              role="list"
-              aria-label="Website development services list"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="relative hidden lg:block"
             >
-              {services.map((service, index) => (
-                <motion.div
-                  key={index}
-                  variants={fadeIn}
-                  className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 border border-orange-500/20 hover:border-orange-500/40 transition-all duration-300 hover:shadow-xl group relative overflow-hidden"
-                  role="listitem"
-                  itemScope
-                  itemType="https://schema.org/Service"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="relative z-10">
-                    <div className="mb-4 flex justify-center">
-                      <div className="p-3 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full text-white">
-                        {service.icon}
-                      </div>
+              <div className="relative rounded-2xl overflow-hidden bg-white/5 border border-white/10 aspect-[4/3]">
+                <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-transparent" />
+                <div className="absolute inset-0 flex items-center justify-center text-white/20">
+                  <div className="text-center">
+                    <div className="w-32 h-32 rounded-2xl bg-white/5 mx-auto mb-4 flex items-center justify-center">
+                      <FaQuoteRight className="w-12 h-12" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-3 text-center text-white" itemProp="name">
-                      {service.title}
-                    </h3>
-                    <p className="text-gray-400 text-center" itemProp="description">
-                      {service.description}
-                    </p>
+                    <p className="text-sm">Project Preview</p>
                   </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Pricing Section */}
-        <section 
-          id="pricing" 
-          className="py-20 lg:py-28 bg-gradient-to-br from-gray-800 to-gray-900 relative"
-          data-section="pricing"
-          aria-labelledby="pricing-heading"
-        >
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1015&q=80')] bg-cover bg-center opacity-5"></div>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <motion.div
-              className="text-center mb-16"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeIn}
-            >
-              <h2 id="pricing-heading" className="text-3xl md:text-4xl font-bold mb-4">
-                Website{" "}
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-pink-400">
-                  Packages
-                </span>
-              </h2>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                Affordable pricing options to get your business online quickly and professionally in South Africa.
-              </p>
-            </motion.div>
-
-            <div 
-              className="grid grid-cols-1 md:grid-cols-3 gap-8"
-              itemScope
-              itemType="https://schema.org/OfferCatalog"
-            >
-              {pricingPackages.map((pkg, index) => (
+                </div>
+                
+                {/* Floating Elements */}
                 <motion.div
-                  key={index}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.3 }}
-                  variants={fadeIn}
-                  transition={{ delay: index * 0.1 }}
-                  className={`relative rounded-2xl overflow-hidden ${
-                    pkg.popular
-                      ? "border-2 border-orange-500 transform scale-105"
-                      : "border border-orange-500/20"
-                  }`}
-                  itemScope
-                  itemType="https://schema.org/Offer"
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                  className="absolute top-8 right-8 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-sm"
                 >
-                  {pkg.popular && (
-                    <div className="absolute top-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-orange-500 to-pink-500 text-white px-6 py-1 rounded-full text-sm font-semibold z-10 flex items-center">
-                      <FaStar className="mr-2" aria-hidden="true" /> Most Popular
-                    </div>
-                  )}
-
-                  <div className="bg-gradient-to-br from-gray-800 to-gray-900 p-8 h-full">
-                    <div className="text-center mb-6">
-                      <div className="flex justify-center mb-4 text-orange-500">
-                        {pkg.icon}
-                      </div>
-                      <h3 className="text-2xl font-bold text-white mb-2" itemProp="name">
-                        {pkg.name}
-                      </h3>
-                      <div className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-pink-400 mb-1" itemProp="price">
-                        {pkg.price}
-                      </div>
-                      <p className="text-orange-400 text-sm">Starting Price</p>
-                      <p className="text-gray-300 mt-2" itemProp="description">
-                        {pkg.description}
-                      </p>
-                    </div>
-
-                    <ul className="space-y-3 mb-8 text-sm">
-                      {pkg.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-center">
-                          <FaCheck className="text-green-500 mr-3 flex-shrink-0" aria-hidden="true" />
-                          <span className="text-gray-300">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <Link href={pkg.url} aria-label={`Get started with ${pkg.name} package`}>
-                      <button
-                        className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 ${
-                          pkg.popular
-                            ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600"
-                            : "bg-gray-700 text-white hover:bg-gray-600"
-                        }`}
-                      >
-                        Get Started
-                      </button>
-                    </Link>
-                  </div>
+                  <span className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    Live Site
+                  </span>
                 </motion.div>
-              ))}
-            </div>
-
-            {/* Additional Pricing Information */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeIn}
-              className="text-center mt-12"
-            >
-              <p className="text-gray-400 text-sm">
-                All packages include free consultation, domain guidance, and 30 days of free support. 
-                Custom quotes available for enterprise solutions.
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section 
-          className="py-20 lg:py-28 bg-gradient-to-r from-orange-600 to-pink-600 text-white relative overflow-hidden"
-          data-section="cta"
-          aria-labelledby="cta-heading"
-        >
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1015&q=80')] bg-cover bg-center mix-blend-overlay opacity-20"></div>
-
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeIn}
-            >
-              <h2 id="cta-heading" className="text-3xl md:text-4xl font-bold mb-6">
-                Ready to <span className="text-white">Launch</span> Your Website?
-              </h2>
-              <p className="text-xl text-orange-100 mb-8 max-w-3xl mx-auto">
-                Let's create a stunning website that represents your brand and drives growth for your South African business.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link 
-                  href="/contact-us" 
-                  className="px-8 py-4 bg-white text-orange-600 font-semibold rounded-lg shadow-lg hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1"
-                  aria-label="Get free consultation for website development"
-                >
-                  Get Your Free Consultation
-                </Link>
-                <Link 
-                  href="/projects" 
-                  className="px-8 py-4 border border-white text-white font-semibold rounded-lg shadow-sm hover:bg-white/10 transition-all duration-300"
-                  aria-label="View our web development portfolio"
-                >
-                  View Our Portfolio
-                </Link>
               </div>
             </motion.div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Local Business Info */}
-        <section 
-          className="py-12 bg-gray-800 border-t border-gray-700"
-          data-section="local-info"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p className="text-gray-400 text-sm">
-              Serving businesses across <strong>Johannesburg, Pretoria, and surrounding areas</strong> with professional website development services since 2023.
-            </p>
+      {/* Services Grid */}
+      <section ref={containerRef} className="py-24 border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            className="text-center max-w-2xl mx-auto mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">What We Build</h2>
+            <p className="text-white/50">End-to-end solutions tailored to your business objectives and growth stage.</p>
+          </motion.div>
+
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            className="grid md:grid-cols-3 gap-8"
+          >
+            {services.map((service, index) => (
+              <motion.div
+                key={index}
+                variants={fadeInUp}
+                className="group p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-violet-500/30 transition-all duration-300"
+              >
+                <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <span className="text-violet-400 font-bold text-xl">0{index + 1}</span>
+                </div>
+                <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
+                <p className="text-white/50 mb-6 text-sm leading-relaxed">{service.description}</p>
+                <ul className="space-y-2">
+                  {service.features.map((feature, i) => (
+                    <li key={i} className="flex items-center gap-2 text-sm text-white/40">
+                      <FaCheck className="w-3 h-3 text-violet-400" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Process Section */}
+      <section className="py-24 bg-white/[0.02] border-y border-white/10">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">How We Work</h2>
+              <p className="text-white/50 mb-12">A proven process that delivers results on time and within budget.</p>
+              
+              <div className="space-y-8">
+                {process.map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className="flex gap-6"
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center shrink-0">
+                      <span className="text-violet-400 font-bold">{item.step}</span>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
+                      <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            <div className="relative">
+              <div className="aspect-square rounded-2xl bg-gradient-to-br from-violet-500/10 to-transparent border border-white/10 p-8 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="w-24 h-24 rounded-full bg-violet-500/20 flex items-center justify-center mx-auto mb-6">
+                    <FaClock className="w-10 h-10 text-violet-400" />
+                  </div>
+                  <div className="text-5xl font-bold text-white mb-2">2-4 Weeks</div>
+                  <p className="text-white/50">Average project delivery time</p>
+                </div>
+              </div>
+            </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-      </div>
-    </>
+      {/* Pricing Section */}
+      <section className="py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center max-w-2xl mx-auto mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Investment</h2>
+            <p className="text-white/50">Transparent pricing with no hidden costs. Choose what fits your stage.</p>
+          </motion.div>
+
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid md:grid-cols-3 gap-8"
+          >
+            {packages.map((pkg, index) => (
+              <motion.div
+                key={index}
+                variants={fadeInUp}
+                className={`relative p-8 rounded-2xl border transition-all duration-300 ${
+                  pkg.popular
+                    ? 'bg-white text-black border-white'
+                    : 'bg-white/[0.02] border-white/[0.06] hover:border-white/20'
+                }`}
+              >
+                {pkg.popular && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-violet-500 text-white text-xs font-medium rounded-full">
+                    Recommended
+                  </div>
+                )}
+                
+                <div className="mb-6">
+                  <h3 className={`text-lg font-medium mb-2 ${pkg.popular ? 'text-black/60' : 'text-white/60'}`}>
+                    {pkg.name}
+                  </h3>
+                  <div className={`text-4xl font-bold mb-2 ${pkg.popular ? 'text-black' : 'text-white'}`}>
+                    {pkg.price}
+                  </div>
+                  <p className={`text-sm ${pkg.popular ? 'text-black/60' : 'text-white/40'}`}>
+                    {pkg.description}
+                  </p>
+                </div>
+
+                <ul className="space-y-3 mb-8">
+                  {pkg.features.map((feature, i) => (
+                    <li key={i} className="flex items-center gap-3 text-sm">
+                      <FaCheck className={`w-4 h-4 ${pkg.popular ? 'text-violet-600' : 'text-violet-400'}`} />
+                      <span className={pkg.popular ? 'text-black/70' : 'text-white/70'}>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Link
+                  href={pkg.price === "Custom" ? "/contact-us" : "/new-project/request-quotation"}
+                  className={`block w-full py-3 rounded-xl text-center font-medium transition-colors ${
+                    pkg.popular
+                      ? 'bg-black text-white hover:bg-black/80'
+                      : 'bg-white text-black hover:bg-white/90'
+                  }`}
+                >
+                  {pkg.cta}
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-24 bg-white/[0.02] border-y border-white/10">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-12">
+            {testimonials.map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06]"
+              >
+                <FaQuoteRight className="w-8 h-8 text-violet-400/30 mb-6" />
+                <p className="text-lg text-white/80 leading-relaxed mb-6">
+                  "{testimonial.quote}"
+                </p>
+                <div>
+                  <div className="font-medium text-white">{testimonial.author}</div>
+                  <div className="text-sm text-white/40">{testimonial.company}</div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Guarantee Section */}
+      <section className="py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-3 gap-8 text-center">
+            <div className="p-6">
+              <div className="w-16 h-16 rounded-2xl bg-violet-500/10 flex items-center justify-center mx-auto mb-4">
+                <FaShieldAlt className="w-8 h-8 text-violet-400" />
+              </div>
+              <h3 className="font-semibold mb-2">Quality Guarantee</h3>
+              <p className="text-sm text-white/50">30-day free fixes for any issues post-launch</p>
+            </div>
+            <div className="p-6">
+              <div className="w-16 h-16 rounded-2xl bg-violet-500/10 flex items-center justify-center mx-auto mb-4">
+                <FaClock className="w-8 h-8 text-violet-400" />
+              </div>
+              <h3 className="font-semibold mb-2">On-Time Delivery</h3>
+              <p className="text-sm text-white/50">Milestone-based payments, deliverables on schedule</p>
+            </div>
+            <div className="p-6">
+              <div className="w-16 h-16 rounded-2xl bg-violet-500/10 flex items-center justify-center mx-auto mb-4">
+                <FaHeadset className="w-8 h-8 text-violet-400" />
+              </div>
+              <h3 className="font-semibold mb-2">Ongoing Support</h3>
+              <p className="text-sm text-white/50">Dedicated account manager and technical support</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-24 border-t border-white/10">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            Ready to <span className="text-violet-400">transform</span> your digital presence?
+          </h2>
+          <p className="text-lg text-white/50 mb-8">
+            Join 150+ South African businesses that trust RealNet with their digital success.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/new-project/request-quotation"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors"
+            >
+              Get Your Free Quote <FaArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/contact-us"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full font-medium hover:bg-white/10 transition-colors"
+            >
+              Schedule a Call
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 };
 
 export default WebsiteDevelopment;
-

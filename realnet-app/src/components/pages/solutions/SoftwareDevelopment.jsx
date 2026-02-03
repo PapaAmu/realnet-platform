@@ -1,442 +1,597 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { 
   FaCode, 
-  FaDesktop, 
+  FaCloud, 
   FaServer, 
   FaDatabase, 
-  FaPaintBrush, 
-  FaTools, 
+  FaUsers, 
+  FaLock, 
   FaRocket,
-  FaShoppingCart,
-  FaUsers,
-  FaShieldAlt,
-  FaCloud,
-  FaMobile,
-  FaGlobe,
   FaCogs,
-  FaChartLine,
+  FaLayerGroup,
+  FaNetworkWired,
+  FaShieldAlt,
   FaSync,
-  FaArrowRight
+  FaArrowRight,
+  FaCheck,
+  FaBuilding,
+  FaGlobe,
+  FaChartLine
 } from "react-icons/fa";
 
 const WebSoftware = () => {
-  // Animation variants
-  const fadeIn = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+  const containerRef = useRef(null);
+  const heroRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 0.5], [0, 100]);
+
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
   };
 
-  const staggerChildren = {
+  const staggerContainer = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
   };
 
-  // Services data
-  const services = [
+  const capabilities = [
     {
-      title: "Custom Web Applications",
-      description: "Tailor-made web applications built to solve your specific business challenges and streamline operations for South African businesses.",
-      icon: <FaCode className="text-3xl" />,
-      ariaLabel: "Learn about our custom web application development services"
+      icon: FaCloud,
+      title: "SaaS Architecture",
+      description: "Multi-tenant cloud applications with scalable infrastructure, automated provisioning, and tenant isolation.",
+      features: ["Tenant isolation", "Auto-scaling", "Zero-downtime deployments"]
     },
     {
-      title: "Responsive Web Design",
-      description: "Websites that look and function perfectly across all devices, from desktops to smartphones, optimized for South African users.",
-      icon: <FaDesktop className="text-3xl" />,
-      ariaLabel: "Discover our responsive web design solutions"
+      icon: FaLayerGroup,
+      title: "Enterprise Systems",
+      description: "Sophisticated business platforms handling complex workflows, integrations, and high-volume transactions.",
+      features: ["Microservices", "Event-driven", "API-first design"]
     },
     {
-      title: "E-Commerce Solutions",
-      description: "Full-featured online stores with secure payment processing, inventory management, and customer portals for South African retailers.",
-      icon: <FaShoppingCart className="text-3xl" />,
-      ariaLabel: "Explore our e-commerce development services"
+      icon: FaNetworkWired,
+      title: "Multi-Tenancy",
+      description: "Secure, isolated environments for multiple organizations with shared infrastructure and custom configurations.",
+      features: ["Data isolation", "Custom branding", "Role-based access"]
     },
     {
-      title: "UI/UX Design",
-      description: "Intuitive and engaging user interfaces designed to maximize user satisfaction and conversion rates for African markets.",
-      icon: <FaPaintBrush className="text-3xl" />,
-      ariaLabel: "Learn about our UI/UX design services"
+      icon: FaServer,
+      title: "Cloud Infrastructure",
+      description: "AWS, Azure, and Google Cloud solutions with containerization, orchestration, and serverless architectures.",
+      features: ["Kubernetes", "Docker", "CI/CD pipelines"]
     },
     {
-      title: "API Development",
-      description: "Custom API development and seamless integration with third-party services and platforms used in South Africa.",
-      icon: <FaCogs className="text-3xl" />,
-      ariaLabel: "Discover our API development capabilities"
+      icon: FaDatabase,
+      title: "Data Architecture",
+      description: "High-performance database design, data warehousing, and real-time analytics for business intelligence.",
+      features: ["PostgreSQL", "MongoDB", "Redis caching"]
     },
     {
-      title: "Maintenance & Support",
-      description: "Ongoing updates, security patches, and performance optimization to keep your web application running smoothly 24/7.",
-      icon: <FaTools className="text-3xl" />,
-      ariaLabel: "Learn about our maintenance and support services"
+      icon: FaLock,
+      title: "Security & Compliance",
+      description: "Enterprise-grade security, encryption, and compliance frameworks for sensitive business data.",
+      features: ["SOC 2", "GDPR/POPIA", "End-to-end encryption"]
     }
   ];
 
-  // Process steps
+  const solutions = [
+    {
+      category: "Business Management",
+      title: "ERP & Operations Platforms",
+      description: "Integrated systems for inventory, finance, HR, and operations. Custom workflows that match your business processes.",
+      icon: FaBuilding
+    },
+    {
+      category: "Customer Solutions",
+      title: "CRM & Service Platforms",
+      description: "Customer relationship management, support ticketing, and service delivery systems with automation.",
+      icon: FaUsers
+    },
+    {
+      category: "Industry Specific",
+      title: "Vertical SaaS Solutions",
+      description: "Specialized platforms for logistics, healthcare, finance, retail, and manufacturing sectors.",
+      icon: FaCogs
+    },
+    {
+      category: "Integration Hubs",
+      title: "API & Integration Layers",
+      description: "Connect disparate systems, third-party services, and legacy infrastructure into unified platforms.",
+      icon: FaNetworkWired
+    }
+  ];
+
+  const architectureFeatures = [
+    {
+      title: "Scalable by Design",
+      description: "Horizontal scaling, load balancing, and auto-scaling groups handle traffic spikes without degradation."
+    },
+    {
+      title: "High Availability",
+      description: "Multi-region deployments, redundant systems, and automated failover ensure 99.9% uptime."
+    },
+    {
+      title: "Security First",
+      description: "Zero-trust architecture, encrypted communications, and comprehensive audit logging."
+    },
+    {
+      title: "API Ecosystem",
+      description: "RESTful and GraphQL APIs with comprehensive documentation for third-party integrations."
+    }
+  ];
+
   const processSteps = [
-    {
-      step: "01",
-      title: "Discovery & Planning",
-      description: "We analyze your requirements, target audience, and business goals to create a comprehensive project plan tailored for South African markets."
-    },
-    {
-      step: "02",
-      title: "UI/UX Design",
-      description: "Our designers create wireframes and prototypes focused on creating exceptional user experiences for African users."
-    },
-    {
-      step: "03",
-      title: "Development",
-      description: "Our developers build your web application using the latest technologies and coding best practices with security in mind."
-    },
-    {
-      step: "04",
-      title: "Quality Assurance",
-      description: "Rigorous testing across browsers and devices to ensure flawless performance and security for all users."
-    },
-    {
-      step: "05",
-      title: "Deployment",
-      description: "We handle the complete deployment process, including server configuration and domain setup with South African hosting."
-    },
-    {
-      step: "06",
-      title: "Maintenance",
-      description: "Continuous support, security updates, and feature enhancements based on user feedback and analytics."
-    }
+    { step: "01", title: "Discovery", desc: "Deep-dive into your business requirements, existing systems, and growth objectives." },
+    { step: "02", title: "Architecture", desc: "Design scalable, secure system architecture with technology stack recommendations." },
+    { step: "03", title: "Development", desc: "Agile sprints with continuous integration, automated testing, and regular demos." },
+    { step: "04", title: "Deployment", desc: "Production deployment with monitoring, logging, and performance optimization." },
+    { step: "05", title: "Evolution", desc: "Continuous improvement, feature expansion, and infrastructure scaling." }
   ];
-
-  // Tech stack
-  const techStack = [
-    { name: "React", icon: <FaCode />, description: "Modern frontend framework" },
-    { name: "Node.js", icon: <FaServer />, description: "Scalable backend runtime" },
-    { name: "MongoDB", icon: <FaDatabase />, description: "NoSQL database solutions" },
-    { name: "PHP", icon: <FaCogs />, description: "Server-side scripting" },
-    { name: "Laravel", icon: <FaCloud />, description: "PHP web framework" },
-    { name: "Python", icon: <FaGlobe />, description: "Versatile programming" }
-  ];
-
-  const handleCTAClick = (buttonText, location) => {
-    // trackCTAClick(buttonText, location);
-    console.log(`CTA clicked: ${buttonText} at ${location}`);
-  };
-
-  const handleInternalLink = (linkText, destination) => {
-    // trackInternalLinkClick(linkText, destination);
-    console.log(`Internal link clicked: ${linkText} to ${destination}`);
-  };
 
   return (
-    <>
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white overflow-hidden">
-        {/* Hero Section with Code Background */}
-        <section 
-          className="relative py-20 lg:py-32 overflow-hidden pt-8"
-          data-section="hero"
-          itemScope
-          itemType="https://schema.org/WebPage"
-        >
-          <div className="absolute inset-0 z-0 opacity-10">
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-pink-500/10"></div>
-            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80')] bg-cover bg-center mix-blend-overlay"></div>
-          </div>
-          
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <motion.div 
-                initial="hidden"
-                animate="visible"
-                variants={fadeIn}
+    <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
+      
+      {/* Hero Section */}
+      <section ref={heroRef} className="relative min-h-screen flex items-center pt-20 lg:pt-0">
+        <motion.div className="absolute inset-0 z-0" style={{ opacity: heroOpacity }}>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,_rgba(139,92,246,0.15),transparent_50%)]" />
+          <div className="absolute top-0 left-0 w-full h-px bg-white/10" />
+        </motion.div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 w-full">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <motion.div style={{ y: heroY, opacity: heroOpacity }} className="order-2 lg:order-1">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6"
               >
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6" itemProp="headline">
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-pink-400">Web & Software Development</span> Solutions for South Africa
-                </h1>
-                <p className="text-xl text-gray-300 mb-8" itemProp="description">
-                  We build powerful, scalable web applications and software solutions that drive business growth, enhance productivity, and deliver exceptional user experiences across South Africa.
-                </p>
-                <div className="flex flex-wrap gap-4">
-                  <Link
-                    href="/new-project/request-quotation"
-                    legacyBehavior
-                  >
-                    <motion.a
-                      className="px-6 py-3 bg-gradient-to-r from-orange-500 to-pink-500 text-white font-semibold rounded-lg shadow-lg hover:from-orange-600 hover:to-pink-600 transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
-                      onClick={() => handleCTAClick("Start Your Project", "software-hero")}
-                      aria-label="Start your software development project"
-                    >
-                      Start Your Project
-                    </motion.a>
-                  </Link>
-                  <Link
-                    href="/features/web-development/live-projects"
-                    legacyBehavior
-                  >
-                    <motion.a
-                      className="px-6 py-3 border border-orange-500 text-orange-300 font-semibold rounded-lg shadow-sm hover:bg-orange-500/10 transition-all duration-300 cursor-pointer"
-                      onClick={() => handleInternalLink("See Our Trending Product", "/features/web-development/live-projects")}
-                      aria-label="View our software development portfolio"
-                    >
-                      See Our Projects
-                    </motion.a>
-                  </Link>
-                </div>
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-violet-400">
+                  <FaRocket className="w-4 h-4" />
+                  Enterprise Software Development
+                </span>
               </motion.div>
               
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.7, delay: 0.3 }}
-                className="relative"
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-6 lg:mb-8 leading-tight"
               >
-                <div className="bg-gradient-to-br from-gray-800 to-gray-900 p-1 rounded-2xl shadow-2xl transform rotate-3 border border-orange-500/20">
-                  <div className="bg-gray-800 rounded-2xl p-4">
-                    <div className="flex gap-2 mb-4">
-                      <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                      <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                      <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                    </div>
-                    <div className="font-mono text-sm">
-                      <div className="text-orange-400">function <span className="text-pink-400">developWebApp</span>() {"{"}</div>
-                      <div className="ml-4 text-green-400">// Custom solutions for South African businesses</div>
-                      <div className="ml-4 text-blue-400">const</div>
-                      <div className="ml-8 text-yellow-200">innovation</div>
-                      <div className="ml-8 text-yellow-200">creativity</div>
-                      <div className="ml-8 text-yellow-200">expertise</div>
-                      <div className="text-orange-400">{"}"}</div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="absolute -bottom-6 -left-6 bg-gradient-to-br from-orange-500 to-pink-500 p-1 rounded-xl shadow-lg transform -rotate-6 z-10">
-                  <div className="bg-gray-800 rounded-lg p-2">
-                    <FaRocket className="text-4xl text-orange-300" />
-                  </div>
-                </div>
-                
-                <div className="absolute -top-6 -right-6 bg-gradient-to-br from-pink-500 to-orange-500 p-1 rounded-xl shadow-lg transform rotate-6 z-10">
-                  <div className="bg-gray-800 rounded-lg p-2">
-                    <FaGlobe className="text-4xl text-pink-300" />
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* Services Section */}
-        <section 
-          className="relative py-20 lg:py-28"
-          data-section="services"
-          aria-labelledby="services-heading"
-        >
-          <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-orange-500/5 to-transparent"></div>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <motion.div 
-              className="text-center mb-16"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeIn}
-            >
-              <h2 id="services-heading" className="text-3xl md:text-4xl font-bold mb-4">
-                Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-pink-400">Web Software</span> Solutions
-              </h2>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                Comprehensive web application and software development solutions tailored for South African businesses of all sizes.
-              </p>
-            </motion.div>
-
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-              variants={staggerChildren}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              role="list"
-              aria-label="Web software development services"
-            >
-              {services.map((service, index) => (
-                <motion.div 
-                  key={index}
-                  variants={fadeIn}
-                  className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 border border-orange-500/20 hover:border-orange-500/40 transition-all duration-300 hover:shadow-xl group relative overflow-hidden"
-                  role="listitem"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="relative z-10">
-                    <div className="mb-4 flex justify-center">
-                      <div className="p-3 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full text-white">
-                        {service.icon}
-                      </div>
-                    </div>
-                    <h3 className="text-xl font-semibold mb-3 text-center text-white">{service.title}</h3>
-                    <p className="text-gray-400 text-center">{service.description}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Process Section */}
-        <section 
-          className="py-20 lg:py-28 bg-gradient-to-br from-gray-800 to-gray-900 relative"
-          data-section="process"
-          aria-labelledby="process-heading"
-        >
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80')] bg-cover bg-center opacity-5"></div>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <motion.div 
-              className="text-center mb-16"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeIn}
-            >
-              <h2 id="process-heading" className="text-3xl md:text-4xl font-bold mb-4">
-                Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-pink-400">Development</span> Process
-              </h2>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                A structured approach to transform your idea into a successful web application tailored for the South African market.
-              </p>
-            </motion.div>
-
-            <div className="relative">
-              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-orange-500 to-pink-500 hidden lg:block"></div>
+                Sophisticated
+                <br />
+                <span className="text-violet-400">Business Systems</span>
+                <br />
+                That Scale
+              </motion.h1>
               
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                {processSteps.map((step, index) => (
-                  <motion.div 
-                    key={index}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.3 }}
-                    variants={fadeIn}
-                    transition={{ delay: index * 0.1 }}
-                    className={`relative ${index % 2 === 0 ? 'lg:pr-8' : 'lg:pl-8 lg:mt-20'}`}
-                  >
-                    <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 border border-orange-500/20 hover:shadow-xl transition-all duration-300 relative">
-                      <div className="absolute -left-4 top-6 w-8 h-8 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg lg:block">
-                        {index + 1}
-                      </div>
-                      <div className="text-4xl font-bold text-orange-500/30 mb-2">{step.step}</div>
-                      <h3 className="text-xl font-semibold mb-3 text-white">{step.title}</h3>
-                      <p className="text-gray-400">{step.description}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Tech Stack Section */}
-        <section 
-          className="py-20 lg:py-28 relative"
-          data-section="tech-stack"
-          aria-labelledby="tech-stack-heading"
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-pink-500/5"></div>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <motion.div 
-              className="text-center mb-16"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeIn}
-            >
-              <h2 id="tech-stack-heading" className="text-3xl md:text-4xl font-bold mb-4">
-                Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-pink-400">Technology Stack</span>
-              </h2>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                We use cutting-edge technologies to build high-performance, scalable web applications for South African businesses.
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-              {techStack.map((tech, index) => (
-                <motion.div 
-                  key={index}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  variants={fadeIn}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 text-center border border-orange-500/20 hover:border-orange-500/40 shadow-md hover:shadow-xl transition-all duration-300 group"
-                  aria-label={`${tech.name} - ${tech.description}`}
-                >
-                  <div className="flex justify-center mb-4 text-orange-500 group-hover:text-pink-400 text-3xl">
-                    {tech.icon}
-                  </div>
-                  <h3 className="font-semibold text-white">{tech.name}</h3>
-                  <p className="text-gray-400 text-xs mt-2">{tech.description}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section 
-          className="py-20 lg:py-28 bg-gradient-to-r from-orange-600 to-pink-600 text-white relative overflow-hidden"
-          data-section="cta"
-          aria-labelledby="cta-heading"
-        >
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80')] bg-cover bg-center mix-blend-overlay opacity-20"></div>
-          
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeIn}
-            >
-              <h2 id="cta-heading" className="text-3xl md:text-4xl font-bold mb-6">
-                Ready to Build Your <span className="text-white">Web Application</span>?
-              </h2>
-              <p className="text-xl text-orange-100 mb-8 max-w-3xl mx-auto">
-                Let's turn your idea into a powerful web solution with our expert development team serving South Africa.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="text-lg lg:text-xl text-white/50 leading-relaxed mb-8 lg:mb-10 max-w-lg"
+              >
+                We architect and build enterprise-grade SaaS platforms, multi-tenant cloud solutions, 
+                and complex business systems for organizations that demand reliability, security, and scale.
+              </motion.p>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="flex flex-col sm:flex-row gap-4"
+              >
                 <Link
                   href="/new-project/request-quotation"
-                  legacyBehavior
+                  className="inline-flex items-center justify-center gap-2 px-6 lg:px-8 py-4 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors text-sm lg:text-base"
                 >
-                  <motion.a
-                    className="px-8 py-4 bg-white text-orange-600 font-semibold rounded-lg shadow-lg hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
-                    onClick={() => handleCTAClick("Get Your Free Consultation", "software-cta")}
-                    aria-label="Get free consultation for software development"
-                  >
-                    Get Your Free Consultation
-                  </motion.a>
+                  Discuss Your Project <FaArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
-                  href="/features/web-development/live-projects"
-                  legacyBehavior
+                  href="/solutions/software-development/architecture-consultation"
+                  className="inline-flex items-center justify-center gap-2 px-6 lg:px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full font-medium hover:bg-white/10 transition-colors text-sm lg:text-base"
                 >
-                  <motion.a
-                    className="px-8 py-4 border border-white text-white font-semibold rounded-lg shadow-sm hover:bg-white/10 transition-all duration-300 cursor-pointer"
-                    onClick={() => handleInternalLink("View Case Studies", "/features/web-development/live-projects")}
-                    aria-label="View our software development case studies"
-                  >
-                    View Case Studies
-                  </motion.a>
+                  Architecture Review
                 </Link>
+              </motion.div>
+            </motion.div>
+
+            {/* Hero Visual - System Architecture */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="relative order-1 lg:order-2"
+            >
+              <div className="relative aspect-square max-w-lg mx-auto rounded-2xl overflow-hidden bg-white/5 border border-white/10 p-6 lg:p-8">
+                {/* Architecture Diagram Visualization */}
+                <div className="relative h-full flex flex-col justify-center gap-4">
+                  {/* Client Layer */}
+                  <div className="flex justify-center gap-4">
+                    <div className="px-4 py-2 rounded-lg bg-violet-500/20 border border-violet-500/30 text-sm text-violet-300">
+                      Web App
+                    </div>
+                    <div className="px-4 py-2 rounded-lg bg-violet-500/20 border border-violet-500/30 text-sm text-violet-300">
+                      Mobile
+                    </div>
+                    <div className="px-4 py-2 rounded-lg bg-violet-500/20 border border-violet-500/30 text-sm text-violet-300">
+                      API Clients
+                    </div>
+                  </div>
+                  
+                  {/* Connection */}
+                  <div className="h-8 w-px bg-gradient-to-b from-violet-500/50 to-cyan-500/50 mx-auto" />
+                  
+                  {/* Gateway Layer */}
+                  <div className="px-6 py-3 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-center">
+                    <div className="text-sm text-cyan-300 font-medium">API Gateway & Load Balancer</div>
+                  </div>
+                  
+                  {/* Connection */}
+                  <div className="h-8 w-px bg-gradient-to-b from-cyan-500/50 to-emerald-500/50 mx-auto" />
+                  
+                  {/* Service Layer */}
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-center">
+                      <div className="text-xs text-emerald-300">Auth Service</div>
+                    </div>
+                    <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-center">
+                      <div className="text-xs text-emerald-300">Core API</div>
+                    </div>
+                    <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-center">
+                      <div className="text-xs text-emerald-300">Workers</div>
+                    </div>
+                  </div>
+                  
+                  {/* Connection */}
+                  <div className="h-8 w-px bg-gradient-to-b from-emerald-500/50 to-orange-500/50 mx-auto" />
+                  
+                  {/* Data Layer */}
+                  <div className="flex justify-center gap-4">
+                    <div className="px-4 py-2 rounded-lg bg-orange-500/10 border border-orange-500/30 text-sm text-orange-300">
+                      PostgreSQL
+                    </div>
+                    <div className="px-4 py-2 rounded-lg bg-orange-500/10 border border-orange-500/30 text-sm text-orange-300">
+                      Redis
+                    </div>
+                    <div className="px-4 py-2 rounded-lg bg-orange-500/10 border border-orange-500/30 text-sm text-orange-300">
+                      S3 Storage
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Floating Labels */}
+                <motion.div
+                  animate={{ y: [0, -5, 0] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                  className="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs"
+                >
+                  <span className="text-emerald-400">●</span> Multi-Tenant
+                </motion.div>
+                
+                <motion.div
+                  animate={{ y: [0, 5, 0] }}
+                  transition={{ duration: 3.5, repeat: Infinity, delay: 0.5 }}
+                  className="absolute bottom-4 right-4 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs"
+                >
+                  <span className="text-violet-400">●</span> Auto-Scaling
+                </motion.div>
               </div>
             </motion.div>
           </div>
-        </section>
+        </div>
+      </section>
 
-      </div>
-    </>
+      {/* Capabilities Grid */}
+      <section ref={containerRef} className="py-16 sm:py-20 lg:py-24 border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            className="text-center max-w-2xl mx-auto mb-12 lg:mb-16"
+          >
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-violet-400 mb-6">
+              <FaCogs className="w-4 h-4" />
+              Core Capabilities
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 tracking-tight">
+              Enterprise-Grade
+              <br />
+              <span className="text-violet-400">System Architecture</span>
+            </h2>
+            <p className="text-white/50 text-base sm:text-lg">
+              We design and build sophisticated platforms that handle complex business logic, 
+              high concurrency, and sensitive data at scale.
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+          >
+            {capabilities.map((cap, index) => (
+              <motion.div
+                key={index}
+                variants={fadeInUp}
+                className="group relative p-6 sm:p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-violet-500/30 transition-all duration-500"
+              >
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-violet-500/10 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <cap.icon className="w-6 h-6 sm:w-7 sm:h-7 text-violet-400" />
+                </div>
+                
+                <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">{cap.title}</h3>
+                <p className="text-white/50 text-sm sm:text-base mb-4 sm:mb-6 leading-relaxed">{cap.description}</p>
+                
+                <div className="flex flex-wrap gap-2">
+                  {cap.features.map((feature, i) => (
+                    <span key={i} className="flex items-center gap-1.5 text-xs text-white/40">
+                      <FaCheck className="w-3 h-3 text-violet-400" />
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Solution Types */}
+      <section className="py-16 sm:py-20 lg:py-24 bg-white/[0.02] border-y border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center max-w-2xl mx-auto mb-12 lg:mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Systems We Build</h2>
+            <p className="text-white/50 text-sm sm:text-base">
+              Tailored solutions for complex operational challenges across industries.
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
+          >
+            {solutions.map((sol, index) => (
+              <motion.div
+                key={index}
+                variants={fadeInUp}
+                className="group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-violet-500/30 hover:bg-white/[0.04] transition-all duration-300"
+              >
+                <div className="text-xs text-violet-400 font-medium uppercase tracking-wider mb-3">
+                  {sol.category}
+                </div>
+                <div className="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center mb-4">
+                  <sol.icon className="w-5 h-5 text-violet-400" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">{sol.title}</h3>
+                <p className="text-sm text-white/50 leading-relaxed">
+                  {sol.description}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Architecture Features */}
+      <section className="py-16 sm:py-20 lg:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-violet-400 mb-6">
+                <FaServer className="w-4 h-4" />
+                Technical Excellence
+              </span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+                Built for
+                <br />
+                <span className="text-violet-400">Reliability & Scale</span>
+              </h2>
+              <p className="text-white/50 text-base sm:text-lg mb-8 leading-relaxed">
+                Every system we architect is designed with growth in mind. From day one, 
+                your platform can handle expansion without rebuilding.
+              </p>
+              
+              <div className="space-y-4 sm:space-y-6">
+                {architectureFeatures.map((feat, index) => (
+                  <div key={index} className="flex gap-4">
+                    <div className="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center shrink-0">
+                      <FaCheck className="w-4 h-4 text-violet-400" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold mb-1 text-sm sm:text-base">{feat.title}</h4>
+                      <p className="text-white/50 text-xs sm:text-sm leading-relaxed">{feat.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="aspect-[4/3] rounded-2xl bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 overflow-hidden">
+                {/* Abstract Infrastructure Visualization */}
+                <div className="h-full flex flex-col justify-center gap-4 sm:gap-6">
+                  <div className="flex items-center gap-4">
+                    <div className="flex-1 h-12 rounded-lg bg-violet-500/10 border border-violet-500/30 flex items-center px-4">
+                      <div className="w-3 h-3 rounded-full bg-violet-400 mr-3 animate-pulse" />
+                      <span className="text-sm text-violet-300">Load Balancer</span>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-3 gap-3 sm:gap-4">
+                    {[1, 2, 3].map((i) => (
+                      <div key={i} className="h-20 sm:h-24 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex flex-col items-center justify-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-cyan-400" />
+                        <span className="text-xs text-cyan-300">Node {i}</span>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="flex items-center gap-4">
+                    <div className="flex-1 h-12 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center px-4">
+                      <div className="w-3 h-3 rounded-full bg-emerald-400 mr-3" />
+                      <span className="text-sm text-emerald-300">Primary DB</span>
+                    </div>
+                    <div className="flex-1 h-12 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center px-4">
+                      <div className="w-3 h-3 rounded-full bg-orange-400 mr-3" />
+                      <span className="text-sm text-orange-300">Replica</span>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Glow Effect */}
+                <div className="absolute -top-20 -right-20 w-40 h-40 bg-violet-500/20 rounded-full blur-3xl" />
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Process Timeline */}
+      <section className="py-16 sm:py-20 lg:py-24 bg-white/[0.02] border-y border-white/10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center mb-12 lg:mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">How We Work</h2>
+            <p className="text-white/50 text-sm sm:text-base">
+              A proven methodology for delivering complex systems on time and within budget.
+            </p>
+          </motion.div>
+
+          <div className="relative">
+            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-white/10" />
+            
+            {processSteps.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className={`relative flex items-start gap-4 sm:gap-8 mb-8 sm:mb-12 last:mb-0 ${
+                  index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                }`}
+              >
+                <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-violet-500 ring-2 sm:ring-4 ring-[#050505]" />
+                
+                <div className={`ml-10 sm:ml-12 md:ml-0 md:w-1/2 ${
+                  index % 2 === 0 ? 'md:pr-8 md:text-right lg:pr-12' : 'md:pl-8 lg:pl-12'
+                }`}>
+                  <span className="inline-block px-2 sm:px-3 py-0.5 sm:py-1 rounded-full bg-violet-500/10 text-violet-400 text-xs font-medium mb-2">
+                    {item.step}
+                  </span>
+                  <h3 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">{item.title}</h3>
+                  <p className="text-white/50 text-xs sm:text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 sm:py-20 lg:py-24">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 leading-tight">
+              Ready to Build Your
+              <br />
+              <span className="text-violet-400">Business Platform?</span>
+            </h2>
+            <p className="text-base sm:text-lg lg:text-xl text-white/50 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
+              Let's discuss how we can architect a scalable, secure system that transforms 
+              your operations and drives growth.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+              <Link
+                href="/new-project/request-quotation"
+                className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors text-sm sm:text-base"
+              >
+                Schedule Architecture Call <FaArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                href="/contact-us"
+                className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white/5 text-white border border-white/10 rounded-full font-medium hover:bg-white/10 transition-colors text-sm sm:text-base"
+              >
+                View System Designs
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Bottom Info */}
+      <section className="py-12 sm:py-16 border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid sm:grid-cols-3 gap-6 sm:gap-8 text-center">
+            <div>
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <FaGlobe className="w-5 h-5 sm:w-6 sm:h-6 text-violet-400" />
+              </div>
+              <h4 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Cloud-Native</h4>
+              <p className="text-white/40 text-xs sm:text-sm">AWS, Azure, Google Cloud</p>
+            </div>
+            <div>
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <FaShieldAlt className="w-5 h-5 sm:w-6 sm:h-6 text-violet-400" />
+              </div>
+              <h4 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Enterprise Security</h4>
+              <p className="text-white/40 text-xs sm:text-sm">SOC 2, ISO 27001 Ready</p>
+            </div>
+            <div>
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <FaChartLine className="w-5 h-5 sm:w-6 sm:h-6 text-violet-400" />
+              </div>
+              <h4 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Performance Optimized</h4>
+              <p className="text-white/40 text-xs sm:text-sm">Sub-100ms Response Times</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 };
 

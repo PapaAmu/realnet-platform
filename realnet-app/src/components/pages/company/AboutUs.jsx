@@ -1,345 +1,612 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
-import { FaUsers, FaLightbulb, FaHeart, FaRocket, FaStar, FaCode, FaMobile, FaGlobe } from "react-icons/fa";
+import React, { useRef } from "react";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
+import { 
+  FaUsers, 
+  FaLightbulb, 
+  FaHandshake, 
+  FaRocket, 
+  FaCode, 
+  FaMobile, 
+  FaGlobe, 
+  FaAward,
+  FaMapMarkerAlt,
+  FaPhone,
+  FaEnvelope,
+  FaClock,
+  FaCheckCircle,
+  FaArrowRight,
+  FaLinkedin,
+  FaTwitter
+} from "react-icons/fa";
 
 const AboutUs = () => {
+  const containerRef = useRef(null);
+  const heroRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 0.5], [0, 100]);
+
   const values = [
     {
       icon: FaLightbulb,
-      title: "Innovation",
-      description: "We stay at the forefront of technology to deliver cutting-edge solutions that give our clients a competitive advantage."
+      title: "Innovation First",
+      description: "We embrace emerging technologies to deliver solutions that keep our clients ahead of the curve."
     },
     {
-      icon: FaHeart,
-      title: "Quality",
-      description: "We're committed to delivering high-quality work that exceeds expectations and stands the test of time."
-    },
-    {
-      icon: FaUsers,
-      title: "Partnership",
-      description: "We believe in building long-term relationships with our clients, working together as partners to achieve success."
+      icon: FaHandshake,
+      title: "True Partnership",
+      description: "We don't just deliver projects; we build lasting relationships that drive continuous success."
     },
     {
       icon: FaRocket,
-      title: "Growth",
-      description: "We help businesses grow and scale by providing robust, scalable solutions that evolve with your needs."
+      title: "Scalable Growth",
+      description: "Every solution is architected for scale, ensuring your technology grows with your business."
+    },
+    {
+      icon: FaAward,
+      title: "Excellence Always",
+      description: "B-BBEE Level 1 certified, we maintain the highest standards in every aspect of our work."
     }
   ];
 
   const stats = [
-    { number: "50+", label: "Projects Completed" },
-    { number: "25+", label: "Happy Clients" },
-    { number: "5+", label: "Years Experience" },
-    { number: "99%", label: "Client Satisfaction" }
+    { number: "150+", label: "Projects Delivered", suffix: "" },
+    { number: "50", label: "Active Clients", suffix: "+" },
+    { number: "5", label: "Years Experience", suffix: "+" },
+    { number: "98", label: "Client Retention", suffix: "%" }
   ];
 
-  const services = [
+  const team = [
     {
-      icon: FaGlobe,
-      title: "Web Development",
-      description: "Custom websites and web applications built with modern technologies"
+      name: "Leadership Team",
+      role: "Strategic Direction",
+      description: "Seasoned technology executives with 15+ years combined experience in enterprise software and digital transformation."
     },
     {
-      icon: FaMobile,
-      title: "Mobile Apps",
-      description: "Native and cross-platform mobile applications for iOS and Android"
+      name: "Development Team",
+      role: "Engineering Excellence",
+      description: "Full-stack engineers, mobile specialists, and cloud architects certified in modern frameworks and platforms."
     },
     {
-      icon: FaCode,
-      title: "Software Development",
-      description: "Custom software solutions tailored to your business needs"
+      name: "Design Team",
+      role: "User Experience",
+      description: "UI/UX designers and brand strategists creating intuitive, accessible, and beautiful digital experiences."
+    },
+    {
+      name: "Support Team",
+      role: "Client Success",
+      description: "Dedicated account managers and technical support ensuring seamless project delivery and ongoing maintenance."
     }
   ];
 
-  const containerVariants = {
+  const timeline = [
+    { year: "2019", title: "Founded", description: "RealNet established in Pretoria with a vision to democratize enterprise technology." },
+    { year: "2020", title: "First Major Client", description: "Partnered with leading South African enterprise, proving our enterprise capabilities." },
+    { year: "2021", title: "Mobile Division", description: "Launched dedicated iOS and Android development division." },
+    { year: "2022", title: "B-BBEE Level 1", description: "Achieved Level 1 B-BBEE certification, cementing our commitment to transformation." },
+    { year: "2023", title: "National Expansion", description: "Expanded operations to serve clients across all nine provinces." },
+    { year: "2024", title: "Innovation Hub", description: "Opened dedicated R&D facility focusing on AI and cloud-native solutions." }
+  ];
+
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+  };
+
+  const staggerContainer = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5
-      }
+      transition: { staggerChildren: 0.1 }
     }
   };
 
   return (
-    <>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
-        {/* Hero Section */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="bg-gradient-to-r from-gray-900 via-black to-gray-900 text-white py-20 pt-32"
-          data-section="about-hero"
+    <div className="min-h-screen bg-white dark:bg-[#050505] transition-colors duration-300">
+      
+      {/* Hero Section */}
+      <section 
+        ref={heroRef}
+        className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-gray-900 dark:bg-black"
+      >
+        <motion.div 
+          className="absolute inset-0 opacity-20"
+          style={{ opacity: heroOpacity }}
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-4xl md:text-6xl font-bold mb-6"
-            >
-              About <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500">REALNET</span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-xl text-gray-300 max-w-3xl mx-auto"
-            >
-              We're a passionate team of developers and designers dedicated to creating innovative digital solutions that help businesses thrive in the digital age.
-            </motion.p>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-violet-900/40 via-transparent to-transparent" />
+        </motion.div>
+
+        <motion.div 
+          className="relative z-10 max-w-5xl mx-auto px-6 text-center"
+          style={{ y: heroY, opacity: heroOpacity }}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="mb-6"
+          >
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-white/70 text-sm font-medium">
+              <FaAward className="w-4 h-4 text-violet-400" />
+              B-BBEE Level 1 Certified
+            </span>
+          </motion.div>
+          
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight mb-6"
+          >
+            Building Digital
+            <br />
+            <span className="text-violet-400">Excellence</span>
+          </motion.h1>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-xl text-white/60 max-w-2xl mx-auto leading-relaxed"
+          >
+            A Pretoria-based technology partner helping South African businesses 
+            transform, scale, and succeed in the digital economy.
+          </motion.p>
+        </motion.div>
+
+        {/* Scroll indicator */}
+        <motion.div 
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center pt-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-white/40" />
           </div>
-        </motion.section>
+        </motion.div>
+      </section>
 
-        {/* Our Story Section */}
-        <motion.section
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="py-20"
-          data-section="our-story"
-          itemScope
-          itemType="https://schema.org/Organization"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <motion.div variants={itemVariants}>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Our Story</h2>
-                <p className="text-lg text-gray-600 mb-6" itemProp="description">
-                  Founded with a vision to bridge the gap between technology and business success, <strong itemProp="name">REALNET WEB SOLUTIONS</strong> has been at the forefront of digital transformation in South Africa. We started as a small team of passionate developers who believed that every business deserves access to world-class technology solutions.
-                </p>
-                <p className="text-lg text-gray-600 mb-6">
-                  Today, we've grown into a trusted partner for businesses across various industries, helping them leverage the power of web and mobile technologies to achieve their goals. Our journey has been marked by continuous learning, innovation, and an unwavering commitment to our clients' success.
-                </p>
-                <p className="text-lg text-gray-600" itemProp="location" itemScope itemType="https://schema.org/Place">
-                  Based in <span itemProp="name">Pretoria</span>, we serve clients throughout <span itemProp="address" itemScope itemType="https://schema.org/PostalAddress"><span itemProp="addressCountry">South Africa</span></span> and beyond, bringing together local expertise with global best practices to deliver exceptional results.
-                </p>
-              </motion.div>
-              <motion.div
-                variants={itemVariants}
-                className="relative"
-              >
-                <div className="bg-gradient-to-r from-orange-400 to-pink-500 rounded-2xl p-8 text-white">
-                  <h3 className="text-2xl font-bold mb-4">Our Mission</h3>
-                  <p className="text-lg mb-6">
-                    To empower businesses with innovative, scalable, and reliable technology solutions that drive growth and success in the digital era.
-                  </p>
-                  <h3 className="text-2xl font-bold mb-4">Our Vision</h3>
-                  <p className="text-lg">
-                    To be South Africa's leading web and mobile development company, known for excellence, innovation, and client satisfaction.
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </motion.section>
-
-        {/* Values Section */}
-        <motion.section
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="py-20 bg-gray-50"
-          data-section="our-values"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div variants={itemVariants} className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Values</h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                These core values guide everything we do and shape our approach to client relationships and project delivery.
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {values.map((value, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                  className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300"
-                >
-                  <div className="bg-gradient-to-r from-orange-400 to-pink-500 rounded-full w-12 h-12 flex items-center justify-center mb-4">
-                    <value.icon className="text-white text-xl" />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{value.title}</h3>
-                  <p className="text-gray-600">{value.description}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.section>
-
-        {/* Stats Section */}
-        <motion.section
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="py-20 bg-gradient-to-r from-gray-900 via-black to-gray-900 text-white"
-          data-section="achievements"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div variants={itemVariants} className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Achievements</h2>
-              <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-                Numbers that reflect our commitment to excellence and client satisfaction.
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
-                  className="text-center"
-                >
-                  <div className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500 mb-2">
-                    {stat.number}
-                  </div>
-                  <p className="text-lg text-gray-300">{stat.label}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.section>
-
-        {/* Services Overview */}
-        <motion.section
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="py-20"
-          data-section="services-overview"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div variants={itemVariants} className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What We Do</h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                We specialize in creating comprehensive digital solutions that help businesses succeed online.
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {services.map((service, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                  className="bg-white rounded-xl p-8 shadow-md hover:shadow-lg transition-all duration-300 text-center"
-                  itemScope
-                  itemType="https://schema.org/Service"
-                >
-                  <div className="bg-gradient-to-r from-orange-400 to-pink-500 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto">
-                    <service.icon className="text-white text-2xl" />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4" itemProp="name">{service.title}</h3>
-                  <p className="text-gray-600" itemProp="description">{service.description}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.section>
-
-        {/* Local Business Info */}
-        <section 
-          className="py-12 bg-white border-t border-gray-200"
-          data-section="local-info"
-          itemScope
-          itemType="https://schema.org/LocalBusiness"
-        >
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6" itemProp="name">REALNET WEB SOLUTIONS</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-3">Contact Information</h3>
-                <div className="text-gray-600 space-y-2">
-                  <p itemProp="telephone">
-                    <strong>Phone:</strong> +27-64-038-8883
-                  </p>
-                  <p itemProp="email">
-                    <strong>Email:</strong> lukhele@realnet-web.co.za
-                  </p>
-                  <p>
-                    <strong>Hours:</strong> Mon-Fri 8:00-17:00
-                  </p>
-                </div>
+      {/* B-BBEE Banner */}
+      <section className="py-8 bg-violet-600 dark:bg-violet-700">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-white">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                <FaAward className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 mb-3">Location</h3>
-                <div className="text-gray-600 space-y-2" itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
-                  <p itemProp="streetAddress">Mashau Street, Ivory Park</p>
-                  <p>
-                    <span itemProp="addressLocality">Midrand</span>,{" "}
-                    <span itemProp="addressRegion">Gauteng</span>
-                  </p>
-                  <p itemProp="postalCode">1689</p>
-                  <p itemProp="addressCountry">South Africa</p>
-                </div>
+                <h3 className="font-semibold text-lg">B-BBEE Level 1 Contributor</h3>
+                <p className="text-white/70 text-sm">135% procurement recognition • 100% black-owned</p>
               </div>
             </div>
-            <div className="mt-8 text-sm text-gray-500">
-              <p>Serving businesses across Gauteng, including Johannesburg, Pretoria, and surrounding areas.</p>
-            </div>
+            <Link 
+              href="/contact-us"
+              className="px-6 py-3 bg-white text-violet-600 rounded-full font-medium hover:bg-white/90 transition-colors flex items-center gap-2"
+            >
+              Partner With Us <FaArrowRight className="w-4 h-4" />
+            </Link>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Call to Action */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="py-20 bg-gray-50"
-          data-section="cta"
-        >
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Ready to Work Together?</h2>
-            <p className="text-lg text-gray-600 mb-8">
-              Let's discuss how we can help transform your ideas into reality and take your business to the next level.
-            </p>
+      {/* Story Section */}
+      <section ref={containerRef} className="py-24 lg:py-32">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
-              className="flex flex-col sm:flex-row gap-4 justify-center"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              variants={fadeInUp}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
             >
-              <Link
-                href="/contact-us"
-                className="inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-orange-400 to-pink-500 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
-                aria-label="Contact our team for web development services"
-              >
-                Get In Touch
-              </Link>
-              <Link
-                href="/new-project/request-quotation"
-                className="inline-flex items-center justify-center px-8 py-3 bg-white border border-gray-300 text-gray-800 font-semibold rounded-lg shadow-sm hover:bg-gray-50 transition-all duration-300"
-                aria-label="Request a free quote for your project"
-              >
-                Request Quote
-              </Link>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight">
+                Our Story
+              </h2>
+              <div className="space-y-4 text-gray-600 dark:text-white/60 text-lg leading-relaxed">
+                <p>
+                  Founded in 2019 in Pretoria, <strong className="text-gray-900 dark:text-white">RealNet Web Solutions</strong> emerged from a simple belief: that South African businesses deserve world-class technology solutions delivered with local understanding and global standards.
+                </p>
+                <p>
+                  What started as a small team of three passionate developers has grown into a full-service digital agency serving enterprises, SMEs, and government entities across all nine provinces. Our journey has been defined by continuous learning, unwavering quality, and deep commitment to our clients' success.
+                </p>
+                <p>
+                  As a <strong className="text-gray-900 dark:text-white">100% black-owned, B-BBEE Level 1 certified</strong> company, we're proud contributors to South Africa's economic transformation while delivering technology that competes on the global stage.
+                </p>
+              </div>
+              
+              <div className="mt-8 flex items-center gap-6">
+                <div className="flex -space-x-3">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="w-10 h-10 rounded-full bg-gray-200 dark:bg-white/10 border-2 border-white dark:border-[#050505] flex items-center justify-center text-sm font-medium text-gray-600 dark:text-white/60">
+                      {String.fromCharCode(64 + i)}
+                    </div>
+                  ))}
+                </div>
+                <p className="text-sm text-gray-500 dark:text-white/40">
+                  Join our growing team of 12+ professionals
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              className="relative"
+            >
+              <div className="relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-white/5 aspect-[4/3]">
+                <div className="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-white/20">
+                  <div className="text-center">
+                    <div className="w-24 h-24 rounded-2xl bg-gray-200 dark:bg-white/10 mx-auto mb-4 flex items-center justify-center">
+                      <FaGlobe className="w-12 h-12" />
+                    </div>
+                    <p className="text-sm">Team Photo Placeholder</p>
+                  </div>
+                </div>
+                
+                {/* Floating stats */}
+                <div className="absolute bottom-4 left-4 right-4 grid grid-cols-2 gap-3">
+                  <div className="bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200 dark:border-white/10">
+                    <div className="text-2xl font-bold text-violet-600 dark:text-violet-400">100%</div>
+                    <div className="text-xs text-gray-600 dark:text-white/60">Black Owned</div>
+                  </div>
+                  <div className="bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200 dark:border-white/10">
+                    <div className="text-2xl font-bold text-violet-600 dark:text-violet-400">Level 1</div>
+                    <div className="text-xs text-gray-600 dark:text-white/60">B-BBEE Status</div>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           </div>
-        </motion.section>
-      </div>
-    </>
+        </div>
+      </section>
+
+      {/* Values Grid */}
+      <section className="py-24 bg-gray-50 dark:bg-white/[0.02]">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center max-w-2xl mx-auto mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Our Values
+            </h2>
+            <p className="text-gray-600 dark:text-white/50 text-lg">
+              Principles that guide every decision, every line of code, and every client interaction.
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            {values.map((value, index) => (
+              <motion.div
+                key={index}
+                variants={fadeInUp}
+                className="group p-6 rounded-2xl bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] hover:border-violet-500/30 dark:hover:border-violet-500/30 transition-all duration-300"
+              >
+                <div className="w-12 h-12 rounded-xl bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <value.icon className="w-6 h-6 text-violet-600 dark:text-violet-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  {value.title}
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-white/50 leading-relaxed">
+                  {value.description}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-2 lg:grid-cols-4 gap-8"
+          >
+            {stats.map((stat, index) => (
+              <motion.div
+                key={index}
+                variants={fadeInUp}
+                className="text-center p-6 rounded-2xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06]"
+              >
+                <div className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-2">
+                  {stat.number}<span className="text-violet-600 dark:text-violet-400">{stat.suffix}</span>
+                </div>
+                <div className="text-sm text-gray-500 dark:text-white/40 uppercase tracking-wider">
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Team Structure */}
+      <section className="py-24 bg-gray-50 dark:bg-white/[0.02]">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center max-w-2xl mx-auto mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Our Team
+            </h2>
+            <p className="text-gray-600 dark:text-white/50 text-lg">
+              A diverse group of experts united by a passion for technology and client success.
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid md:grid-cols-2 gap-6"
+          >
+            {team.map((member, index) => (
+              <motion.div
+                key={index}
+                variants={fadeInUp}
+                className="flex gap-6 p-6 rounded-2xl bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] hover:border-violet-500/30 transition-all duration-300"
+              >
+                <div className="w-16 h-16 rounded-2xl bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center shrink-0">
+                  <FaUsers className="w-8 h-8 text-violet-600 dark:text-violet-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+                    {member.name}
+                  </h3>
+                  <p className="text-sm text-violet-600 dark:text-violet-400 font-medium mb-2">
+                    {member.role}
+                  </p>
+                  <p className="text-sm text-gray-600 dark:text-white/50 leading-relaxed">
+                    {member.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Timeline */}
+      <section className="py-24">
+        <div className="max-w-4xl mx-auto px-6">
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Our Journey
+            </h2>
+            <p className="text-gray-600 dark:text-white/50 text-lg">
+              Milestones that mark our growth and evolution.
+            </p>
+          </motion.div>
+
+          <div className="relative">
+            {/* Line */}
+            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gray-200 dark:bg-white/10" />
+
+            {timeline.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className={`relative flex items-start gap-8 mb-12 ${
+                  index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                }`}
+              >
+                {/* Dot */}
+                <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-violet-600 dark:bg-violet-400 ring-4 ring-white dark:ring-[#050505]" />
+
+                {/* Content */}
+                <div className={`ml-12 md:ml-0 md:w-1/2 ${
+                  index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'
+                }`}>
+                  <span className="inline-block px-3 py-1 rounded-full bg-violet-100 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">
+                    {item.year}
+                  </span>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-white/50 text-sm leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Services Overview */}
+      <section className="py-24 bg-gray-50 dark:bg-white/[0.02]">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center max-w-2xl mx-auto mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              What We Do
+            </h2>
+            <p className="text-gray-600 dark:text-white/50 text-lg">
+              End-to-end digital solutions tailored to your business objectives.
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid md:grid-cols-3 gap-8"
+          >
+            {[
+              { icon: FaGlobe, title: "Web Development", desc: "Custom websites, web applications, and e-commerce platforms built with modern technologies." },
+              { icon: FaMobile, title: "Mobile Apps", desc: "Native iOS and Android applications with seamless user experiences and robust functionality." },
+              { icon: FaCode, title: "Software Solutions", desc: "Enterprise-grade custom software, cloud solutions, and system integrations." }
+            ].map((service, index) => (
+              <motion.div
+                key={index}
+                variants={fadeInUp}
+                className="group p-8 rounded-2xl bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] text-center hover:border-violet-500/30 transition-all duration-300"
+              >
+                <div className="w-16 h-16 rounded-2xl bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <service.icon className="w-8 h-8 text-violet-600 dark:text-violet-400" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                  {service.title}
+                </h3>
+                <p className="text-gray-600 dark:text-white/50 leading-relaxed">
+                  {service.desc}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Contact Info */}
+      <section className="py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-12">
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
+                Get In Touch
+              </h2>
+              <p className="text-gray-600 dark:text-white/50 mb-8">
+                Ready to start your project? We'd love to hear from you. Reach out and let's discuss how we can help transform your business.
+              </p>
+              
+              <div className="space-y-4">
+                <div className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06]">
+                  <div className="w-10 h-10 rounded-lg bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center">
+                    <FaMapMarkerAlt className="w-5 h-5 text-violet-600 dark:text-violet-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-white/40">Address</p>
+                    <p className="text-gray-900 dark:text-white">Mashau Street, Ivory Park, Midrand, 1689</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06]">
+                  <div className="w-10 h-10 rounded-lg bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center">
+                    <FaPhone className="w-5 h-5 text-violet-600 dark:text-violet-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-white/40">Phone</p>
+                    <p className="text-gray-900 dark:text-white">+27 (0) 64 038 8883</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06]">
+                  <div className="w-10 h-10 rounded-lg bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center">
+                    <FaEnvelope className="w-5 h-5 text-violet-600 dark:text-violet-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-white/40">Email</p>
+                    <p className="text-gray-900 dark:text-white">lukhele@realnet-web.co.za</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06]">
+                  <div className="w-10 h-10 rounded-lg bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center">
+                    <FaClock className="w-5 h-5 text-violet-600 dark:text-violet-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-white/40">Hours</p>
+                    <p className="text-gray-900 dark:text-white">Mon-Fri: 08:00 - 17:00</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="flex flex-col justify-center"
+            >
+              <div className="p-8 rounded-2xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06]">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                  Why Choose RealNet?
+                </h3>
+                <ul className="space-y-3">
+                  {[
+                    "B-BBEE Level 1 certified for maximum procurement recognition",
+                    "100% black-owned, contributing to economic transformation",
+                    "Local presence with understanding of South African market",
+                    "Enterprise-grade solutions at competitive rates",
+                    "Dedicated support and long-term partnership approach"
+                  ].map((item, index) => (
+                    <li key={index} className="flex items-start gap-3 text-gray-600 dark:text-white/60">
+                      <FaCheckCircle className="w-5 h-5 text-violet-600 dark:text-violet-400 shrink-0 mt-0.5" />
+                      <span className="text-sm leading-relaxed">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                
+                <div className="mt-8 flex gap-4">
+                  <Link
+                    href="/contact-us"
+                    className="flex-1 py-3 bg-violet-600 dark:bg-violet-500 text-white rounded-xl font-medium text-center hover:opacity-90 transition-opacity"
+                  >
+                    Contact Us
+                  </Link>
+                  <Link
+                    href="/new-project/request-quotation"
+                    className="flex-1 py-3 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl font-medium text-center hover:bg-gray-50 dark:hover:bg-white/10 transition-colors"
+                  >
+                    Get Quote
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 };
 

@@ -1,790 +1,473 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { 
-  FaServer, 
   FaEnvelope, 
+  FaServer, 
   FaShieldAlt, 
-  FaRocket, 
-  FaDatabase,
-  FaSync,
+  FaCheck,
+  FaArrowRight,
   FaHeadset,
-  FaGlobe,
+  FaSync,
   FaLock,
-  FaCogs,
-  FaChartLine,
-  FaCloud,
-  FaCheckCircle,
-  FaTimes,
-  FaArrowRight
+  FaGlobe,
+  FaRocket
 } from "react-icons/fa";
 
-// Fixed background element positions - consistent between server and client
-const backgroundElements = [
-  { width: 155, height: 162, top: 32, left: 50 },
-  { width: 203, height: 250, top: 64, left: 40 },
-  { width: 162, height: 251, top: 41, left: 62 },
-  { width: 195, height: 183, top: 36, left: 32 },
-  { width: 104, height: 150, top: 62, left: 83 }
-];
-
 const HostingAndEmail = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState("professional");
-  const [selectedEmailPlan, setSelectedEmailPlan] = useState("business");
-  const [isClient, setIsClient] = useState(false);
+  const containerRef = useRef(null);
+  const heroRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 0.5], [0, 100]);
 
-  useEffect(() => {
-    setIsVisible(true);
-    setIsClient(true);
-    return () => setIsVisible(false);
-  }, []);
-
-  // Animation variants
-  const fadeIn = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
   };
 
-  const staggerChildren = {
+  const staggerContainer = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15
-      }
-    }
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
   };
 
-  const floatAnimation = {
-    hidden: { y: 0 },
-    visible: {
-      y: [-10, 10, -10],
-      transition: {
-        duration: 4,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
-  };
-
-  const pulseAnimation = {
-    hidden: { scale: 1 },
-    visible: {
-      scale: [1, 1.05, 1],
-      transition: {
-        duration: 3,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
-  };
-
-  // Hosting features
-  const hostingFeatures = [
-    {
-      title: "99.9% Uptime Guarantee",
-      description: "Maximum reliability with our SLA-backed uptime guarantee for South African businesses",
-      icon: <FaChartLine className="text-2xl" />
-    },
-    {
-      title: "Free SSL Certificates",
-      description: "Secure your website with free SSL certificates for all domains and subdomains",
-      icon: <FaLock className="text-2xl" />
-    },
-    {
-      title: "Daily Backups",
-      description: "Automatic daily backups with easy one-click restoration and data protection",
-      icon: <FaDatabase className="text-2xl" />
-    },
-    {
-      title: "24/7 Expert Support",
-      description: "Round-the-clock technical support from our South African hosting experts",
-      icon: <FaHeadset className="text-2xl" />
-    },
-    {
-      title: "Server Monitoring",
-      description: "Proactive monitoring to prevent issues before they affect your website",
-      icon: <FaCogs className="text-2xl" />
-    },
-    {
-      title: "One-Click Installs",
-      description: "Install WordPress, Joomla, and 100+ applications with one click",
-      icon: <FaRocket className="text-2xl" />
-    }
-  ];
-
-  // Email features
   const emailFeatures = [
     {
-      title: "Professional Address",
-      description: "you@yourbusiness.co.za - Build trust with professional South African email addresses",
-      icon: <FaEnvelope className="text-2xl" />
+      icon: FaEnvelope,
+      title: "Professional Email",
+      description: "you@yourcompany.co.za addresses that build trust with customers and partners."
     },
     {
-      title: "Enhanced Security",
-      description: "Advanced spam filtering and malware protection for business communications",
-      icon: <FaShieldAlt className="text-2xl" />
-    },
-    {
-      title: "Generous Storage",
-      description: "Ample storage space for all your business emails and attachments",
-      icon: <FaDatabase className="text-2xl" />
-    },
-    {
+      icon: FaSync,
       title: "Anywhere Access",
-      description: "Access your email from any device, anywhere in South Africa",
-      icon: <FaGlobe className="text-2xl" />
+      description: "Webmail, mobile, and desktop sync. Access your email from any device, anywhere."
     },
     {
-      title: "Calendar & Contacts",
-      description: "Integrated calendar and contacts synchronization across devices",
-      icon: <FaSync className="text-2xl" />
+      icon: FaShieldAlt,
+      title: "Advanced Security",
+      description: "Spam filtering, virus protection, and encrypted connections keep your communications safe."
     },
     {
-      title: "No Ads",
-      description: "Professional, ad-free email experience for your business",
-      icon: <FaTimes className="text-2xl" />
+      icon: FaHeadset,
+      title: "Local Support",
+      description: "South African support team that understands your business needs."
     }
   ];
 
-  // Hosting plans
-  const hostingPlans = [
+  const vpsFeatures = [
     {
-      name: "Starter",
-      price: "R139.99",
-      period: "month",
-      description: "Perfect for small websites and personal blogs in South Africa",
-      features: [
-        "1 Website",
-        "10 GB SSD Storage",
-        "Unmetered Bandwidth",
-        "Free .co.za Domain (1 year)",
-        "Free SSL Certificate",
-        "Standard Performance"
-      ],
-      recommended: false
+      icon: FaServer,
+      title: "Managed VPS Hosting",
+      description: "We handle server setup, security patches, monitoring, and maintenance so you don't have to."
     },
     {
-      name: "Professional",
-      price: "R249.99",
-      period: "month",
-      description: "Ideal for growing South African businesses and e-commerce",
-      features: [
-        "Unlimited Websites",
-        "50 GB SSD Storage",
-        "Unmetered Bandwidth",
-        "Free .co.za Domain (1 year)",
-        "Free SSL Certificate",
-        "Enhanced Performance",
-        "Daily Backups",
-        "Free Email Account"
-      ],
-      recommended: true
+      icon: FaRocket,
+      title: "Fast Performance",
+      description: "SSD storage and optimized configurations for quick loading times."
     },
     {
-      name: "Enterprise",
-      price: "R399.99",
-      period: "month",
-      description: "For high-traffic websites and online stores in South Africa",
-      features: [
-        "Unlimited Websites",
-        "100 GB NVMe Storage",
-        "Unmetered Bandwidth",
-        "Free .co.za Domain (1 year)",
-        "Free SSL Certificate",
-        "Maximum Performance",
-        "Daily Backups",
-        "Free Email Accounts",
-        "Premium Support",
-        "Free CDN"
-      ],
-      recommended: false
-    }
-  ];
-
-  // Email plans
-  const emailPlans = [
-    {
-      name: "Basic",
-      price: "R99.99",
-      period: "month",
-      description: "For individuals and small teams in South Africa",
-      features: [
-        "8 Email Accounts",
-        "10 GB Storage",
-        "Webmail Access",
-        "Spam Protection",
-        "Email Forwarding"
-      ],
-      recommended: false
+      icon: FaLock,
+      title: "Secure & Reliable",
+      description: "Firewall protection, automated backups, and 99.9% uptime guarantee."
     },
     {
-      name: "Business",
-      price: "R199.99",
-      period: "month",
-      description: "Perfect for small to medium South African businesses",
-      features: [
-        "20 Email Accounts",
-        "30 GB Storage",
-        "Webmail & Mobile Access",
-        "Advanced Spam Protection",
-        "Email Forwarding",
-        "Calendar & Contacts Sync",
-        "99.9% Uptime"
-      ],
-      recommended: true
-    },
-    {
-      name: "Enterprise",
-      price: "R499.99",
-      period: "month",
-      description: "For large South African organizations with advanced needs",
-      features: [
-        "Unlimited Email Accounts",
-        "100 GB Storage",
-        "Webmail & Mobile Access",
-        "Advanced Spam Protection",
-        "Email Forwarding",
-        "Calendar & Contacts Sync",
-        "99.9% Uptime",
-        "Priority Support",
-        "Email Archiving"
-      ],
-      recommended: false
+      icon: FaGlobe,
+      title: "South African Servers",
+      description: "Low latency for local visitors with data centers in Johannesburg."
     }
   ];
 
   return (
-    <>
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white overflow-hidden relative">
-        {/* Animated background elements - FIXED with consistent values */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          {backgroundElements.map((element, i) => (
-            <motion.div
-              key={i}
-              className="absolute rounded-full bg-gradient-to-r from-blue-500/10 to-cyan-500/10"
-              style={{
-                width: element.width,
-                height: element.height,
-                top: `${element.top}%`,
-                left: `${element.left}%`,
-              }}
-              animate={{
-                scale: [1, 1.2, 1],
-                rotate: [0, 180, 360],
-              }}
-              transition={{
-                duration: 10 + (i * 2), // Consistent durations
-                repeat: Infinity,
-                ease: "linear"
-              }}
-            />
-          ))}
-        </div>
+    <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
+      
+      {/* Hero Section */}
+      <section ref={heroRef} className="relative min-h-screen flex items-center pt-20 lg:pt-0">
+        <motion.div className="absolute inset-0 z-0" style={{ opacity: heroOpacity }}>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,_rgba(139,92,246,0.15),transparent_50%)]" />
+          <div className="absolute top-0 left-0 w-full h-px bg-white/10" />
+        </motion.div>
 
-        {/* Floating Icons - Only render on client side */}
-        {isClient && (
-          <>
-            <motion.div 
-              className="absolute top-1/4 left-10 hidden lg:block"
-              variants={floatAnimation}
-              initial="hidden"
-              animate="visible"
-            >
-              <div className="bg-gradient-to-br from-blue-600 to-cyan-600 p-3 rounded-2xl shadow-2xl flex items-center justify-center w-16 h-16">
-                <FaServer className="text-3xl text-white" />
-              </div>
-            </motion.div>
-
-            <motion.div 
-              className="absolute bottom-1/3 right-10 hidden lg:block"
-              variants={floatAnimation}
-              initial="hidden"
-              animate="visible"
-              transition={{ delay: 0.5 }}
-            >
-              <div className="bg-gradient-to-br from-cyan-500 to-blue-500 p-3 rounded-2xl shadow-2xl flex items-center justify-center w-16 h-16">
-                <FaEnvelope className="text-3xl text-white" />
-              </div>
-            </motion.div>
-          </>
-        )}
-
-        {/* Hero Section */}
-        <section 
-          className="relative py-20 lg:py-32 overflow-hidden"
-          data-section="hero"
-          aria-labelledby="hosting-hero-heading"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <motion.div 
-                initial="hidden"
-                animate={isVisible ? "visible" : "hidden"}
-                variants={fadeIn}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 w-full">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <motion.div style={{ y: heroY, opacity: heroOpacity }} className="order-2 lg:order-1">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6"
               >
-                <motion.h1 
-                  id="hosting-hero-heading"
-                  className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                >
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400">Managed Hosting</span> & Professional Email
-                </motion.h1>
-                <motion.p 
-                  className="text-xl text-gray-300 mb-8"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                >
-                  Powerful, reliable hosting solutions and professional business email services for South African businesses. Elevate your online presence with 99.9% uptime guarantee.
-                </motion.p>
-                <motion.div 
-                  className="flex flex-wrap gap-4"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.6 }}
-                >
-                  <Link 
-                    href="/new-project/request-quotation"
-                    className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold rounded-lg shadow-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 flex items-center gap-2 cursor-pointer"
-                  >
-                    <motion.span
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-2"
-                    >
-                      <FaRocket className="text-lg" />
-                      Get Started Now
-                    </motion.span>
-                  </Link>
-                  <Link 
-                    href="/contact-us"
-                    className="px-6 py-3 border border-blue-500 text-blue-300 font-semibold rounded-lg shadow-sm hover:bg-blue-500/10 transition-all duration-300 flex items-center gap-2 cursor-pointer"
-                  >
-                    <motion.span
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-2"
-                    >
-                      <FaHeadset className="text-lg" />
-                      Speak to an Expert
-                    </motion.span>
-                  </Link>
-                </motion.div>
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-violet-400">
+                  <FaServer className="w-4 h-4" />
+                  Managed Services
+                </span>
               </motion.div>
               
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9, rotate: -5 }}
-                animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                transition={{ duration: 0.7, delay: 0.5 }}
-                className="relative"
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-6 lg:mb-8 leading-tight"
               >
-                <motion.div 
-                  className="bg-gradient-to-br from-gray-800 to-gray-900 p-1 rounded-3xl shadow-2xl border border-blue-500/20 relative overflow-hidden"
-                  whileHover={{ y: -5 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1563207153-f403bf289096?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80')] bg-cover bg-center opacity-20"></div>
-                  <div className="bg-gradient-to-b from-gray-900/80 to-gray-800/80 rounded-3xl p-6 backdrop-blur-sm">
-                    <div className="flex gap-2 mb-4">
-                      <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                      <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                      <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                    </div>
-                    <div className="font-mono text-sm">
-                      <div className="text-blue-400">function <span className="text-cyan-400">setupInfrastructure</span>() {"{"}</div>
-                      <div className="ml-4 text-green-400">// Reliable hosting + professional email</div>
-                      <div className="ml-4 text-blue-400">const</div>
-                      <div className="ml-8 text-yellow-200">performance = "blazing-fast"</div>
-                      <div className="ml-8 text-yellow-200">reliability = "99.9% uptime"</div>
-                      <div className="ml-8 text-yellow-200">security = "enterprise-grade"</div>
-                      <div className="text-blue-400">{"}"}</div>
-                    </div>
-                  </div>
-                </motion.div>
-                
-                {/* Only render floating elements on client side */}
-                {isClient && (
-                  <>
-                    <motion.div 
-                      className="absolute -bottom-6 -left-6 bg-gradient-to-br from-blue-500 to-cyan-500 p-1 rounded-xl shadow-2xl z-10"
-                      variants={floatAnimation}
-                      initial="hidden"
-                      animate="visible"
-                    >
-                      <div className="bg-gray-800 rounded-lg p-3 flex items-center justify-center">
-                        <FaServer className="text-3xl text-blue-300" />
-                      </div>
-                    </motion.div>
-                    
-                    <motion.div 
-                      className="absolute -top-6 -right-6 bg-gradient-to-br from-cyan-500 to-blue-500 p-1 rounded-xl shadow-2xl z-10"
-                      variants={floatAnimation}
-                      initial="hidden"
-                      animate="visible"
-                      transition={{ delay: 0.5 }}
-                    >
-                      <div className="bg-gray-800 rounded-lg p-3 flex items-center justify-center">
-                        <FaEnvelope className="text-3xl text-cyan-300" />
-                      </div>
-                    </motion.div>
-                  </>
-                )}
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* Hosting Features Section */}
-        <section 
-          className="relative py-20 lg:py-28"
-          data-section="hosting-features"
-          aria-labelledby="hosting-features-heading"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <motion.div 
-              className="text-center mb-16"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.5 }}
-              variants={fadeIn}
-            >
-              <h2 id="hosting-features-heading" className="text-3xl md:text-4xl font-bold mb-4">
-                Powerful <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400">Managed Hosting</span> Solutions
-              </h2>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                Focus on your South African business while we handle the technical details of your hosting infrastructure with enterprise-grade reliability.
-              </p>
-            </motion.div>
-
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-              variants={staggerChildren}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-            >
-              {hostingFeatures.map((feature, index) => (
-                <motion.div 
-                  key={index}
-                  variants={fadeIn}
-                  className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl p-1 border border-blue-500/20 hover:border-blue-500/40 transition-all duration-500 group relative overflow-hidden h-full"
-                  whileHover={{ y: -5 }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="relative z-10 h-full bg-gradient-to-b from-gray-900/70 to-gray-800/70 rounded-3xl p-6 backdrop-blur-sm">
-                    <motion.div 
-                      className="mb-4 flex justify-center"
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <div className="p-3 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl text-white shadow-lg">
-                        {feature.icon}
-                      </div>
-                    </motion.div>
-                    <h3 className="text-xl font-semibold mb-3 text-center text-white">{feature.title}</h3>
-                    <p className="text-gray-400 text-center">{feature.description}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Email Features Section */}
-        <section 
-          className="py-20 lg:py-28 bg-gradient-to-br from-gray-900 to-gray-800 relative overflow-hidden"
-          data-section="email-features"
-          aria-labelledby="email-features-heading"
-        >
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80')] bg-cover bg-center opacity-5"></div>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <motion.div 
-              className="text-center mb-16"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.5 }}
-              variants={fadeIn}
-            >
-              <h2 id="email-features-heading" className="text-3xl md:text-4xl font-bold mb-4">
-                Professional <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400">Business Email</span>
-              </h2>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                Ditch generic email addresses and build trust with professional email that matches your South African domain and business identity.
-              </p>
-            </motion.div>
-
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-              variants={staggerChildren}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-            >
-              {emailFeatures.map((feature, index) => (
-                <motion.div 
-                  key={index}
-                  variants={fadeIn}
-                  className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl p-1 border border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-500 group relative overflow-hidden h-full"
-                  whileHover={{ y: -5 }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="relative z-10 h-full bg-gradient-to-b from-gray-900/70 to-gray-800/70 rounded-3xl p-6 backdrop-blur-sm">
-                    <motion.div 
-                      className="mb-4 flex justify-center"
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <div className="p-3 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl text-white shadow-lg">
-                        {feature.icon}
-                      </div>
-                    </motion.div>
-                    <h3 className="text-xl font-semibold mb-3 text-center text-white">{feature.title}</h3>
-                    <p className="text-gray-400 text-center">{feature.description}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Pricing Section */}
-        <section 
-          className="py-20 lg:py-28 relative"
-          data-section="pricing"
-          aria-labelledby="pricing-heading"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <motion.div 
-              className="text-center mb-16"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.5 }}
-              variants={fadeIn}
-            >
-              <h2 id="pricing-heading" className="text-3xl md:text-4xl font-bold mb-4">
-                Flexible <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400">Pricing Plans</span>
-              </h2>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                Choose the perfect plan for your South African business needs with our transparent, competitive pricing
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              {/* Hosting Plans */}
-              <motion.div 
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={fadeIn}
-              >
-                <div className="text-center mb-8">
-                  <div className="inline-flex bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full p-1 mb-4">
-                    <FaServer className="text-2xl text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Hosting Plans</h3>
-                  <p className="text-gray-400">High-performance hosting solutions for South African websites</p>
-                </div>
-
-                <div className="space-y-6">
-                  {hostingPlans.map((plan, index) => (
-                    <motion.div 
-                      key={index}
-                      className={`bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-1 ${plan.recommended ? 'border-2 border-blue-500' : 'border border-blue-500/20'} transition-all duration-300 hover:shadow-xl`}
-                      whileHover={{ y: -5 }}
-                      onClick={() => setSelectedPlan(plan.name.toLowerCase())}
-                    >
-                      <div className="bg-gradient-to-b from-gray-900/70 to-gray-800/70 rounded-2xl p-6 backdrop-blur-sm">
-                        {plan.recommended && (
-                          <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-full inline-block mb-4">
-                            MOST POPULAR
-                          </div>
-                        )}
-                        <h4 className="text-xl font-bold text-white mb-2">{plan.name}</h4>
-                        <div className="flex items-baseline justify-center mb-4">
-                          <span className="text-3xl font-bold text-white">{plan.price}</span>
-                          <span className="text-gray-400 ml-1">/{plan.period}</span>
-                        </div>
-                        <p className="text-gray-400 text-sm mb-6">{plan.description}</p>
-                        <ul className="space-y-3 mb-6">
-                          {plan.features.map((feature, i) => (
-                            <li key={i} className="flex items-start">
-                              <FaCheckCircle className="text-green-500 mt-1 mr-2 flex-shrink-0" />
-                              <span className="text-gray-300">{feature}</span>
-                            </li>
-                          ))}
-                        </ul>
-                        <Link 
-                          href="/new-project/request-quotation"
-                          className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${plan.recommended ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'}`}
-                        >
-                          <motion.span
-                            whileHover={{ y: -2 }}
-                            whileTap={{ y: 0 }}
-                            className="flex items-center gap-2"
-                          >
-                            Get Started <FaArrowRight className="text-sm" />
-                          </motion.span>
-                        </Link>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Email Plans */}
-              <motion.div 
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={fadeIn}
+                Email & VPS
+                <br />
+                <span className="text-violet-400">Hosting</span>
+              </motion.h1>
+              
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
+                className="text-lg lg:text-xl text-white/50 leading-relaxed mb-8 lg:mb-10 max-w-lg"
               >
-                <div className="text-center mb-8">
-                  <div className="inline-flex bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full p-1 mb-4">
-                    <FaEnvelope className="text-2xl text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Email Plans</h3>
-                  <p className="text-gray-400">Professional business email solutions for South African companies</p>
-                </div>
-
-                <div className="space-y-6">
-                  {emailPlans.map((plan, index) => (
-                    <motion.div 
-                      key={index}
-                      className={`bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-1 ${plan.recommended ? 'border-2 border-cyan-500' : 'border border-cyan-500/20'} transition-all duration-300 hover:shadow-xl`}
-                      whileHover={{ y: -5 }}
-                      onClick={() => setSelectedEmailPlan(plan.name.toLowerCase())}
-                    >
-                      <div className="bg-gradient-to-b from-gray-900/70 to-gray-800/70 rounded-2xl p-6 backdrop-blur-sm">
-                        {plan.recommended && (
-                          <div className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full inline-block mb-4">
-                            RECOMMENDED
-                          </div>
-                        )}
-                        <h4 className="text-xl font-bold text-white mb-2">{plan.name}</h4>
-                        <div className="flex items-baseline justify-center mb-4">
-                          <span className="text-3xl font-bold text-white">{plan.price}</span>
-                          <span className="text-gray-400 ml-1">/{plan.period}</span>
-                        </div>
-                        <p className="text-gray-400 text-sm mb-6">{plan.description}</p>
-                        <ul className="space-y-3 mb-6">
-                          {plan.features.map((feature, i) => (
-                            <li key={i} className="flex items-start">
-                              <FaCheckCircle className="text-green-500 mt-1 mr-2 flex-shrink-0" />
-                              <span className="text-gray-300">{feature}</span>
-                            </li>
-                          ))}
-                        </ul>
-                        <Link 
-                          href="/new-project/request-quotation"
-                          className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${plan.recommended ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:from-cyan-600 hover:to-blue-600' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'}`}
-                        >
-                          <motion.span
-                            whileHover={{ y: -2 }}
-                            whileTap={{ y: 0 }}
-                            className="flex items-center gap-2"
-                          >
-                            Get Started <FaArrowRight className="text-sm" />
-                          </motion.span>
-                        </Link>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
+                Professional business email and managed VPS hosting for South African businesses. 
+                We handle the technical details so you can focus on your business.
+              </motion.p>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="flex flex-col sm:flex-row gap-4"
+              >
+                <Link
+                  href="/new-project/request-quotation"
+                  className="inline-flex items-center justify-center gap-2 px-6 lg:px-8 py-4 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors text-sm lg:text-base"
+                >
+                  Get Started <FaArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  href="/contact-us"
+                  className="inline-flex items-center justify-center gap-2 px-6 lg:px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full font-medium hover:bg-white/10 transition-colors text-sm lg:text-base"
+                >
+                  Contact Sales
+                </Link>
               </motion.div>
-            </div>
-          </div>
-        </section>
+            </motion.div>
 
-        {/* CTA Section */}
-        <section 
-          className="py-20 lg:py-28 bg-gradient-to-r from-blue-600 to-cyan-600 text-white relative overflow-hidden"
-          data-section="cta"
-          aria-labelledby="hosting-cta-heading"
-        >
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1563207153-f403bf289096?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80')] bg-cover bg-center mix-blend-overlay opacity-20"></div>
-          
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <motion.div 
+            {/* Hero Visual */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="relative order-1 lg:order-2"
+            >
+              <div className="relative aspect-square max-w-lg mx-auto rounded-2xl bg-white/5 border border-white/10 p-6 lg:p-8">
+                <div className="h-full flex flex-col justify-center gap-6">
+                  {/* Email Card */}
+                  <div className="p-5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                    <div className="flex items-center gap-4 mb-3">
+                      <div className="w-12 h-12 rounded-lg bg-violet-500/10 flex items-center justify-center">
+                        <FaEnvelope className="w-6 h-6 text-violet-400" />
+                      </div>
+                      <div>
+                        <div className="text-sm text-white/40">Business Email</div>
+                        <div className="text-lg font-semibold">From R100/month</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-white/50">
+                      <FaCheck className="w-4 h-4 text-emerald-400" />
+                      <span>Up to 7 email accounts</span>
+                    </div>
+                  </div>
+
+                  {/* VPS Card */}
+                  <div className="p-5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                    <div className="flex items-center gap-4 mb-3">
+                      <div className="w-12 h-12 rounded-lg bg-cyan-500/10 flex items-center justify-center">
+                        <FaServer className="w-6 h-6 text-cyan-400" />
+                      </div>
+                      <div>
+                        <div className="text-sm text-white/40">Managed VPS</div>
+                        <div className="text-lg font-semibold">From R150/month</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-white/50">
+                      <FaCheck className="w-4 h-4 text-emerald-400" />
+                      <span>Perfect for basic apps</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <motion.div
+                  animate={{ y: [0, -5, 0] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                  className="absolute top-4 right-4 px-3 py-1.5 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-xs"
+                >
+                  <span className="text-emerald-400">●</span> Available Now
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Email Hosting Section */}
+      <section ref={containerRef} className="py-16 sm:py-20 lg:py-24 border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+            >
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-violet-400 mb-6">
+                <FaEnvelope className="w-4 h-4" />
+                Professional Email
+              </span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+                Business Email
+                <br />
+                <span className="text-violet-400">That Builds Trust</span>
+              </h2>
+              <p className="text-white/50 text-base sm:text-lg mb-8 leading-relaxed">
+                Stop using free email addresses for business. Professional email 
+                at your own domain shows customers you mean business.
+              </p>
+
+              <motion.div
+                variants={staggerContainer}
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+                className="grid sm:grid-cols-2 gap-4 mb-8"
+              >
+                {emailFeatures.map((feature, index) => (
+                  <motion.div
+                    key={index}
+                    variants={fadeInUp}
+                    className="flex items-start gap-3"
+                  >
+                    <div className="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center shrink-0">
+                      <feature.icon className="w-5 h-5 text-violet-400" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium mb-1 text-sm">{feature.title}</h4>
+                      <p className="text-white/40 text-xs leading-relaxed">{feature.description}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <div className="text-sm text-white/40 mb-1">Starting at</div>
+                    <div className="text-3xl font-bold text-white">R100<span className="text-lg text-white/40">/month</span></div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm text-white/40 mb-1">Includes</div>
+                    <div className="text-violet-400 font-medium">Up to 7 accounts</div>
+                  </div>
+                </div>
+                <Link
+                  href="/new-project/request-quotation"
+                  className="block w-full py-3 rounded-xl bg-white text-black text-center font-medium hover:bg-white/90 transition-colors text-sm"
+                >
+                  Order Email Hosting
+                </Link>
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              className="relative"
+            >
+              <div className="aspect-[4/3] rounded-2xl bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 overflow-hidden">
+                {/* Email Interface Mockup */}
+                <div className="h-full flex flex-col bg-white/[0.03] rounded-xl overflow-hidden">
+                  <div className="h-12 bg-white/5 flex items-center px-4 gap-4 border-b border-white/5">
+                    <div className="w-3 h-3 rounded-full bg-red-500/50" />
+                    <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
+                    <div className="w-3 h-3 rounded-full bg-green-500/50" />
+                  </div>
+                  <div className="flex-1 p-4 space-y-3">
+                    <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5">
+                      <div className="w-8 h-8 rounded-full bg-violet-500/20" />
+                      <div className="flex-1">
+                        <div className="h-2 w-32 bg-white/20 rounded mb-1" />
+                        <div className="h-1.5 w-48 bg-white/10 rounded" />
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5">
+                      <div className="w-8 h-8 rounded-full bg-cyan-500/20" />
+                      <div className="flex-1">
+                        <div className="h-2 w-28 bg-white/20 rounded mb-1" />
+                        <div className="h-1.5 w-40 bg-white/10 rounded" />
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 rounded-lg bg-violet-500/10 border border-violet-500/20">
+                      <div className="w-8 h-8 rounded-full bg-violet-500/30" />
+                      <div className="flex-1">
+                        <div className="h-2 w-36 bg-violet-200/30 rounded mb-1" />
+                        <div className="h-1.5 w-44 bg-violet-200/20 rounded" />
+                      </div>
+                      <div className="w-2 h-2 rounded-full bg-violet-400" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* VPS Hosting Section */}
+      <section className="py-16 sm:py-20 lg:py-24 bg-white/[0.02] border-y border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <motion.div
+              variants={fadeInUp}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.5 }}
-              variants={fadeIn}
+              viewport={{ once: true }}
+              className="order-2 lg:order-1 relative"
             >
-              <h2 id="hosting-cta-heading" className="text-3xl md:text-4xl font-bold mb-6">
-                Ready to <span className="text-white">Elevate Your Business</span>?
+              <div className="aspect-[4/3] rounded-2xl bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 overflow-hidden">
+                {/* Server Visualization */}
+                <div className="h-full flex flex-col justify-center gap-4">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="h-20 rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-lg bg-cyan-500/10 flex items-center justify-center">
+                        <FaServer className="w-6 h-6 text-cyan-400" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="h-2 w-24 bg-white/10 rounded mb-2" />
+                        <div className="flex gap-2">
+                          <div className="w-12 h-1 bg-emerald-500/30 rounded-full" />
+                          <div className="w-8 h-1 bg-emerald-500/50 rounded-full" />
+                        </div>
+                      </div>
+                      <div className="flex gap-1">
+                        <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                        <div className="w-2 h-2 rounded-full bg-emerald-400/50" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="order-1 lg:order-2"
+            >
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-cyan-400 mb-6">
+                <FaServer className="w-4 h-4" />
+                Managed VPS
+              </span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+                Managed VPS
+                <br />
+                <span className="text-cyan-400">For Your Apps</span>
               </h2>
-              <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-                Get enterprise-grade hosting and professional email that builds trust and drives growth for your South African business. Join hundreds of satisfied customers today.
+              <p className="text-white/50 text-base sm:text-lg mb-8 leading-relaxed">
+                Virtual private servers with full management included. We handle setup, 
+                security, updates, and monitoring—you just deploy your application.
               </p>
-              <motion.div 
-                className="flex flex-col sm:flex-row gap-4 justify-center"
-                variants={staggerChildren}
+
+              <motion.div
+                variants={staggerContainer}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
+                className="grid sm:grid-cols-2 gap-4 mb-8"
               >
-                <Link 
-                  href="/new-project/request-quotation"
-                  className="px-8 py-4 bg-white text-blue-600 font-semibold rounded-xl shadow-2xl hover:bg-gray-100 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <motion.span
-                    whileHover={{ y: -3, scale: 1.02 }}
-                    whileTap={{ y: 0 }}
-                    className="flex items-center gap-2"
+                {vpsFeatures.map((feature, index) => (
+                  <motion.div
+                    key={index}
+                    variants={fadeInUp}
+                    className="flex items-start gap-3"
                   >
-                    <FaRocket className="text-xl" />
-                    Launch Your Infrastructure
-                  </motion.span>
-                </Link>
-                <Link 
-                  href="/contact-us"
-                  className="px-8 py-4 border border-white text-white font-semibold rounded-xl shadow-lg hover:bg-white/10 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <motion.span
-                    whileHover={{ y: -3, scale: 1.02 }}
-                    whileTap={{ y: 0 }}
-                    className="flex items-center gap-2"
-                  >
-                    <FaHeadset className="text-xl" />
-                    Speak to an Expert
-                  </motion.span>
-                </Link>
+                    <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center shrink-0">
+                      <feature.icon className="w-5 h-5 text-cyan-400" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium mb-1 text-sm">{feature.title}</h4>
+                      <p className="text-white/40 text-xs leading-relaxed">{feature.description}</p>
+                    </div>
+                  </motion.div>
+                ))}
               </motion.div>
+
+              <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <div className="text-sm text-white/40 mb-1">Starting at</div>
+                    <div className="text-3xl font-bold text-white">R150<span className="text-lg text-white/40">/month</span></div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm text-white/40 mb-1">Best for</div>
+                    <div className="text-cyan-400 font-medium">Basic applications</div>
+                  </div>
+                </div>
+                <Link
+                  href="/new-project/request-quotation"
+                  className="block w-full py-3 rounded-xl bg-white text-black text-center font-medium hover:bg-white/90 transition-colors text-sm"
+                >
+                  Order VPS Hosting
+                </Link>
+              </div>
             </motion.div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Local Business Info */}
-        <section 
-          className="py-12 bg-gray-800 border-t border-gray-700"
-          data-section="local-info"
-          itemScope
-          itemType="https://schema.org/LocalBusiness"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h3 className="text-lg font-semibold text-white mb-4" itemProp="name">REALNET WEB SOLUTIONS - Hosting Services</h3>
-            <div className="text-gray-300 text-sm space-y-1">
-              <p itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
-                <span itemProp="streetAddress">Matsau Street, Ivory Park</span>,{" "}
-                <span itemProp="addressLocality">Midrand</span>,{" "}
-                <span itemProp="addressRegion">Gauteng</span>{" "}
-                <span itemProp="postalCode">1689</span>
-              </p>
-              <p itemProp="telephone"><strong>Phone:</strong> +27-64-038-8883</p>
-              <p itemProp="email"><strong>Email:</strong> lukhele@realnet-web.co.za</p>
-              <p><strong>Serving:</strong> Johannesburg, Pretoria, and businesses across South Africa</p>
+      {/* Simple CTA */}
+      <section className="py-16 sm:py-20 lg:py-24">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Need Both?</h2>
+            <p className="text-white/50 mb-8">
+              Combine email and VPS hosting for a complete business infrastructure solution.
+            </p>
+            <Link
+              href="/new-project/request-quotation"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors"
+            >
+              Get Custom Quote <FaArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Simple Footer Info */}
+      <section className="py-12 border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-white/40">
+            <div className="flex items-center gap-2">
+              <FaShieldAlt className="w-4 h-4 text-violet-400" />
+              <span>99.9% Uptime SLA</span>
+            </div>
+            <div className="hidden sm:block w-px h-4 bg-white/10" />
+            <div className="flex items-center gap-2">
+              <FaHeadset className="w-4 h-4 text-violet-400" />
+              <span>Local South African Support</span>
+            </div>
+            <div className="hidden sm:block w-px h-4 bg-white/10" />
+            <div className="flex items-center gap-2">
+              <FaLock className="w-4 h-4 text-violet-400" />
+              <span>Secure & Reliable</span>
             </div>
           </div>
-        </section>
-      </div>
-    </>
+        </div>
+      </section>
+    </div>
   );
 };
 

@@ -11,17 +11,15 @@ import {
   FaClock, 
   FaTags, 
   FaArrowLeft,
-  FaShare,
   FaBookmark,
   FaFacebook,
   FaTwitter,
   FaLinkedin,
   FaLink,
-  FaSpinner,
   FaImage
 } from 'react-icons/fa';
 
-// Helper functions
+// Helper functions - UNCHANGED
 const parseTags = (tags) => {
   if (Array.isArray(tags)) {
     return tags;
@@ -71,7 +69,7 @@ const getImageUrl = (imagePath) => {
   return `${process.env.NEXT_PUBLIC_API_BASE_URL}/storage/${imagePath}`;
 };
 
-// Blog Image component for individual post page
+// Blog Image component - UNCHANGED
 const BlogPostImage = ({ src, alt, className, ...props }) => {
   const [imageSrc, setImageSrc] = useState(getImageUrl(src));
   const [hasError, setHasError] = useState(false);
@@ -93,15 +91,15 @@ const BlogPostImage = ({ src, alt, className, ...props }) => {
         {...props}
       />
       {hasError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-          <FaImage className="text-gray-400 text-3xl" />
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-white/5">
+          <FaImage className="text-gray-400 dark:text-white/20 text-3xl" />
         </div>
       )}
     </div>
   );
 };
 
-// Blog Image component for related posts (to fix the undefined error)
+// Blog Image for related posts - UNCHANGED
 const BlogImage = ({ src, alt, className, ...props }) => {
   const [imageSrc, setImageSrc] = useState(getImageUrl(src));
   const [hasError, setHasError] = useState(false);
@@ -123,8 +121,8 @@ const BlogImage = ({ src, alt, className, ...props }) => {
         {...props}
       />
       {hasError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-          <FaImage className="text-gray-400 text-2xl" />
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-white/5">
+          <FaImage className="text-gray-400 dark:text-white/20 text-2xl" />
         </div>
       )}
     </div>
@@ -143,7 +141,6 @@ const BlogPostPage = ({ post: initialPost }) => {
     if (initialPost) {
       setPost(initialPost);
       setLoading(false);
-      // Fetch related posts immediately if we have the post
       fetchRelatedPosts(initialPost.category, initialPost.id);
     } else if (params.slug) {
       fetchPost();
@@ -169,7 +166,6 @@ const BlogPostPage = ({ post: initialPost }) => {
       
       if (data.success && data.post) {
         setPost(data.post);
-        // Fetch related posts based on category
         fetchRelatedPosts(data.post.category, data.post.id);
       } else {
         throw new Error(data.message || 'Blog post not found');
@@ -191,7 +187,6 @@ const BlogPostPage = ({ post: initialPost }) => {
       if (response.ok) {
         const data = await response.json();
         if (data.success) {
-          // Filter out current post and limit to 3 posts
           const related = (data.posts || [])
             .filter(p => p.id !== currentPostId)
             .slice(0, 3);
@@ -234,42 +229,38 @@ const BlogPostPage = ({ post: initialPost }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-        <div className="text-center">
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            className="w-20 h-20 border-4 border-orange-500 border-t-transparent rounded-full mx-auto mb-6"
-          />
-          <p className="text-gray-600 text-lg font-medium">Loading article...</p>
-        </div>
+      <div className="min-h-screen bg-white dark:bg-[#050505] flex items-center justify-center">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          className="w-12 h-12 border-2 border-blue-600 dark:border-violet-500 border-t-transparent rounded-full"
+        />
       </div>
     );
   }
 
   if (error || !post) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-white dark:bg-[#050505] flex items-center justify-center p-4">
         <div className="text-center max-w-md">
-          <div className="text-8xl mb-6">😞</div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            {error?.includes('not found') ? 'Article Not Found' : 'Error Loading Article'}
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            {error?.includes('not found') ? 'Not Found' : 'Error'}
           </h2>
-          <p className="text-gray-600 mb-6 text-lg">
+          <p className="text-gray-600 dark:text-white/50 mb-6">
             {error || 'The article you\'re looking for doesn\'t exist.'}
           </p>
-          <div className="flex gap-4 justify-center flex-wrap">
+          <div className="flex gap-4 justify-center">
             <button
               onClick={() => router.back()}
-              className="px-6 py-3 bg-gray-500 text-white rounded-xl hover:bg-gray-600 transition-colors font-semibold shadow-lg"
+              className="px-6 py-3 bg-gray-200 dark:bg-white/10 text-gray-900 dark:text-white rounded-xl font-medium hover:bg-gray-300 dark:hover:bg-white/20 transition-colors"
             >
               Go Back
             </button>
             <Link
               href="/updates/blogs"
-              className="px-6 py-3 bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition-colors font-semibold shadow-lg"
+              className="px-6 py-3 bg-blue-600 dark:bg-violet-500 text-white rounded-xl font-medium hover:opacity-90 transition-opacity"
             >
-              Browse All Articles
+              Browse Articles
             </Link>
           </div>
         </div>
@@ -278,22 +269,33 @@ const BlogPostPage = ({ post: initialPost }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Navigation */}
-      <nav className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
+    <div className="min-h-screen bg-white dark:bg-[#050505] transition-colors duration-300">
+      {/* Top Navigation */}
+      <nav className="sticky top-0 z-50 bg-white/80 dark:bg-[#050505]/80 backdrop-blur-md border-b border-gray-200 dark:border-white/10">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="flex items-center justify-between h-16">
             <Link
               href="/updates/blogs"
-              className="flex items-center gap-3 text-gray-600 hover:text-orange-500 transition-colors font-semibold"
+              className="flex items-center gap-2 text-gray-600 dark:text-white/60 hover:text-blue-600 dark:hover:text-violet-400 transition-colors text-sm font-medium"
             >
-              <FaArrowLeft className="text-lg" />
-              <span className="hidden sm:inline">Back to Articles</span>
-              <span className="sm:hidden">Back</span>
+              <FaArrowLeft />
+              Back to Articles
             </Link>
-            <div className="flex items-center gap-4">
-              <button className="text-gray-400 hover:text-orange-500 transition-colors p-2 hover:bg-orange-50 rounded-lg">
-                <FaBookmark className="text-lg" />
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={() => handleShare('twitter')}
+                className="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-white/60 hover:bg-blue-100 dark:hover:bg-blue-500/20 hover:text-blue-600 transition-colors"
+              >
+                <FaTwitter className="text-sm" />
+              </button>
+              <button 
+                onClick={() => handleShare('facebook')}
+                className="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-white/60 hover:bg-blue-100 dark:hover:bg-blue-500/20 hover:text-blue-600 transition-colors"
+              >
+                <FaFacebook className="text-sm" />
+              </button>
+              <button className="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-white/60 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
+                <FaBookmark className="text-sm" />
               </button>
             </div>
           </div>
@@ -301,210 +303,173 @@ const BlogPostPage = ({ post: initialPost }) => {
       </nav>
 
       {/* Article Header */}
-      <section className="relative bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+      <header className="pt-16 pb-12 border-b border-gray-200 dark:border-white/10">
+        <div className="max-w-4xl mx-auto px-6">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-sm text-gray-500 mb-6 lg:mb-8">
-            <Link href="/" className="hover:text-orange-500 transition-colors">Home</Link>
+          <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-white/40 mb-8">
+            <Link href="/" className="hover:text-blue-600 dark:hover:text-violet-400 transition-colors">Home</Link>
             <span>/</span>
-            <Link href="/updates/blogs" className="hover:text-orange-500 transition-colors">Blog</Link>
+            <Link href="/updates/blogs" className="hover:text-blue-600 dark:hover:text-violet-400 transition-colors">Blog</Link>
             <span>/</span>
-            <span className="text-gray-900 font-medium capitalize">{post.category}</span>
+            <span className="text-gray-900 dark:text-white capitalize">{post.category}</span>
           </div>
 
-          {/* Article Meta */}
-          <div className="flex flex-wrap items-center gap-3 lg:gap-4 mb-6">
-            <div className="flex items-center gap-2 bg-orange-50 px-3 lg:px-4 py-1.5 lg:py-2 rounded-full">
-              <FaCalendarAlt className="text-orange-500 text-sm" />
-              <span className="font-medium text-orange-700 text-sm lg:text-base">
-                {new Date(post.created_at).toLocaleDateString('en-US', { 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
-                })}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 bg-blue-50 px-3 lg:px-4 py-1.5 lg:py-2 rounded-full">
-              <FaUser className="text-blue-500 text-sm" />
-              <span className="font-medium text-blue-700 text-sm lg:text-base">{post.author || 'Unknown Author'}</span>
-            </div>
-            <div className="flex items-center gap-2 bg-green-50 px-3 lg:px-4 py-1.5 lg:py-2 rounded-full">
-              <FaClock className="text-green-500 text-sm" />
-              <span className="font-medium text-green-700 text-sm lg:text-base">{post.read_time}</span>
-            </div>
-            {post.is_featured && (
-              <div className="flex items-center gap-2 bg-purple-50 px-3 lg:px-4 py-1.5 lg:py-2 rounded-full">
-                <span className="font-medium text-purple-700 text-sm lg:text-base">Featured</span>
-              </div>
-            )}
+          {/* Meta */}
+          <div className="flex flex-wrap items-center gap-4 mb-6 text-sm text-gray-500 dark:text-white/50">
+            <span className="flex items-center gap-2">
+              <FaCalendarAlt className="text-blue-600 dark:text-violet-400" />
+              {new Date(post.created_at).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              })}
+            </span>
+            <span className="flex items-center gap-2">
+              <FaClock className="text-blue-600 dark:text-violet-400" />
+              {post.read_time}
+            </span>
+            <span className="flex items-center gap-2">
+              <FaUser className="text-blue-600 dark:text-violet-400" />
+              {post.author || 'Unknown'}
+            </span>
           </div>
 
           {/* Title */}
-          <h1 className="text-3xl lg:text-4xl xl:text-5xl font-black text-gray-900 mb-4 lg:mb-6 leading-tight">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight tracking-tight">
             {post.title}
           </h1>
 
           {/* Excerpt */}
-          <p className="text-lg lg:text-xl text-gray-600 mb-6 lg:mb-8 leading-relaxed">
+          <p className="text-lg text-gray-600 dark:text-white/50 leading-relaxed max-w-2xl">
             {post.excerpt}
           </p>
+        </div>
+      </header>
 
-          {/* Featured Image */}
-          <div className="relative rounded-2xl lg:rounded-3xl overflow-hidden shadow-xl lg:shadow-2xl mb-6 lg:mb-8">
-            <BlogPostImage
-              src={post.image}
-              alt={post.title}
-              className="w-full h-64 lg:h-96 object-cover"
-            />
-            <div className="absolute top-4 left-4 flex flex-col gap-2">
-              <span className="px-3 lg:px-4 py-1.5 lg:py-2 bg-orange-500 text-white text-xs lg:text-sm font-bold rounded-full shadow-lg capitalize">
-                {post.category}
+      {/* Featured Image */}
+      <div className="max-w-5xl mx-auto px-6 -mt-8">
+        <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-gray-900/10 dark:shadow-violet-500/10">
+          <BlogPostImage
+            src={post.image}
+            alt={post.title}
+            className="w-full aspect-[21/9] object-cover"
+          />
+          <div className="absolute top-4 left-4 flex gap-2">
+            <span className="px-3 py-1.5 bg-white/90 dark:bg-black/80 backdrop-blur-sm text-xs font-medium text-gray-900 dark:text-white rounded-full border border-gray-200 dark:border-white/10 capitalize">
+              {post.category}
+            </span>
+            {post.is_featured && (
+              <span className="px-3 py-1.5 bg-blue-600 dark:bg-violet-500 text-white text-xs font-medium rounded-full">
+                Featured
               </span>
-              {post.is_featured && (
-                <span className="px-3 lg:px-4 py-1.5 lg:py-2 bg-purple-500 text-white text-xs lg:text-sm font-bold rounded-full shadow-lg">
-                  Featured
-                </span>
-              )}
-            </div>
+            )}
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Article Content */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12">
-          {/* Main Content */}
-          <div className="lg:col-span-3">
-            <article className="prose prose-sm lg:prose-lg max-w-none">
-              <div 
-                className="text-gray-700 leading-relaxed text-base lg:text-lg"
-                dangerouslySetInnerHTML={{ __html: post.content }}
-              />
-            </article>
+      <main className="max-w-4xl mx-auto px-6 py-16">
+        <article className="prose prose-lg dark:prose-invert max-w-none">
+          <div 
+            className="text-gray-700 dark:text-white/70 leading-relaxed text-lg"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+        </article>
 
-            {/* Tags */}
-            {safeTags.length > 0 && (
-              <div className="mt-8 lg:mt-12 pt-6 lg:pt-8 border-t border-gray-200">
-                <h4 className="text-lg lg:text-xl font-bold text-gray-900 mb-4 lg:mb-6">Tags</h4>
-                <div className="flex flex-wrap gap-2 lg:gap-3">
-                  {safeTags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="px-3 lg:px-4 py-1.5 lg:py-2 bg-gradient-to-r from-orange-50 to-pink-50 text-orange-700 border border-orange-200 text-sm font-medium rounded-full hover:shadow-md transition-shadow cursor-pointer"
-                    >
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Social Share */}
-            <div className="mt-8 lg:mt-12 pt-6 lg:pt-8 border-t border-gray-200">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 lg:gap-6">
-                <span className="text-lg lg:text-xl font-bold text-gray-900">Share this article:</span>
-                <div className="flex flex-wrap gap-3 lg:gap-4">
-                  <button 
-                    onClick={() => handleShare('facebook')}
-                    className="flex items-center gap-2 px-4 lg:px-6 py-2 lg:py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200 hover:scale-105 shadow-md text-sm lg:text-base"
-                  >
-                    <FaFacebook className="text-sm lg:text-lg" />
-                    <span className="font-semibold">Share</span>
-                  </button>
-                  <button 
-                    onClick={() => handleShare('twitter')}
-                    className="flex items-center gap-2 px-4 lg:px-6 py-2 lg:py-3 bg-blue-400 text-white rounded-xl hover:bg-blue-500 transition-all duration-200 hover:scale-105 shadow-md text-sm lg:text-base"
-                  >
-                    <FaTwitter className="text-sm lg:text-lg" />
-                    <span className="font-semibold">Tweet</span>
-                  </button>
-                  <button 
-                    onClick={() => handleShare('linkedin')}
-                    className="flex items-center gap-2 px-4 lg:px-6 py-2 lg:py-3 bg-blue-700 text-white rounded-xl hover:bg-blue-800 transition-all duration-200 hover:scale-105 shadow-md text-sm lg:text-base"
-                  >
-                    <FaLinkedin className="text-sm lg:text-lg" />
-                    <span className="font-semibold">Share</span>
-                  </button>
-                  <button 
-                    onClick={copyToClipboard}
-                    className="flex items-center gap-2 px-4 lg:px-6 py-2 lg:py-3 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition-all duration-200 hover:scale-105 shadow-md text-sm lg:text-base"
-                  >
-                    <FaLink className="text-sm lg:text-lg" />
-                    <span className="font-semibold">Copy</span>
-                  </button>
-                </div>
-              </div>
+        {/* Tags */}
+        {safeTags.length > 0 && (
+          <div className="mt-16 pt-8 border-t border-gray-200 dark:border-white/10">
+            <div className="flex items-center gap-3 mb-4">
+              <FaTags className="text-gray-400 dark:text-white/30" />
+              <span className="text-sm font-medium text-gray-900 dark:text-white">Tags</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {safeTags.map((tag, index) => (
+                <span
+                  key={index}
+                  className="px-4 py-2 bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-white/60 text-sm rounded-full border border-gray-200 dark:border-white/[0.06] hover:border-blue-500 dark:hover:border-violet-500 transition-colors cursor-pointer"
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
           </div>
+        )}
 
-          {/* Sidebar - Hidden on mobile, shown on desktop */}
-          <div className="hidden lg:block lg:col-span-1">
-            <div className="sticky top-8 space-y-8">
-              {/* Author Info */}
-              <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
-                <h4 className="text-lg font-bold text-gray-900 mb-4">About Author</h4>
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                    {post.author ? post.author.charAt(0).toUpperCase() : 'A'}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900">{post.author || 'Anonymous'}</p>
-                    <p className="text-sm text-gray-500">Author</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Table of Contents */}
-              <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
-                <h4 className="text-lg font-bold text-gray-900 mb-4">In this Article</h4>
-                <div className="space-y-2 text-sm text-gray-600">
-                  <p className="text-gray-500">Table of contents would be generated based on article headings.</p>
-                </div>
-              </div>
-            </div>
+        {/* Share */}
+        <div className="mt-12 pt-8 border-t border-gray-200 dark:border-white/10">
+          <span className="text-sm font-medium text-gray-900 dark:text-white mb-4 block">Share this article</span>
+          <div className="flex gap-3">
+            <button 
+              onClick={() => handleShare('twitter')}
+              className="flex items-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-white/70 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-500/10 hover:text-blue-600 transition-colors text-sm font-medium"
+            >
+              <FaTwitter />
+              Twitter
+            </button>
+            <button 
+              onClick={() => handleShare('facebook')}
+              className="flex items-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-white/70 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-500/10 hover:text-blue-600 transition-colors text-sm font-medium"
+            >
+              <FaFacebook />
+              Facebook
+            </button>
+            <button 
+              onClick={() => handleShare('linkedin')}
+              className="flex items-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-white/70 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-500/10 hover:text-blue-600 transition-colors text-sm font-medium"
+            >
+              <FaLinkedin />
+              LinkedIn
+            </button>
+            <button 
+              onClick={copyToClipboard}
+              className="flex items-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-white/70 rounded-xl hover:bg-gray-200 dark:hover:bg-white/10 transition-colors text-sm font-medium"
+            >
+              <FaLink />
+              Copy Link
+            </button>
           </div>
         </div>
-      </section>
+      </main>
 
       {/* Related Posts */}
       {relatedPosts.length > 0 && (
-        <section className="bg-gray-50 py-12 lg:py-16">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl lg:text-3xl font-black text-gray-900 mb-6 lg:mb-8 text-center">
+        <section className="bg-gray-50 dark:bg-[#0a0a0a] border-t border-gray-200 dark:border-white/10 py-20">
+          <div className="max-w-6xl mx-auto px-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-12 text-center">
               Related Articles
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            <div className="grid md:grid-cols-3 gap-8">
               {relatedPosts.map((relatedPost) => (
                 <article 
                   key={relatedPost.id}
-                  className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group border border-gray-100 cursor-pointer"
+                  className="group bg-white dark:bg-white/[0.02] rounded-2xl border border-gray-200 dark:border-white/[0.06] overflow-hidden hover:border-blue-500/30 dark:hover:border-violet-500/30 transition-all duration-300 cursor-pointer"
                   onClick={() => router.push(`/updates/blogs/${relatedPost.slug}`)}
                 >
-                  <div className="relative overflow-hidden">
+                  <div className="relative h-48 overflow-hidden">
                     <BlogImage
                       src={relatedPost.image}
                       alt={relatedPost.title}
-                      className="w-full h-48 group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-full group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-4 right-4">
-                      <span className="px-3 py-1 bg-orange-500 text-white text-xs font-bold rounded-full capitalize shadow-lg">
+                      <span className="px-3 py-1 bg-white/90 dark:bg-black/80 backdrop-blur-sm text-xs font-medium text-gray-900 dark:text-white rounded-full capitalize">
                         {relatedPost.category}
                       </span>
                     </div>
                   </div>
-                  <div className="p-4 lg:p-6">
-                    <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-orange-500 transition-colors line-clamp-2">
+                  <div className="p-6">
+                    <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-white/40 mb-3">
+                      <span>{new Date(relatedPost.created_at).toLocaleDateString()}</span>
+                      <span>•</span>
+                      <span>{relatedPost.read_time}</span>
+                    </div>
+                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-violet-400 transition-colors line-clamp-2">
                       {relatedPost.title}
                     </h3>
-                    <p className="text-gray-600 text-sm line-clamp-2 mb-4">
+                    <p className="text-sm text-gray-600 dark:text-white/50 line-clamp-2">
                       {relatedPost.excerpt}
                     </p>
-                    <div className="flex items-center justify-between text-sm text-gray-500">
-                      <span>{new Date(relatedPost.created_at).toLocaleDateString()}</span>
-                      <span className="flex items-center gap-1 text-orange-500 font-semibold">
-                        Read More
-                      </span>
-                    </div>
                   </div>
                 </article>
               ))}
