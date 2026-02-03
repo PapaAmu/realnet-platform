@@ -338,22 +338,42 @@ class QuotationResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('convertToInvoice')
-                    ->label('Convert to Invoice')
-                    ->icon('heroicon-o-document-currency-dollar')
-                    ->color('warning')
-                    ->requiresConfirmation()
-                    ->visible(fn (Quotation $record) => $record->status === 'accepted' && $record->items()->count() > 0)
-                    ->action(function (Quotation $record) {
-                        // Logic to convert to invoice would go here
-                        // For now just update status
-                        $record->update(['status' => 'invoiced']);
-                        
-                        // You would typically redirect to the create invoice page 
-                        // pre-filled with this quotation's data
-                    }),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\Action::make('mark_sent')
+                        ->label('Mark as Sent')
+                        ->icon('heroicon-o-paper-airplane')
+                        ->color('info')
+                        ->requiresConfirmation()
+                        ->visible(fn (Quotation $record) => in_array($record->status, ['draft', 'pending']))
+                        ->action(fn (Quotation $record) => $record->update(['status' => 'sent'])),
+                    Tables\Actions\Action::make('mark_accepted')
+                        ->label('Mark as Accepted')
+                        ->icon('heroicon-o-check-circle')
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->visible(fn (Quotation $record) => in_array($record->status, ['sent', 'pending']))
+                        ->action(fn (Quotation $record) => $record->update(['status' => 'accepted'])),
+                    Tables\Actions\Action::make('mark_rejected')
+                        ->label('Mark as Rejected')
+                        ->icon('heroicon-o-x-circle')
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->visible(fn (Quotation $record) => in_array($record->status, ['sent', 'pending']))
+                        ->action(fn (Quotation $record) => $record->update(['status' => 'rejected'])),
+                    Tables\Actions\Action::make('convertToInvoice')
+                        ->label('Convert to Invoice')
+                        ->icon('heroicon-o-document-currency-dollar')
+                        ->color('warning')
+                        ->requiresConfirmation()
+                        ->visible(fn (Quotation $record) => $record->status === 'accepted')
+                        ->action(function (Quotation $record) {
+                            $record->update(['status' => 'invoiced']);
+                            // Future: Redirect to invoice creation
+                        }),
+                    Tables\Actions\DeleteAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

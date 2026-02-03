@@ -73,17 +73,23 @@ class QuotationController extends Controller
                 }
                 
                 // Database Notification (Filament Bell Icon)
-                Notification::make()
-                    ->title('New Quotation Request')
-                    ->body("From {$quotation->name} for {$quotation->service}")
-                    ->icon('heroicon-o-currency-dollar')
-                    ->success()
-                    ->actions([
-                        Action::make('view')
-                            ->button()
-                            ->url(QuotationResource::getUrl('edit', ['record' => $quotation])),
-                    ])
-                    ->sendToDatabase($admin);
+                try {
+                    $notification = Notification::make()
+                        ->title('New Quotation Request')
+                        ->body("From {$quotation->name} for {$quotation->service}")
+                        ->icon('heroicon-o-currency-dollar')
+                        ->success()
+                        ->actions([
+                            Action::make('view')
+                                ->button()
+                                ->url(QuotationResource::getUrl('edit', ['record' => $quotation])),
+                        ]);
+
+                    $admin->notify($notification->toDatabase());
+                    Log::info('Quotation DB notification sent to admin: ' . $admin->id);
+                } catch (\Exception $e) {
+                    Log::error('Failed to send Quotation DB notification: ' . $e->getMessage());
+                }
             }
         } catch (\Exception $e) {
             // Log error but don't fail the request
