@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
+import { getApiBaseUrl } from "@/lib/api-config";
 import { 
   FaCode, 
   FaMobile, 
@@ -14,15 +15,109 @@ import {
   FaClock,
   FaTag,
   FaBookmark,
-  FaEnvelope
+  FaEnvelope,
+  FaSpinner,
+  FaImage
 } from "react-icons/fa";
+
+const createPlaceholderImage = (width = 800, height = 400) => {
+  return `data:image/svg+xml;base64,${btoa(`
+    <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100%" height="100%" fill="#1a1a1a"/>
+      <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="20" fill="#4b5563" text-anchor="middle" dy=".3em">Resource Image</text>
+    </svg>
+  `)}`;
+};
+
+const getImageUrl = (imagePath) => {
+  if (!imagePath) {
+    return createPlaceholderImage();
+  }
+  
+  if (imagePath.startsWith('http') || imagePath.startsWith('data:')) {
+    return imagePath;
+  }
+  
+  const baseUrl = getApiBaseUrl();
+
+  if (imagePath.startsWith('/storage/')) {
+    return `${baseUrl}${imagePath}`;
+  }
+  
+  if (imagePath.startsWith('/')) {
+    return `${baseUrl}/storage${imagePath}`;
+  }
+  
+  return `${baseUrl}/storage/${imagePath}`;
+};
+
+const ResourceCardImage = ({ src, alt, className, ...props }) => {
+  const [imageSrc, setImageSrc] = useState(getImageUrl(src));
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    setImageSrc(getImageUrl(src));
+  }, [src]);
+
+  const handleError = () => {
+    if (!hasError) {
+      setImageSrc(createPlaceholderImage());
+      setHasError(true);
+    }
+  };
+
+  return (
+    <div className={`relative ${className} overflow-hidden bg-white/5`}>
+      <img
+        src={imageSrc}
+        alt={alt}
+        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        onError={handleError}
+        {...props}
+      />
+      {hasError && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/5">
+          <FaImage className="text-white/20 text-3xl" />
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Resources = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [resources, setResources] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   
   const containerRef = React.useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+
+  useEffect(() => {
+    fetchResources();
+  }, []);
+
+  const fetchResources = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${getApiBaseUrl()}/api/resources/posts`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch resources');
+      }
+      const data = await response.json();
+      if (data.success && data.posts) {
+        setResources(data.posts);
+      } else {
+        setResources([]);
+      }
+    } catch (err) {
+      console.error('Error fetching resources:', err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
@@ -34,70 +129,14 @@ const Resources = () => {
     visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
   };
 
-  const resources = [
-    {
-      id: 1,
-      title: "Complete Guide to Website Development Costs in South Africa 2024",
-      excerpt: "Understand the factors that influence website development costs, from simple business websites to complex e-commerce solutions. Includes pricing breakdown and tips for budget planning.",
-      category: "Web Development",
-      readTime: "8 min",
-      date: "Dec 2024",
-      featured: true
-    },
-    {
-      id: 2,
-      title: "Why Your Business Needs a Mobile App in 2024",
-      excerpt: "Discover the benefits of having a mobile app for your South African business, including increased customer engagement, brand loyalty, and revenue growth.",
-      category: "Mobile Development",
-      readTime: "6 min",
-      date: "Dec 2024",
-      featured: true
-    },
-    {
-      id: 3,
-      title: "SEO Best Practices for South African Businesses",
-      excerpt: "Learn how to optimize your website for local South African searches, improve Google rankings, and attract more customers online.",
-      category: "Digital Marketing",
-      readTime: "10 min",
-      date: "Nov 2024",
-      featured: false
-    },
-    {
-      id: 4,
-      title: "E-commerce Website Features That Increase Sales",
-      excerpt: "Essential features every South African e-commerce website needs to convert visitors into customers and boost online sales.",
-      category: "E-commerce",
-      readTime: "7 min",
-      date: "Nov 2024",
-      featured: false
-    },
-    {
-      id: 5,
-      title: "Website Security: Protecting Your Business Online",
-      excerpt: "Essential security measures every South African business website needs to protect against cyber threats and maintain customer trust.",
-      category: "Security",
-      readTime: "5 min",
-      date: "Oct 2024",
-      featured: false
-    },
-    {
-      id: 6,
-      title: "Choosing the Right Web Hosting for Your Business",
-      excerpt: "Compare different web hosting options available in South Africa and choose the best solution for your website's needs and budget.",
-      category: "Hosting",
-      readTime: "6 min",
-      date: "Oct 2024",
-      featured: false
-    }
-  ];
-
   const categories = [
     { name: "All", icon: FaTag },
     { name: "Web Development", icon: FaCode },
-    { name: "Mobile Development", icon: FaMobile },
+    { name: "Mobile Apps", icon: FaMobile },
     { name: "Digital Marketing", icon: FaSearch },
-    { name: "E-commerce", icon: FaRocket },
-    { name: "Security", icon: FaShieldAlt },
+    { name: "UI/UX Design", icon: FaRocket },
+    { name: "Business Strategy", icon: FaShieldAlt },
+    { name: "Technology", icon: FaCode },
   ];
 
   const filteredResources = resources.filter(resource => {
@@ -107,8 +146,8 @@ const Resources = () => {
     return matchesCategory && matchesSearch;
   });
 
-  const featuredResources = filteredResources.filter(r => r.featured);
-  const regularResources = filteredResources.filter(r => !r.featured);
+  const featuredResources = filteredResources.filter(r => r.is_featured);
+  const regularResources = filteredResources.filter(r => !r.is_featured);
 
   return (
     <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
@@ -180,208 +219,191 @@ const Resources = () => {
         </div>
       </section>
 
-      {/* Featured Articles */}
-      {featuredResources.length > 0 && (
-        <section ref={containerRef} className="py-16 sm:py-20 lg:py-24">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              animate={isInView ? "visible" : "hidden"}
-              className="mb-12"
-            >
-              <h2 className="text-2xl sm:text-3xl font-bold">Featured</h2>
-            </motion.div>
-
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              animate={isInView ? "visible" : "hidden"}
-              className="grid lg:grid-cols-2 gap-6 lg:gap-8"
-            >
-              {featuredResources.map((resource, index) => (
-                <motion.article
-                  key={resource.id}
-                  variants={fadeInUp}
-                  className="group relative bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6 sm:p-8 hover:border-violet-500/30 transition-all duration-500 overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-4">
-                      <span className="px-3 py-1 rounded-full bg-violet-500/10 text-violet-400 text-xs font-medium">
-                        {resource.category}
-                      </span>
-                      <span className="flex items-center gap-1 text-xs text-white/40">
-                        <FaClock className="w-3 h-3" />
-                        {resource.readTime}
-                      </span>
-                    </div>
-                    
-                    <h3 className="text-xl sm:text-2xl font-bold mb-3 group-hover:text-violet-400 transition-colors duration-300 line-clamp-2">
-                      {resource.title}
-                    </h3>
-                    
-                    <p className="text-white/50 text-sm sm:text-base leading-relaxed mb-6 line-clamp-3">
-                      {resource.excerpt}
-                    </p>
-                    
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-white/40">{resource.date}</span>
-                      <button className="inline-flex items-center gap-2 text-sm font-medium text-violet-400 group-hover:text-violet-300 transition-colors">
-                        Read Article <FaArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                      </button>
-                    </div>
-                  </div>
-                </motion.article>
-              ))}
-            </motion.div>
-          </div>
-        </section>
+      {/* Loading State */}
+      {loading && (
+        <div className="flex items-center justify-center py-20">
+          <div className="w-12 h-12 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
+        </div>
       )}
 
-      {/* All Articles */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-white/[0.02] border-y border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="flex items-center justify-between mb-12"
+      {/* Error State */}
+      {!loading && error && (
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <p className="text-white/60 mb-4">Failed to load resources</p>
+          <button 
+            onClick={fetchResources}
+            className="px-6 py-2 bg-violet-600 text-white rounded-full hover:bg-violet-700 transition-colors"
           >
-            <h2 className="text-2xl sm:text-3xl font-bold">
-              {activeCategory === "All" ? "All Articles" : activeCategory}
-            </h2>
-            <span className="text-sm text-white/40">
-              {filteredResources.length} articles
-            </span>
-          </motion.div>
+            Try Again
+          </button>
+        </div>
+      )}
 
-          {filteredResources.length > 0 ? (
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
-            >
-              {(activeCategory === "All" ? regularResources : filteredResources.filter(r => !r.featured)).map((resource) => (
-                <motion.article
-                  key={resource.id}
+      {/* Content */}
+      {!loading && !error && (
+        <>
+          {/* Featured Articles */}
+          {featuredResources.length > 0 && (
+            <section ref={containerRef} className="py-16 sm:py-20 lg:py-24">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <motion.div
                   variants={fadeInUp}
-                  className="group relative bg-white/[0.02] border border-white/[0.06] rounded-xl p-5 sm:p-6 hover:border-violet-500/30 hover:bg-white/[0.04] transition-all duration-300"
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                  className="mb-12"
                 >
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="px-2.5 py-0.5 rounded-full bg-white/5 text-white/60 text-xs">
-                      {resource.category}
-                    </span>
-                  </div>
-                  
-                  <h3 className="font-semibold mb-2 group-hover:text-violet-400 transition-colors duration-300 line-clamp-2 text-sm sm:text-base">
-                    {resource.title}
-                  </h3>
-                  
-                  <p className="text-white/40 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3">
-                    {resource.excerpt}
-                  </p>
-                  
-                  <div className="flex items-center justify-between pt-4 border-t border-white/[0.06]">
-                    <div className="flex items-center gap-3 text-xs text-white/30">
-                      <span className="flex items-center gap-1">
-                        <FaCalendarAlt className="w-3 h-3" />
-                        {resource.date}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <FaClock className="w-3 h-3" />
-                        {resource.readTime}
-                      </span>
-                    </div>
-                    <FaArrowRight className="w-4 h-4 text-white/20 group-hover:text-violet-400 group-hover:translate-x-1 transition-all" />
-                  </div>
-                </motion.article>
-              ))}
-            </motion.div>
-          ) : (
-            <div className="text-center py-20">
-              <p className="text-white/40">No articles found matching your criteria.</p>
-              <button 
-                onClick={() => {setActiveCategory("All"); setSearchQuery("");}}
-                className="mt-4 text-violet-400 hover:text-violet-300 text-sm"
-              >
-                Clear filters
-              </button>
-            </div>
-          )}
-        </div>
-      </section>
+                  <h2 className="text-2xl sm:text-3xl font-bold">Featured</h2>
+                </motion.div>
 
-      {/* Newsletter CTA */}
-      <section className="py-16 sm:py-20 lg:py-24">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="relative p-8 sm:p-12 rounded-2xl bg-white/[0.02] border border-white/[0.06] overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-violet-500/10 rounded-full blur-3xl" />
-            
-            <div className="relative z-10 text-center">
-              <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mx-auto mb-6">
-                <FaEnvelope className="w-6 h-6 text-violet-400" />
+                <motion.div
+                  variants={staggerContainer}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                  className="grid lg:grid-cols-2 gap-6 lg:gap-8"
+                >
+                  {featuredResources.map((resource) => (
+                    <motion.article
+                      key={resource.id}
+                      variants={fadeInUp}
+                      className="group relative bg-white/[0.02] border border-white/[0.06] rounded-2xl hover:border-violet-500/30 transition-all duration-500 overflow-hidden flex flex-col"
+                    >
+                      <Link href={`/resources/${resource.slug}`} className="block relative h-48 sm:h-64 overflow-hidden">
+                        <ResourceCardImage 
+                          src={resource.image} 
+                          alt={resource.title} 
+                          className="w-full h-full" 
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-60" />
+                      </Link>
+
+                      <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                      
+                      <div className="relative z-10 p-6 sm:p-8 flex flex-col flex-grow">
+                        <div className="flex items-center gap-3 mb-4">
+                          <span className="px-3 py-1 rounded-full bg-violet-500/10 text-violet-400 text-xs font-medium">
+                            {resource.category}
+                          </span>
+                          <span className="flex items-center gap-1 text-xs text-white/40">
+                            <FaClock className="w-3 h-3" />
+                            {resource.read_time} min read
+                          </span>
+                        </div>
+                        
+                        <Link href={`/resources/${resource.slug}`} className="block">
+                          <h3 className="text-xl sm:text-2xl font-bold mb-3 group-hover:text-violet-400 transition-colors duration-300 line-clamp-2">
+                            {resource.title}
+                          </h3>
+                        </Link>
+                        
+                        <p className="text-white/50 text-sm sm:text-base leading-relaxed mb-6 line-clamp-3 flex-grow">
+                          {resource.excerpt}
+                        </p>
+                        
+                        <div className="flex items-center justify-between mt-auto">
+                          <span className="text-xs text-white/40">
+                            {new Date(resource.created_at || resource.published_at).toLocaleDateString()}
+                          </span>
+                          <Link 
+                            href={`/resources/${resource.slug}`}
+                            className="inline-flex items-center gap-2 text-sm font-medium text-violet-400 group-hover:text-violet-300 transition-colors"
+                          >
+                            Read Article <FaArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                          </Link>
+                        </div>
+                      </div>
+                    </motion.article>
+                  ))}
+                </motion.div>
               </div>
-              
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
-                Stay in the loop
-              </h2>
-              <p className="text-white/50 mb-8 max-w-lg mx-auto text-sm sm:text-base">
-                Get the latest articles, industry insights, and exclusive resources 
-                delivered directly to your inbox.
-              </p>
-              
-              <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                <input
-                  type="email"
-                  placeholder="your@email.com"
-                  className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-violet-500/50 text-sm"
-                />
-                <button 
-                  type="submit"
-                  className="px-6 py-3 bg-white text-black rounded-xl font-medium hover:bg-white/90 transition-colors text-sm whitespace-nowrap"
-                >
-                  Subscribe
-                </button>
-              </form>
-              
-              <p className="mt-4 text-xs text-white/30">
-                No spam. Unsubscribe anytime.
-              </p>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+            </section>
+          )}
 
-      {/* Bottom CTA */}
-      <section className="py-16 border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <p className="text-white/40 mb-4">Need help with your project?</p>
-            <Link
-              href="/contact-us"
-              className="inline-flex items-center gap-2 text-violet-400 hover:text-violet-300 font-medium transition-colors"
-            >
-              Get in touch <FaArrowRight className="w-4 h-4" />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+          {/* All Articles */}
+          <section className="py-16 sm:py-20 lg:py-24 bg-white/[0.02] border-y border-white/10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <motion.div
+                variants={fadeInUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="flex items-center justify-between mb-12"
+              >
+                <h2 className="text-2xl sm:text-3xl font-bold">
+                  {activeCategory === "All" ? "All Articles" : activeCategory}
+                </h2>
+                <span className="text-sm text-white/40">
+                  {filteredResources.length} articles
+                </span>
+              </motion.div>
+
+              {filteredResources.length > 0 ? (
+                <motion.div
+                  variants={staggerContainer}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+                >
+                  {(activeCategory === "All" ? regularResources : filteredResources.filter(r => !r.is_featured)).map((resource) => (
+                    <motion.article
+                      key={resource.id}
+                      variants={fadeInUp}
+                      className="group relative bg-white/[0.02] border border-white/[0.06] rounded-xl hover:border-violet-500/30 hover:bg-white/[0.04] transition-all duration-300 overflow-hidden flex flex-col"
+                    >
+                      <Link href={`/resources/${resource.slug}`} className="block relative h-48 overflow-hidden">
+                        <ResourceCardImage 
+                          src={resource.image} 
+                          alt={resource.title} 
+                          className="w-full h-full" 
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-60" />
+                      </Link>
+
+                      <div className="p-5 sm:p-6 flex flex-col flex-grow">
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="px-2.5 py-0.5 rounded-full bg-white/5 text-white/60 text-xs">
+                            {resource.category}
+                          </span>
+                        </div>
+                        
+                        <Link href={`/resources/${resource.slug}`} className="block">
+                          <h3 className="font-semibold mb-2 group-hover:text-violet-400 transition-colors duration-300 line-clamp-2 text-sm sm:text-base">
+                            {resource.title}
+                          </h3>
+                        </Link>
+                        
+                        <p className="text-white/40 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3 flex-grow">
+                          {resource.excerpt}
+                        </p>
+                        
+                        <div className="flex items-center justify-between pt-4 border-t border-white/[0.06] mt-auto">
+                          <div className="flex items-center gap-3 text-xs text-white/30">
+                            <span className="flex items-center gap-1">
+                              <FaCalendarAlt className="w-3 h-3" />
+                              {new Date(resource.created_at || resource.published_at).toLocaleDateString()}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <FaClock className="w-3 h-3" />
+                              {resource.read_time} min
+                            </span>
+                          </div>
+                          <Link href={`/resources/${resource.slug}`}>
+                            <FaArrowRight className="w-4 h-4 text-white/20 group-hover:text-violet-400 group-hover:translate-x-1 transition-all" />
+                          </Link>
+                        </div>
+                      </div>
+                    </motion.article>
+                  ))}
+                </motion.div>
+              ) : (
+                <div className="text-center py-20 text-white/40">
+                  No resources found matching your criteria.
+                </div>
+              )}
+            </div>
+          </section>
+        </>
+      )}
     </div>
   );
 };

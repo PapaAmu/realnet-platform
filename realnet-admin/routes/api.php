@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\MessageController;
 
 
 use App\Http\Controllers\Api\BlogPostController;
+use App\Http\Controllers\Api\ResourcePostController;
 
 
 Route::post('/quotations', [QuotationController::class, 'store']);
@@ -23,4 +24,12 @@ Route::prefix('blog')->group(function () {
     Route::get('/posts/{slug}', [BlogPostController::class, 'show']);
     Route::get('/categories', [BlogPostController::class, 'categories']);
     Route::get('/featured', [BlogPostController::class, 'featured']);
+});
+
+// Resource Post Routes
+Route::prefix('resources')->group(function () {
+    Route::get('/posts', [ResourcePostController::class, 'index']);
+    Route::get('/posts/featured', [ResourcePostController::class, 'featured']);
+    Route::get('/categories', [ResourcePostController::class, 'categories']);
+    Route::get('/posts/{slug}', [ResourcePostController::class, 'show']);
 });

@@ -149,7 +149,7 @@ export default async function BlogPostPage({ params }) {
           </p>
           <a
             href="/updates/blogs"
-            className="px-8 py-4 bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition-colors font-semibold text-lg"
+            className="px-8 py-4 bg-gray-950 text-white rounded-xl hover:bg-gray-800 transition-colors font-semibold text-lg"
           >
             Back to Blog
           </a>

@@ -1,11 +1,9 @@
 <?php
-// app/Filament/Resources/BlogPostResource.php
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\BlogPostResource\Pages;
-use App\Filament\Resources\BlogPostResource\RelationManagers;
-use App\Models\BlogPost;
+use App\Filament\Resources\ResourcePostResource\Pages;
+use App\Models\ResourcePost;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,11 +12,11 @@ use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
 
-class BlogPostResource extends Resource
+class ResourcePostResource extends Resource
 {
-    protected static ?string $model = BlogPost::class;
+    protected static ?string $model = ResourcePost::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
     protected static ?string $navigationGroup = 'Article Posts';
 
@@ -28,7 +26,7 @@ class BlogPostResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Post Information')
+                Forms\Components\Section::make('Resource Information')
                     ->schema([
                         Forms\Components\TextInput::make('title')
                             ->required()
@@ -47,7 +45,7 @@ class BlogPostResource extends Resource
                             ->maxLength(500),
                         Forms\Components\RichEditor::make('content')
                             ->required()
-                            ->fileAttachmentsDirectory('blog/images')
+                            ->fileAttachmentsDirectory('resource-posts/images')
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
@@ -58,7 +56,7 @@ class BlogPostResource extends Resource
                             ->label('Featured Image')
                             ->image()
                             ->disk('public')
-                            ->directory('blog/images')
+                            ->directory('resource-posts/images')
                             ->preserveFilenames()
                             ->maxSize(2048)
                             ->imageResizeMode('cover')
@@ -69,12 +67,12 @@ class BlogPostResource extends Resource
                         Forms\Components\Select::make('category')
                             ->required()
                             ->options([
-                                'web-development' => 'Web Development',
-                                'mobile-apps' => 'Mobile Apps',
-                                'digital-marketing' => 'Digital Marketing',
-                                'ui-ux-design' => 'UI/UX Design',
-                                'business-strategy' => 'Business Strategy',
-                                'technology' => 'Technology',
+                                'Web Development' => 'Web Development',
+                                'Mobile Apps' => 'Mobile Apps',
+                                'Digital Marketing' => 'Digital Marketing',
+                                'UI/UX Design' => 'UI/UX Design',
+                                'Business Strategy' => 'Business Strategy',
+                                'Technology' => 'Technology',
                             ]),
                         
                         Forms\Components\TextInput::make('author')
@@ -99,7 +97,7 @@ class BlogPostResource extends Resource
                             ->nestedRecursiveRules(['string', 'max:50']),
                         
                         Forms\Components\Toggle::make('is_featured')
-                            ->label('Featured Post')
+                            ->label('Featured Resource')
                             ->default(false),
                         
                         Forms\Components\Toggle::make('is_published')
@@ -174,11 +172,11 @@ class BlogPostResource extends Resource
                     ]),
                 
                 Tables\Filters\Filter::make('is_featured')
-                    ->label('Featured Posts')
+                    ->label('Featured Resources')
                     ->query(fn (Builder $query): Builder => $query->where('is_featured', true)),
                 
                 Tables\Filters\Filter::make('is_published')
-                    ->label('Published Posts')
+                    ->label('Published Resources')
                     ->query(fn (Builder $query): Builder => $query->where('is_published', true)),
             ])
             ->actions([
@@ -198,8 +196,7 @@ class BlogPostResource extends Resource
                         ->action(fn ($records) => $records->each->update(['is_published' => false]))
                         ->requiresConfirmation(),
                 ]),
-            ])
-            ->defaultSort('published_at', 'desc');
+            ]);
     }
 
     public static function getRelations(): array
@@ -212,14 +209,9 @@ class BlogPostResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBlogPosts::route('/'),
-            'create' => Pages\CreateBlogPost::route('/create'),
-            'edit' => Pages\EditBlogPost::route('/{record}/edit'),
+            'index' => Pages\ListResourcePosts::route('/'),
+            'create' => Pages\CreateResourcePost::route('/create'),
+            'edit' => Pages\EditResourcePost::route('/{record}/edit'),
         ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->withoutGlobalScopes();
     }
 }

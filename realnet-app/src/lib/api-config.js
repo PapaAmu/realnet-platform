@@ -5,6 +5,9 @@ export const getApiBaseUrl = () => {
     // Otherwise, default to localhost:8009 for local development on host machine.
     return process.env.INTERNAL_API_URL || 'http://localhost:8009';
   }
-  // If we are on the client, use the public URL
+  // If we are on the client
+  if (process.env.NODE_ENV === 'development') {
+    return process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8009';
+  }
   return process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.realnet-web.co.za';
 };

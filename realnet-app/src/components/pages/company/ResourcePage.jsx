@@ -44,7 +44,7 @@ const createPlaceholderImage = (width = 800, height = 400) => {
   return `data:image/svg+xml;base64,${btoa(`
     <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
       <rect width="100%" height="100%" fill="#1a1a1a"/>
-      <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="20" fill="#4b5563" text-anchor="middle" dy=".3em">Featured Blog Image</text>
+      <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="20" fill="#4b5563" text-anchor="middle" dy=".3em">Featured Resource Image</text>
     </svg>
   `)}`;
 };
@@ -71,8 +71,8 @@ const getImageUrl = (imagePath) => {
   return `${baseUrl}/storage/${imagePath}`;
 };
 
-// Blog Image component
-const BlogPostImage = ({ src, alt, className, ...props }) => {
+// Resource Image component
+const ResourcePostImage = ({ src, alt, className, ...props }) => {
   const [imageSrc, setImageSrc] = useState(getImageUrl(src));
   const [hasError, setHasError] = useState(false);
 
@@ -101,8 +101,8 @@ const BlogPostImage = ({ src, alt, className, ...props }) => {
   );
 };
 
-// Blog Image for related posts
-const BlogImage = ({ src, alt, className, ...props }) => {
+// Image for related posts
+const RelatedResourceImage = ({ src, alt, className, ...props }) => {
   const [imageSrc, setImageSrc] = useState(getImageUrl(src));
   const [hasError, setHasError] = useState(false);
 
@@ -131,7 +131,7 @@ const BlogImage = ({ src, alt, className, ...props }) => {
   );
 };
 
-const BlogPostPage = ({ post: initialPost }) => {
+const ResourcePageComponent = ({ post: initialPost }) => {
   const params = useParams();
   const router = useRouter();
   const [post, setPost] = useState(initialPost);
@@ -154,14 +154,14 @@ const BlogPostPage = ({ post: initialPost }) => {
       setLoading(true);
       setError(null);
       const response = await fetch(
-        `${getApiBaseUrl()}/api/blog/posts/${params.slug}`
+        `${getApiBaseUrl()}/api/resources/posts/${params.slug}`
       );
       
       if (!response.ok) {
         if (response.status === 404) {
-          throw new Error('Blog post not found');
+          throw new Error('Resource not found');
         }
-        throw new Error(`Failed to fetch blog post: ${response.status}`);
+        throw new Error(`Failed to fetch resource: ${response.status}`);
       }
       
       const data = await response.json();
@@ -170,10 +170,10 @@ const BlogPostPage = ({ post: initialPost }) => {
         setPost(data.post);
         fetchRelatedPosts(data.post.category, data.post.id);
       } else {
-        throw new Error(data.message || 'Blog post not found');
+        throw new Error(data.message || 'Resource not found');
       }
     } catch (err) {
-      console.error('Error fetching blog post:', err);
+      console.error('Error fetching resource:', err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -183,7 +183,7 @@ const BlogPostPage = ({ post: initialPost }) => {
   const fetchRelatedPosts = async (category, currentPostId) => {
     try {
       const response = await fetch(
-        `${getApiBaseUrl()}/api/blog/posts?category=${category}`
+        `${getApiBaseUrl()}/api/resources/posts?category=${category}`
       );
       
       if (response.ok) {
@@ -196,14 +196,14 @@ const BlogPostPage = ({ post: initialPost }) => {
         }
       }
     } catch (err) {
-      console.error('Error fetching related posts:', err);
+      console.error('Error fetching related resources:', err);
     }
   };
 
   const safeTags = post ? parseTags(post.tags) : [];
 
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
-  const shareText = `Check out this article: ${post?.title}`;
+  const shareText = `Check out this resource: ${post?.title}`;
 
   const handleShare = (platform) => {
     const url = encodeURIComponent(shareUrl);
@@ -249,7 +249,7 @@ const BlogPostPage = ({ post: initialPost }) => {
             {error?.includes('not found') ? 'Not Found' : 'Error'}
           </h2>
           <p className="text-white/50 mb-6">
-            {error || 'The article you\'re looking for doesn\'t exist.'}
+            {error || 'The resource you\'re looking for doesn\'t exist.'}
           </p>
           <div className="flex gap-4 justify-center">
             <button
@@ -259,10 +259,10 @@ const BlogPostPage = ({ post: initialPost }) => {
               Go Back
             </button>
             <Link
-              href="/updates/blogs"
+              href="/resources"
               className="px-6 py-3 bg-primary text-white rounded-xl font-medium hover:opacity-90 transition-opacity"
             >
-              Browse Articles
+              Browse Resources
             </Link>
           </div>
         </div>
@@ -277,11 +277,11 @@ const BlogPostPage = ({ post: initialPost }) => {
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex items-center justify-between h-16">
             <Link
-              href="/updates/blogs"
+              href="/resources"
               className="flex items-center gap-2 text-white/60 hover:text-primary/70 transition-colors text-sm font-medium"
             >
               <FaArrowLeft />
-              Back to Articles
+              Back to Resources
             </Link>
             <div className="flex items-center gap-3">
               <button 
@@ -305,175 +305,135 @@ const BlogPostPage = ({ post: initialPost }) => {
       </nav>
 
       {/* Article Header */}
-      <header className="pt-16 pb-12 border-b border-white/10">
-        <div className="max-w-4xl mx-auto px-6">
-          {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-sm text-white/40 mb-8">
-            <Link href="/" className="hover:text-primary/70 transition-colors">Home</Link>
-            <span>/</span>
-            <Link href="/updates/blogs" className="hover:text-primary/70 transition-colors">Blog</Link>
-            <span>/</span>
-            <span className="text-white capitalize">{post.category}</span>
-          </div>
+      <header className="relative pt-12 pb-12 overflow-hidden">
+        <div className="max-w-4xl mx-auto px-6 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            {/* Category & Date */}
+            <div className="flex items-center gap-4 text-sm mb-6">
+              <span className="px-3 py-1 bg-primary/10 text-primary rounded-full border border-primary/20 font-medium">
+                {post.category}
+              </span>
+              <span className="flex items-center gap-2 text-white/50">
+                <FaCalendarAlt />
+                {new Date(post.created_at || post.published_at).toLocaleDateString()}
+              </span>
+              <span className="flex items-center gap-2 text-white/50">
+                <FaClock />
+                {post.read_time} min read
+              </span>
+            </div>
 
-          {/* Meta */}
-          <div className="flex flex-wrap items-center gap-4 mb-6 text-sm text-white/50">
-            <span className="flex items-center gap-2">
-              <FaCalendarAlt className="text-primary/70" />
-              {new Date(post.created_at).toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-              })}
-            </span>
-            <span className="flex items-center gap-2">
-              <FaClock className="text-primary/70" />
-              {post.read_time}
-            </span>
-            <span className="flex items-center gap-2">
-              <FaUser className="text-primary/70" />
-              {post.author || 'Unknown'}
-            </span>
-          </div>
+            {/* Title */}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-8">
+              {post.title}
+            </h1>
 
-          {/* Title */}
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight tracking-tight">
-            {post.title}
-          </h1>
-
-          {/* Excerpt */}
-          <p className="text-lg text-white/70 leading-relaxed max-w-2xl">
-            {post.excerpt}
-          </p>
+            {/* Author */}
+            <div className="flex items-center justify-between py-6 border-y border-white/10">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                  <FaUser className="text-white/40" />
+                </div>
+                <div>
+                  <div className="font-medium">{post.author || 'Realnet Team'}</div>
+                  <div className="text-sm text-white/40">Author</div>
+                </div>
+              </div>
+              <button 
+                onClick={copyToClipboard}
+                className="flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors"
+              >
+                <FaLink />
+                Copy Link
+              </button>
+            </div>
+          </motion.div>
         </div>
       </header>
 
       {/* Featured Image */}
-      <div className="max-w-5xl mx-auto px-6 -mt-8">
-        <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-primary/10 border border-white/10">
-          <BlogPostImage
+      <div className="max-w-5xl mx-auto px-6 mb-16">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+          className="rounded-2xl overflow-hidden border border-white/10 aspect-[21/9] bg-white/5"
+        >
+          <ResourcePostImage
             src={post.image}
             alt={post.title}
-            className="w-full aspect-[21/9] object-cover"
+            className="w-full h-full object-cover"
           />
-          <div className="absolute top-4 left-4 flex gap-2">
-            <span className="px-3 py-1.5 bg-black/80 backdrop-blur-sm text-xs font-medium text-white rounded-full border border-white/10 capitalize">
-              {post.category}
-            </span>
-            {post.is_featured && (
-              <span className="px-3 py-1.5 bg-primary text-white text-xs font-medium rounded-full">
-                Featured
-              </span>
-            )}
-          </div>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Article Content */}
-      <main className="max-w-4xl mx-auto px-6 py-16">
-        <article className="prose prose-lg prose-invert max-w-none">
-          <div 
-            className="text-white/80 leading-relaxed text-lg"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
-        </article>
+      {/* Content */}
+      <div className="max-w-4xl mx-auto px-6 mb-20">
+        <motion.article
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="prose prose-invert prose-lg max-w-none prose-headings:text-white prose-p:text-white/80 prose-a:text-primary hover:prose-a:text-primary/80 prose-strong:text-white prose-code:text-primary prose-code:bg-white/5 prose-code:px-1 prose-code:rounded prose-code:before:content-none prose-code:after:content-none"
+        >
+          <div dangerouslySetInnerHTML={{ __html: post.content }} />
+        </motion.article>
 
         {/* Tags */}
         {safeTags.length > 0 && (
-          <div className="mt-16 pt-8 border-t border-white/10">
-            <div className="flex items-center gap-3 mb-4">
-              <FaTags className="text-white/30" />
-              <span className="text-sm font-medium text-white">Tags</span>
+          <div className="mt-12 pt-8 border-t border-white/10">
+            <div className="flex items-center gap-2 text-white/60 mb-4">
+              <FaTags />
+              <span className="text-sm font-medium uppercase tracking-wider">Tags</span>
             </div>
             <div className="flex flex-wrap gap-2">
               {safeTags.map((tag, index) => (
                 <span
                   key={index}
-                  className="px-4 py-2 bg-white/5 text-white/60 text-sm rounded-full border border-white/[0.06] hover:border-primary transition-colors cursor-pointer"
+                  className="px-3 py-1 bg-white/5 text-white/70 rounded-full text-sm hover:bg-white/10 transition-colors cursor-default"
                 >
-                  {tag}
+                  #{tag}
                 </span>
               ))}
             </div>
           </div>
         )}
+      </div>
 
-        {/* Share */}
-        <div className="mt-12 pt-8 border-t border-white/10">
-          <span className="text-sm font-medium text-white mb-4 block">Share this article</span>
-          <div className="flex gap-3">
-            <button 
-              onClick={() => handleShare('twitter')}
-              className="flex items-center gap-2 px-4 py-2.5 bg-white/5 text-white/70 rounded-xl hover:bg-blue-500/10 hover:text-blue-400 transition-colors text-sm font-medium"
-            >
-              <FaTwitter />
-              Twitter
-            </button>
-            <button 
-              onClick={() => handleShare('facebook')}
-              className="flex items-center gap-2 px-4 py-2.5 bg-white/5 text-white/70 rounded-xl hover:bg-blue-500/10 hover:text-blue-400 transition-colors text-sm font-medium"
-            >
-              <FaFacebook />
-              Facebook
-            </button>
-            <button 
-              onClick={() => handleShare('linkedin')}
-              className="flex items-center gap-2 px-4 py-2.5 bg-white/5 text-white/70 rounded-xl hover:bg-blue-500/10 hover:text-blue-400 transition-colors text-sm font-medium"
-            >
-              <FaLinkedin />
-              LinkedIn
-            </button>
-            <button 
-              onClick={copyToClipboard}
-              className="flex items-center gap-2 px-4 py-2.5 bg-white/5 text-white/70 rounded-xl hover:bg-white/10 transition-colors text-sm font-medium"
-            >
-              <FaLink />
-              Copy Link
-            </button>
-          </div>
-        </div>
-      </main>
-
-      {/* Related Posts */}
+      {/* Related Resources */}
       {relatedPosts.length > 0 && (
-        <section className="bg-[#0a0a0a] border-t border-white/10 py-20">
-          <div className="max-w-6xl mx-auto px-6">
-            <h2 className="text-2xl font-bold text-white mb-12 text-center">
-              Related Articles
-            </h2>
+        <section className="py-20 bg-white/[0.02] border-t border-white/10">
+          <div className="max-w-7xl mx-auto px-6">
+            <h2 className="text-2xl font-bold mb-10">Related Resources</h2>
             <div className="grid md:grid-cols-3 gap-8">
               {relatedPosts.map((relatedPost) => (
-                <article 
+                <Link
                   key={relatedPost.id}
-                  className="group bg-white/[0.02] rounded-2xl border border-white/[0.06] overflow-hidden hover:border-primary/30 transition-all duration-300 cursor-pointer"
-                  onClick={() => router.push(`/updates/blogs/${relatedPost.slug}`)}
+                  href={`/resources/${relatedPost.slug}`}
+                  className="group block bg-white/5 rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-colors"
                 >
-                  <div className="relative h-48 overflow-hidden">
-                    <BlogImage
+                  <div className="aspect-video relative overflow-hidden bg-white/5">
+                    <RelatedResourceImage
                       src={relatedPost.image}
                       alt={relatedPost.title}
-                      className="w-full h-full group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute top-4 right-4">
-                      <span className="px-3 py-1 bg-black/80 backdrop-blur-sm text-xs font-medium text-white rounded-full capitalize">
-                        {relatedPost.category}
-                      </span>
-                    </div>
                   </div>
                   <div className="p-6">
-                    <div className="flex items-center gap-3 text-xs text-white/40 mb-3">
-                      <span>{new Date(relatedPost.created_at).toLocaleDateString()}</span>
-                      <span>•</span>
-                      <span>{relatedPost.read_time}</span>
+                    <div className="flex items-center gap-2 text-xs text-primary mb-3">
+                      <span className="uppercase tracking-wider font-medium">{relatedPost.category}</span>
                     </div>
-                    <h3 className="font-semibold text-white mb-2 group-hover:text-primary/70 transition-colors line-clamp-2">
+                    <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">
                       {relatedPost.title}
                     </h3>
-                    <p className="text-sm text-white/50 line-clamp-2">
+                    <p className="text-white/60 text-sm line-clamp-2">
                       {relatedPost.excerpt}
                     </p>
                   </div>
-                </article>
+                </Link>
               ))}
             </div>
           </div>
@@ -483,4 +443,4 @@ const BlogPostPage = ({ post: initialPost }) => {
   );
 };
 
-export default BlogPostPage;
+export default ResourcePageComponent;
