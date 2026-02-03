@@ -7,8 +7,12 @@ import { getApiBaseUrl } from "@/lib/api-config";
 async function getBlogPost(slug) {
   try {
     const response = await fetch(`${getApiBaseUrl()}/api/blog/posts/${slug}`, {
-      next: { revalidate: 3600 } // Revalidate every hour
+      next: { revalidate: 0 }
     });
+    
+    if (response.status === 404) {
+      return null;
+    }
     
     if (!response.ok) {
       throw new Error(`Failed to fetch blog post: ${response.status}`);
@@ -48,13 +52,14 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) {
   try {
-    const post = await getBlogPost(params.slug);
+    const { slug } = await params;
+    const post = await getBlogPost(slug);
     
     if (!post) {
       return generateSEO({
         title: 'Blog Post Not Found',
         description: 'The requested blog post could not be found.',
-        path: `/updates/blogs/${params.slug}`,
+        path: `/updates/blogs/${slug}`,
         noindex: true,
       });
     }
@@ -66,7 +71,7 @@ export async function generateMetadata({ params }) {
       title: post.title || 'Blog Post',
       description: post.excerpt || post.description || 'Read our latest blog post',
       keywords: keywords,
-      path: `/updates/blogs/${params.slug}`,
+      path: `/updates/blogs/${slug}`,
       image: post.image || '/og-image.jpg',
       type: 'article',
       publishedTime: post.created_at || post.published_at,
@@ -75,30 +80,32 @@ export async function generateMetadata({ params }) {
     });
   } catch (error) {
     console.error('Error generating metadata:', error);
+    const { slug } = await params;
     return generateSEO({
       title: 'Blog Post',
       description: 'Read our latest blog post',
-      path: `/updates/blogs/${params.slug}`,
+      path: `/updates/blogs/${slug}`,
     });
   }
 }
 
 export default async function BlogPostPage({ params }) {
   try {
-    const post = await getBlogPost(params.slug);
+    const { slug } = await params;
+    const post = await getBlogPost(slug);
     
     if (!post) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-[#050505] flex items-center justify-center p-4">
           <div className="text-center max-w-md">
             <div className="text-8xl mb-6">😞</div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Post Not Found</h1>
-            <p className="text-gray-600 mb-8 text-lg">
+            <h1 className="text-3xl font-bold text-white mb-4">Post Not Found</h1>
+            <p className="text-white/60 mb-8 text-lg">
               The blog post you're looking for doesn't exist or may have been moved.
             </p>
             <a
               href="/updates/blogs"
-              className="px-8 py-4 bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition-colors font-semibold text-lg"
+              className="inline-block px-8 py-3 bg-violet-500 text-white rounded-lg font-medium hover:bg-violet-600 transition-colors shadow-lg shadow-violet-500/20"
             >
               Back to Blog
             </a>
