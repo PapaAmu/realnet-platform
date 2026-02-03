@@ -20,7 +20,7 @@ class PaymentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
 
-    protected static ?string $cluster = \App\Filament\Clusters\Billing::class;
+    protected static ?string $navigationGroup = 'Billing';
 
     protected static ?int $navigationSort = 4;
 
@@ -89,7 +89,7 @@ class PaymentResource extends Resource
                     ->label('Invoice #')
                     ->searchable()
                     ->sortable()
-                    ->url(fn ($record) => route('filament.admin.billing.resources.invoices.edit', $record->invoice_id)),
+                    ->url(fn ($record) => route('filament.admin.resources.invoices.edit', $record->invoice_id)),
                 Tables\Columns\TextColumn::make('client.name')
                     ->label('Client')
                     ->searchable()

@@ -1,9 +1,9 @@
 // components/pages/company/ServicesOverview.jsx
 'use client';
 
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { 
   FaGlobe, 
   FaMobileAlt, 
@@ -11,13 +11,21 @@ import {
   FaCode, 
   FaServer, 
   FaRocket,
-  FaCheckCircle,
+  FaCheck,
   FaArrowRight,
   FaShieldAlt,
-  FaChartLine
+  FaChartLine,
+  FaChevronLeft,
+  FaChevronRight
 } from 'react-icons/fa';
 
 const ServicesOverview = () => {
+  const containerRef = useRef(null);
+  const scrollRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const [activeService, setActiveService] = useState(0);
+  const [hoveredPackage, setHoveredPackage] = useState(null);
+
   const services = [
     {
       icon: FaGlobe,
@@ -25,380 +33,411 @@ const ServicesOverview = () => {
       description: 'Professional, responsive websites that convert visitors into customers. From simple business sites to complex web applications.',
       features: ['Responsive Design', 'SEO Optimized', 'Fast Loading', 'Mobile-First'],
       link: '/solutions/web-development',
-      color: 'from-blue-500 to-cyan-500',
-      bgColor: 'bg-blue-50',
-      textColor: 'text-blue-600'
+      stat: '150+ Sites'
     },
     {
       icon: FaMobileAlt,
-      title: 'Mobile App Development',
+      title: 'Mobile Apps',
       description: 'Native and cross-platform mobile applications for iOS and Android that engage users and drive business growth.',
       features: ['iOS & Android', 'Cross-Platform', 'User-Friendly', 'App Store Ready'],
       link: '/solutions/mobile-app-development',
-      color: 'from-green-500 to-emerald-500',
-      bgColor: 'bg-green-50',
-      textColor: 'text-green-600'
+      stat: '50+ Apps'
     },
     {
       icon: FaShoppingCart,
-      title: 'Ecommerce Solutions',
+      title: 'Ecommerce',
       description: 'Complete online store development with secure payment gateways, inventory management, and marketing tools.',
       features: ['Online Payments', 'Inventory Management', 'Marketing Tools', 'Analytics'],
       link: '/solutions/web-development/e-commerce-quote-request',
-      color: 'from-purple-500 to-pink-500',
-      bgColor: 'bg-purple-50',
-      textColor: 'text-purple-600'
+      stat: '80+ Stores'
     },
     {
       icon: FaCode,
-      title: 'Software Development',
+      title: 'Custom Software',
       description: 'Custom business software and management systems that streamline operations and improve efficiency.',
       features: ['Custom Solutions', 'System Integration', 'Database Design', 'API Development'],
       link: '/solutions/software-development',
-      color: 'from-orange-500 to-red-500',
-      bgColor: 'bg-orange-50',
-      textColor: 'text-orange-600'
+      stat: '40+ Systems'
     },
     {
       icon: FaServer,
-      title: 'Managed Hosting & Emails',
+      title: 'Hosting & Email',
       description: 'Reliable hosting solutions and professional business email services with 99.9% uptime guarantee.',
       features: ['99.9% Uptime', 'SSL Certificates', 'Business Emails', '24/7 Support'],
       link: '/solutions/email-and-hosting',
-      color: 'from-indigo-500 to-purple-500',
-      bgColor: 'bg-indigo-50',
-      textColor: 'text-indigo-600'
+      stat: '99.9% Up'
     },
     {
       icon: FaRocket,
-      title: 'Digital Transformation',
+      title: 'Digital Strategy',
       description: 'Comprehensive digital strategy and implementation to modernize your business operations and customer experience.',
-      features: ['Digital Strategy', 'Process Automation', 'Cloud Migration', 'Training & Support'],
+      features: ['Digital Strategy', 'Process Automation', 'Cloud Migration', 'Training'],
       link: '/contact-us',
-      color: 'from-teal-500 to-cyan-500',
-      bgColor: 'bg-teal-50',
-      textColor: 'text-teal-600'
+      stat: '30+ Clients'
     }
   ];
 
   const packages = [
     {
-      name: 'Starter Business Website',
-      price: 'From R2,800',
-      description: 'Perfect for small businesses and personal brands',
+      name: 'Starter',
+      price: 'R2,800',
+      description: 'Perfect for small businesses',
       features: [
         '5-Page Responsive Website',
         'Basic SEO Setup',
         'Contact Form',
         'Social Media Integration',
-        '1 Month Free Support',
-        'Self Hosting',
+        '1 Month Support'
       ],
-      cta: 'Get Quote',
-      link: '/solutions/web-development/starter-website-quote-request',
-      popular: false
+      link: '/solutions/web-development/starter-website-quote-request'
     },
     {
-      name: 'Ecommerce Website',
-      price: 'From R5,999',
-      description: 'Complete online store with payment integration',
+      name: 'Business',
+      price: 'R5,999',
+      description: 'Complete ecommerce solution',
       features: [
         'Product Catalog',
-        'Secure Payment Gateway',
+        'Secure Payments',
         'Inventory Management',
         'Order Tracking',
         '3 Months Support'
       ],
-      cta: 'Get Quote',
       link: '/solutions/web-development/e-commerce-quote-request',
       popular: true
     },
     {
-      name: 'Advanced Custom Website',
-      price: 'From R9,999',
-      description: 'Custom web applications and complex systems',
+      name: 'Enterprise',
+      price: 'R9,999',
+      description: 'Custom web applications',
       features: [
-        'Custom Design & Development',
+        'Custom Development',
         'Database Integration',
         'User Management',
         'API Development',
         '12 Months Support'
       ],
-      cta: 'Get Quote',
-      link: '/solutions/web-development/custom-website-quote-request',
-      popular: false
+      link: '/solutions/web-development/custom-website-quote-request'
     }
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
+  const whyUs = [
+    {
+      icon: FaShieldAlt,
+      title: 'Proven Expertise',
+      description: 'Years of experience delivering successful projects across various industries.'
+    },
+    {
+      icon: FaChartLine,
+      title: 'Results-Driven',
+      description: 'We focus on solutions that deliver measurable business growth and ROI.'
+    },
+    {
+      icon: FaRocket,
+      title: 'Modern Stack',
+      description: 'Using the latest technologies and best practices for optimal performance.'
+    },
+    {
+      icon: FaCheck,
+      title: 'End-to-End Support',
+      description: 'From concept to launch and beyond, we support you every step.'
     }
-  };
+  ];
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5
-      }
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = 400;
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-orange-500 via-pink-500 to-purple-600 text-white py-20">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight">
-              Our Services
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto leading-relaxed opacity-95">
-              Comprehensive digital solutions to transform your business and drive growth. 
-              From stunning websites to powerful mobile apps and custom software.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 mt-8">
-              <Link
-                href="/contact-us"
-                className="px-8 py-4 bg-white text-orange-600 font-bold rounded-xl hover:bg-gray-100 transition-all duration-200 shadow-lg hover:shadow-xl"
-              >
-                Start Your Project
-              </Link>
-              <Link
-                href="/projects"
-                className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-xl hover:bg-white/10 transition-all duration-200"
-              >
-                View Our Work
-              </Link>
-            </div>
-          </motion.div>
+    <div ref={containerRef} className="min-h-screen bg-white dark:bg-[#050505] transition-colors duration-300">
+      
+      {/* Hero Section - Minimal, Typography Focused */}
+      <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-0 w-full h-px bg-gray-200 dark:bg-white/10" />
+          <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-blue-100/50 dark:bg-violet-600/10 rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-6">
+          <div className="max-w-3xl">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6 }}
+            >
+              <span className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-violet-400 mb-6">
+                <FaRocket className="w-4 h-4" />
+                Our Services
+              </span>
+              
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-[1.1] tracking-tight mb-6">
+                Digital Solutions That Drive Growth
+              </h1>
+              
+              <p className="text-xl text-gray-600 dark:text-white/50 leading-relaxed mb-8 max-w-2xl">
+                From concept to deployment, we build scalable digital products 
+                that transform businesses and delight users.
+              </p>
+
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="/contact-us"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-black rounded-full font-medium hover:scale-[1.02] transition-transform duration-200"
+                >
+                  Start Your Project
+                  <FaArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  href="/projects"
+                  className="inline-flex items-center gap-2 px-8 py-4 border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-full font-medium hover:bg-gray-50 dark:hover:bg-white/5 transition-colors duration-200"
+                >
+                  View Work
+                </Link>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Services Grid */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {services.map((service, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                whileHover={{ y: -5 }}
-                className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden group"
+      {/* Services - Horizontal Scroll */}
+      <section className="py-20 border-y border-gray-200 dark:border-white/10">
+        <div className="max-w-7xl mx-auto px-6 mb-12">
+          <div className="flex items-end justify-between">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                What We Do
+              </h2>
+              <p className="text-gray-600 dark:text-white/50">
+                Comprehensive digital services for modern businesses
+              </p>
+            </div>
+            
+            <div className="hidden md:flex gap-2">
+              <button
+                onClick={() => scroll('left')}
+                className="w-10 h-10 rounded-full border border-gray-300 dark:border-white/10 flex items-center justify-center text-gray-600 dark:text-white/60 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
               >
-                <div className={`p-8 ${service.bgColor} group-hover:bg-gradient-to-br ${service.color} group-hover:text-white transition-all duration-300`}>
-                  <div className="flex items-center justify-between mb-4">
-                    <service.icon className={`text-4xl ${service.textColor} group-hover:text-white transition-colors duration-300`} />
-                    <FaArrowRight className={`text-xl ${service.textColor} group-hover:text-white opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300`} />
+                <FaChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => scroll('right')}
+                className="w-10 h-10 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black flex items-center justify-center hover:scale-105 transition-transform"
+              >
+                <FaChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          ref={scrollRef}
+          className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory px-6 pb-4 -mx-6"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {services.map((service, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="snap-start shrink-0 w-[350px] group"
+              onMouseEnter={() => setActiveService(index)}
+            >
+              <Link href={service.link} className="block h-full">
+                <div className="h-full p-8 rounded-2xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06] hover:border-blue-500/30 dark:hover:border-violet-500/30 hover:bg-white dark:hover:bg-white/[0.04] transition-all duration-300">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="w-12 h-12 rounded-xl bg-gray-200 dark:bg-white/5 flex items-center justify-center group-hover:bg-blue-100 dark:group-hover:bg-violet-500/10 transition-colors">
+                      <service.icon className="w-6 h-6 text-gray-700 dark:text-white/70 group-hover:text-blue-600 dark:group-hover:text-violet-400 transition-colors" />
+                    </div>
+                    <span className="text-xs font-medium text-gray-400 dark:text-white/30 px-3 py-1 rounded-full bg-gray-200 dark:bg-white/5">
+                      {service.stat}
+                    </span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-white mb-3 transition-colors duration-300">
+
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-violet-400 transition-colors">
                     {service.title}
                   </h3>
-                  <p className="text-gray-600 group-hover:text-white/90 leading-relaxed transition-colors duration-300">
+                  
+                  <p className="text-gray-600 dark:text-white/50 text-sm leading-relaxed mb-6">
                     {service.description}
                   </p>
-                </div>
-                
-                <div className="p-6">
-                  <ul className="space-y-2 mb-6">
-                    {service.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center text-sm text-gray-600">
-                        <FaCheckCircle className="text-green-500 mr-3 text-sm" />
+
+                  <ul className="space-y-2">
+                    {service.features.map((feature, i) => (
+                      <li key={i} className="flex items-center gap-2 text-sm text-gray-500 dark:text-white/40">
+                        <div className="w-1 h-1 rounded-full bg-blue-500 dark:bg-violet-400" />
                         {feature}
                       </li>
                     ))}
                   </ul>
-                  
-                  <Link
-                    href={service.link}
-                    className={`w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl ${service.textColor} ${service.bgColor} hover:bg-gradient-to-r ${service.color} hover:text-white hover:shadow-lg transition-all duration-200 group/btn`}
-                  >
-                    Learn More
-                    <FaArrowRight className="ml-2 text-xs group-hover/btn:translate-x-1 transition-transform duration-200" />
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
 
-      {/* Website Packages */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-              Website Development Packages
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Choose the perfect package for your business needs. All packages include responsive design, 
-              SEO optimization, and professional development.
-            </p>
-          </motion.div>
-
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            className="grid md:grid-cols-3 gap-8"
-          >
-            {packages.map((pkg, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                className={`relative bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-xl border-2 hover:shadow-2xl transition-all duration-300 ${
-                  pkg.popular 
-                    ? 'border-orange-500 transform scale-105' 
-                    : 'border-gray-200'
-                }`}
-              >
-                {pkg.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="px-6 py-2 bg-orange-500 text-white text-sm font-bold rounded-full shadow-lg">
-                      Most Popular
-                    </span>
+                  <div className="mt-6 pt-6 border-t border-gray-200 dark:border-white/10 flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-violet-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Learn more <FaArrowRight className="w-3 h-3" />
                   </div>
-                )}
-                
-                <div className="p-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{pkg.name}</h3>
-                  <div className="text-3xl font-black text-orange-500 mb-4">{pkg.price}</div>
-                  <p className="text-gray-600 mb-6">{pkg.description}</p>
-                  
-                  <ul className="space-y-3 mb-8">
-                    {pkg.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center text-gray-700">
-                        <FaCheckCircle className="text-green-500 mr-3 text-sm flex-shrink-0" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  <Link
-                    href={pkg.link}
-                    className={`w-full inline-flex items-center justify-center px-6 py-4 font-bold rounded-xl transition-all duration-200 ${
-                      pkg.popular
-                        ? 'bg-orange-500 text-white hover:bg-orange-600 shadow-lg hover:shadow-xl'
-                        : 'bg-gray-900 text-white hover:bg-gray-800'
-                    }`}
-                  >
-                    {pkg.cta}
-                    <FaArrowRight className="ml-2 text-sm" />
-                  </Link>
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
+              </Link>
+            </motion.div>
+          ))}
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <section className="py-20 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Pricing - Table Style */}
+      <section className="py-24">
+        <div className="max-w-5xl mx-auto px-6">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-black mb-4">
-              Why Choose RealNet Web Solutions?
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Development Packages
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              We deliver more than just code - we deliver solutions that drive real business results.
+            <p className="text-gray-600 dark:text-white/50">
+              Transparent pricing for every stage of business
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: FaShieldAlt,
-                title: 'Proven Expertise',
-                description: 'Years of experience delivering successful projects across various industries.'
-              },
-              {
-                icon: FaChartLine,
-                title: 'Results-Driven',
-                description: 'We focus on solutions that deliver measurable business growth and ROI.'
-              },
-              {
-                icon: FaRocket,
-                title: 'Modern Technology',
-                description: 'Using the latest technologies and best practices for optimal performance.'
-              },
-              {
-                icon: FaCheckCircle,
-                title: 'End-to-End Support',
-                description: 'From concept to launch and beyond, we support you every step of the way.'
-              }
-            ].map((item, index) => (
+          <div className="space-y-4">
+            {packages.map((pkg, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="text-center"
+                className={`relative rounded-2xl border transition-all duration-300 ${
+                  pkg.popular 
+                    ? 'border-blue-500 dark:border-violet-500 bg-blue-50/50 dark:bg-violet-500/5' 
+                    : 'border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.02] hover:border-gray-300 dark:hover:border-white/10'
+                }`}
+                onMouseEnter={() => setHoveredPackage(index)}
+                onMouseLeave={() => setHoveredPackage(null)}
               >
-                <div className="w-16 h-16 bg-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <item.icon className="text-2xl text-white" />
+                <div className="p-6 md:p-8 flex flex-col md:flex-row md:items-center gap-6">
+                  <div className="md:w-1/4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                        {pkg.name}
+                      </h3>
+                      {pkg.popular && (
+                        <span className="px-3 py-1 text-xs font-medium bg-blue-100 dark:bg-violet-500/20 text-blue-700 dark:text-violet-300 rounded-full">
+                          Popular
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-3xl font-bold text-gray-900 dark:text-white">
+                      {pkg.price}
+                    </div>
+                    <p className="text-sm text-gray-500 dark:text-white/40 mt-1">
+                      {pkg.description}
+                    </p>
+                  </div>
+
+                  <div className="md:w-2/4">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {pkg.features.map((feature, i) => (
+                        <div key={i} className="flex items-center gap-2 text-sm text-gray-600 dark:text-white/60">
+                          <FaCheck className={`w-3 h-3 flex-shrink-0 ${pkg.popular ? 'text-blue-500 dark:text-violet-400' : 'text-gray-400 dark:text-white/30'}`} />
+                          <span>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="md:w-1/4 flex justify-start md:justify-end">
+                    <Link
+                      href={pkg.link}
+                      className={`inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all duration-200 ${
+                        pkg.popular
+                          ? 'bg-gray-900 dark:bg-white text-white dark:text-black hover:scale-[1.02]'
+                          : 'border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-white/5'
+                      }`}
+                    >
+                      Get Quote
+                      <FaArrowRight className="w-3 h-3" />
+                    </Link>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                <p className="text-gray-300 leading-relaxed">{item.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-orange-500 to-pink-600">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      {/* Why Choose Us - Grid */}
+      <section className="py-24 bg-gray-50 dark:bg-white/[0.02] border-y border-gray-200 dark:border-white/10">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Why Work With Us
+            </h2>
+            <p className="text-gray-600 dark:text-white/50 max-w-2xl mx-auto">
+              Beyond code—we deliver strategic partnerships
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {whyUs.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="text-center group"
+              >
+                <div className="w-16 h-16 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 flex items-center justify-center mx-auto mb-6 group-hover:border-blue-500/30 dark:group-hover:border-violet-500/30 transition-colors">
+                  <item.icon className="w-7 h-7 text-gray-700 dark:text-white/70 group-hover:text-blue-600 dark:group-hover:text-violet-400 transition-colors" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-white/50 leading-relaxed">
+                  {item.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section - Minimal */}
+      <section className="py-32">
+        <div className="max-w-4xl mx-auto px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
-              Ready to Transform Your Business?
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+              Ready to Start?
             </h2>
-            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-              Let's discuss your project and create a custom solution that drives your business forward.
+            <p className="text-lg text-gray-600 dark:text-white/50 mb-10 max-w-2xl mx-auto">
+              Let's discuss your project and create a solution that drives your business forward.
             </p>
+            
             <div className="flex flex-wrap justify-center gap-4">
               <Link
                 href="/contact-us"
-                className="px-8 py-4 bg-white text-orange-600 font-bold rounded-xl hover:bg-gray-100 transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-black rounded-full font-medium hover:scale-[1.02] transition-transform duration-200"
               >
-                Get Free Consultation
+                Schedule Consultation
+                <FaArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/projects"
-                className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-xl hover:bg-white/10 transition-all duration-200"
+                className="inline-flex items-center gap-2 px-8 py-4 border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-full font-medium hover:bg-gray-50 dark:hover:bg-white/5 transition-colors duration-200"
               >
-                View Our Portfolio
+                View Portfolio
               </Link>
             </div>
           </motion.div>

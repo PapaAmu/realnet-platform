@@ -24,7 +24,7 @@ class InvoiceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-check';
 
-    protected static ?string $cluster = \App\Filament\Clusters\Billing::class;
+    protected static ?string $navigationGroup = 'Billing';
 
 
 

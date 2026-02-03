@@ -4,9 +4,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\QuotationController;
 use App\Http\Controllers\Api\MessageController;
-use App\Http\Controllers\Api\StarterWebsiteQuoteController;
-use App\Http\Controllers\Api\EcommerceWebsiteQuoteController;
-use App\Http\Controllers\Api\CustomWebsiteQuoteController;
+
+
 use App\Http\Controllers\Api\BlogPostController;
 
 

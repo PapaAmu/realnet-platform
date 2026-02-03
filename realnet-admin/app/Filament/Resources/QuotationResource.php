@@ -24,13 +24,13 @@ class QuotationResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-currency-dollar';
 
-    protected static ?string $cluster = \App\Filament\Clusters\Billing::class;
+    protected static ?string $navigationGroup = 'Billing';
 
     protected static ?string $recordTitleAttribute = 'quotation_number';
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['quotation_number', 'client.name', 'company'];
+        return ['quotation_number', 'client.name', 'company', 'name', 'email'];
     }
 
     protected static ?int $navigationSort = 2;
@@ -98,169 +98,157 @@ class QuotationResource extends Resource
                                     ->native(false)
                                     ->searchable(),
                             ]),
-                        Grid::make(2)
+                            
+                        Grid::make(3)
                             ->schema([
                                 Forms\Components\DatePicker::make('issue_date')
                                     ->default(now())
                                     ->required(),
                                 Forms\Components\DatePicker::make('expiry_date')
-                                    ->default(now()->addDays(30))
+                                    ->default(now()->addDays(7))
                                     ->required(),
                             ]),
                     ]),
 
                 Section::make('Client Information')
-                    ->icon('heroicon-o-user-group')
-                    ->description('Client contact and billing details')
+                    ->icon('heroicon-o-user')
+                    ->description('Client contact details')
                     ->collapsible()
-                    ->collapsed()
                     ->schema([
                         Grid::make(2)
                             ->schema([
                                 Forms\Components\TextInput::make('name')
-                                    ->required()
-                                    ->maxLength(255),
+                                    ->label('Contact Person')
+                                    ->required(),
+                                Forms\Components\TextInput::make('company')
+                                    ->label('Company Name'),
                                 Forms\Components\TextInput::make('email')
                                     ->email()
-                                    ->required()
-                                    ->maxLength(255),
+                                    ->required(),
                                 Forms\Components\TextInput::make('phone')
-                                    ->tel()
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('company')
-                                    ->label('Company / Client')
-                                    ->maxLength(255),
+                                    ->tel(),
                                 Forms\Components\Textarea::make('address')
                                     ->rows(2)
                                     ->columnSpanFull(),
                             ]),
                     ]),
 
-                Section::make('Web Request Details')
-                    ->icon('heroicon-o-globe-alt')
-                    ->description('Details submitted via website form')
+                Section::make('Service Request Details')
+                    ->icon('heroicon-o-clipboard-document-list')
+                    ->description('Details from the quotation request form')
                     ->collapsible()
-                    ->collapsed(fn ($record) => $record && $record->items()->exists()) // Collapse if items exist (implies converted to formal quote)
                     ->schema([
                         Grid::make(2)
                             ->schema([
                                 Forms\Components\TextInput::make('service')
                                     ->label('Service Requested'),
-                                Forms\Components\TextInput::make('project_type')
-                                    ->label('Project Type'),
+                                Forms\Components\TextInput::make('project_type'),
                                 Forms\Components\TextInput::make('budget')
                                     ->label('Budget Range'),
-                                Forms\Components\TextInput::make('timeline')
-                                    ->label('Timeline'),
-                                Forms\Components\TextInput::make('urgency')
-                                    ->label('Urgency'),
-                                Forms\Components\TextInput::make('preferred_contact_method')
-                                    ->label('Preferred Contact'),
-                                Forms\Components\Textarea::make('project_description')
-                                    ->label('Project Description')
-                                    ->columnSpanFull(),
-                                Forms\Components\Textarea::make('additional_details')
-                                    ->label('Additional Details')
-                                    ->columnSpanFull(),
+                                Forms\Components\TextInput::make('timeline'),
+                                Forms\Components\TextInput::make('urgency'),
+                                Forms\Components\TextInput::make('preferred_contact_method'),
                                 Forms\Components\TextInput::make('reference')
-                                    ->label('Reference (How did they hear about us)'),
+                                    ->url()
+                                    ->label('Reference URL'),
+                                Forms\Components\Toggle::make('agree_to_terms')
+                                    ->label('Agreed to Terms')
+                                    ->disabled()
+                                    ->dehydrated(false),
                             ]),
+                        Forms\Components\Textarea::make('project_description')
+                            ->label('Project Description')
+                            ->rows(4)
+                            ->columnSpanFull(),
+                        Forms\Components\Textarea::make('additional_details')
+                            ->label('Additional Details')
+                            ->rows(3)
+                            ->columnSpanFull(),
                     ]),
 
                 Section::make('Line Items')
                     ->icon('heroicon-o-list-bullet')
-                    ->description('Add products or services to this quotation')
                     ->schema([
                         Repeater::make('items')
                             ->relationship()
                             ->schema([
-                                Forms\Components\TextInput::make('description')
+                                Forms\Components\Textarea::make('description')
                                     ->required()
-                                    ->columnSpan(3),
+                                    ->columnSpan(4),
                                 Forms\Components\TextInput::make('quantity')
                                     ->numeric()
                                     ->default(1)
                                     ->required()
+                                    ->columnSpan(2)
                                     ->live()
-                                    ->afterStateUpdated(fn (Get $get, Set $set) => self::updateLineTotal($get, $set))
-                                    ->columnSpan(1),
+                                    ->afterStateUpdated(function ($state, Get $get, Set $set) {
+                                        $set('amount', $state * $get('unit_price'));
+                                    }),
                                 Forms\Components\TextInput::make('unit_price')
                                     ->numeric()
                                     ->default(0)
                                     ->required()
+                                    ->columnSpan(2)
                                     ->live()
-                                    ->afterStateUpdated(fn (Get $get, Set $set) => self::updateLineTotal($get, $set))
-                                    ->columnSpan(1),
+                                    ->afterStateUpdated(function ($state, Get $get, Set $set) {
+                                        $set('amount', $state * $get('quantity'));
+                                    }),
                                 Forms\Components\TextInput::make('amount')
                                     ->numeric()
+                                    ->default(0)
                                     ->disabled()
                                     ->dehydrated()
-                                    ->columnSpan(1),
+                                    ->columnSpan(2),
                             ])
-                            ->columns(6)
+                            ->columns(10)
+                            ->defaultItems(0)
                             ->live()
-                            ->afterStateUpdated(fn (Get $get, Set $set) => self::updateTotals($get, $set)),
+                            ->afterStateUpdated(function (Get $get, Set $set) {
+                                self::updateTotals($get, $set);
+                            }),
                     ]),
 
                 Section::make('Totals')
-                    ->icon('heroicon-o-calculator')
-                    ->description('Financial summary and calculations')
                     ->schema([
-                        Grid::make(3)
+                        Grid::make(2)
                             ->schema([
-                                Forms\Components\TextInput::make('subtotal')
-                                    ->numeric()
-                                    ->prefix('R')
-                                    ->readOnly(),
-                                Forms\Components\TextInput::make('tax_rate')
-                                    ->label('Tax Rate (%)')
-                                    ->numeric()
-                                    ->default(0)
-                                    ->live()
-                                    ->afterStateUpdated(fn (Get $get, Set $set) => self::updateTotals($get, $set)),
-                                Forms\Components\TextInput::make('tax_amount')
-                                    ->numeric()
-                                    ->prefix('R')
-                                    ->readOnly(),
+                                Forms\Components\Group::make()
+                                    ->schema([
+                                        Forms\Components\Textarea::make('notes')
+                                            ->rows(3),
+                                        Forms\Components\Textarea::make('terms')
+                                            ->rows(3),
+                                        Forms\Components\Textarea::make('banking_details')
+                                            ->rows(3)
+                                            ->default("Bank: FNB\nAccount Name: Realnet Web Solutions\nAccount Number: 6303888883\nBranch Code: 250655"),
+                                    ]),
+                                Forms\Components\Group::make()
+                                    ->schema([
+                                        Forms\Components\TextInput::make('subtotal')
+                                            ->numeric()
+                                            ->prefix('R')
+                                            ->readOnly(),
+                                        Forms\Components\TextInput::make('tax_rate')
+                                            ->label('Tax Rate (%)')
+                                            ->numeric()
+                                            ->default(0)
+                                            ->live()
+                                            ->afterStateUpdated(function (Get $get, Set $set) {
+                                                self::updateTotals($get, $set);
+                                            }),
+                                        Forms\Components\TextInput::make('tax_amount')
+                                            ->numeric()
+                                            ->prefix('R')
+                                            ->readOnly(),
+                                        Forms\Components\TextInput::make('total_amount')
+                                            ->numeric()
+                                            ->prefix('R')
+                                            ->readOnly()
+                                            ->extraInputAttributes(['class' => 'text-xl font-bold']),
+                                    ]),
                             ]),
-                        Forms\Components\TextInput::make('total_amount')
-                            ->label('Grand Total')
-                            ->numeric()
-                            ->prefix('R')
-                            ->readOnly()
-                            ->extraInputAttributes(['class' => 'text-xl font-bold']),
                     ]),
-
-                Section::make('Terms & Notes')
-                    ->icon('heroicon-o-document-text')
-                    ->description('Additional information, terms, and banking details')
-                    ->collapsible()
-                    ->collapsed()
-                    ->schema([
-        Forms\Components\Textarea::make('notes')
-            ->label('Notes for Client')
-            ->rows(3),
-
-        Forms\Components\Textarea::make('terms')
-            ->label('Terms & Conditions')
-            ->default("1. Valid for 30 days.\n2. 50% deposit required to start.\n3. Balance due upon completion.")
-            ->rows(3),
-
-        Forms\Components\Textarea::make('banking_details')
-            ->label('Banking Details')
-            ->default("BANK NAME: Standard Bank\nAccount holder: REALNET WEB SOLUTIONS\nAccount type: CURRENT\nAccount number: 10231694243\nBranch code: 051001\nSWIFT code: SBZA ZA JJ")
-            ->rows(6),
-    ]),
-]);
-
-    }
-
-    public static function updateLineTotal(Get $get, Set $set): void
-    {
-        $quantity = (float) ($get('quantity') ?? 0);
-        $price = (float) ($get('unit_price') ?? 0);
-        $amount = round($quantity * $price, 2);
-        $set('amount', number_format($amount, 2, '.', ''));
+            ]);
     }
 
     public static function updateTotals(Get $get, Set $set): void
@@ -270,27 +258,17 @@ class QuotationResource extends Resource
 
         if ($items) {
             foreach ($items as $item) {
-                // Calculate amount directly from quantity and unit_price to ensure accuracy
-                // This avoids issues with formatted strings or missing amounts
-                $quantity = (float) ($item['quantity'] ?? 0);
-                $unitPrice = (float) ($item['unit_price'] ?? 0);
-                $lineAmount = $quantity * $unitPrice;
-                $subtotal += $lineAmount;
+                $subtotal += ($item['quantity'] * $item['unit_price']);
             }
         }
 
-        // Round subtotal to 2 decimal places to avoid floating point precision issues
-        $subtotal = round($subtotal, 2);
+        $taxRate = $get('tax_rate') ?? 0;
+        $taxAmount = $subtotal * ($taxRate / 100);
+        $total = $subtotal + $taxAmount;
+
         $set('subtotal', number_format($subtotal, 2, '.', ''));
-        
-        // Calculate tax amount
-        $taxRate = (float) ($get('tax_rate') ?? 0);
-        $taxAmount = round($subtotal * ($taxRate / 100), 2);
         $set('tax_amount', number_format($taxAmount, 2, '.', ''));
-        
-        // Calculate grand total (subtotal + tax)
-        $totalAmount = round($subtotal + $taxAmount, 2);
-        $set('total_amount', number_format($totalAmount, 2, '.', ''));
+        $set('total_amount', number_format($total, 2, '.', ''));
     }
 
     public static function table(Table $table): Table
@@ -300,49 +278,37 @@ class QuotationResource extends Resource
                 Tables\Columns\TextColumn::make('quotation_number')
                     ->searchable()
                     ->sortable()
-                    ->weight('bold')
-                    ->icon('heroicon-o-document-text')
-                    ->copyable()
-                    ->copyMessage('Quotation number copied!')
-                    ->copyMessageDuration(1500),
-                Tables\Columns\TextColumn::make('client.name')
-                    ->label('Client')
-                    ->placeholder(fn ($record) => $record->company ?: $record->name)
+                    ->weight('bold'),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Contact Person')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('issue_date')
-                    ->date()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('company')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('service')
+                    ->label('Service')
+                    ->badge()
+                    ->color('primary'),
                 Tables\Columns\TextColumn::make('total_amount')
                     ->money('ZAR')
-                    ->sortable()
-                    ->weight('bold'),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->icon(fn (string $state): string => match ($state) {
-                        'draft' => 'heroicon-o-pencil',
-                        'sent' => 'heroicon-o-paper-airplane',
-                        'accepted' => 'heroicon-o-check-circle',
-                        'rejected' => 'heroicon-o-x-circle',
-                        'invoiced' => 'heroicon-o-arrow-right-circle',
-                        default => 'heroicon-o-document',
-                    })
                     ->color(fn (string $state): string => match ($state) {
                         'draft' => 'gray',
                         'sent' => 'info',
                         'accepted' => 'success',
                         'rejected' => 'danger',
-                        'invoiced' => 'primary',
-                    })
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'draft' => 'Draft',
-                        'sent' => 'Sent',
-                        'accepted' => 'Accepted',
-                        'rejected' => 'Rejected',
-                        'invoiced' => 'Invoiced',
-                        default => $state,
+                        'invoiced' => 'warning',
                     }),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
@@ -352,144 +318,40 @@ class QuotationResource extends Resource
                         'rejected' => 'Rejected',
                         'invoiced' => 'Invoiced',
                     ]),
+                Tables\Filters\SelectFilter::make('service')
+                    ->options([
+                        'Website Development' => 'Website Development',
+                        'Mobile App Development' => 'Mobile App Development',
+                        'Software Development' => 'Software Development',
+                        'Hosting & Business Email' => 'Hosting & Business Email',
+                        'E-Commerce Solution' => 'E-Commerce Solution',
+                        'UI/UX Design' => 'UI/UX Design',
+                        'Digital Marketing' => 'Digital Marketing',
+                    ]),
             ])
             ->actions([
-                Tables\Actions\Action::make('convert_to_invoice')
-                    ->label('Convert to Invoice')
-                    ->icon('heroicon-o-arrow-right-circle')
-                    ->color('success')
-                    ->button()
-                    ->size('sm')
-                    ->visible(fn ($record) => $record->status === 'accepted' && !$record->quotation_id)
-                    ->requiresConfirmation()
-                    ->action(function (Quotation $record) {
-                        // Create invoice from quotation
-                        $invoice = \App\Models\Invoice::create([
-                            'quotation_id' => $record->id,
-                            'client_id' => $record->client_id,
-                            'name' => $record->name,
-                            'email' => $record->email,
-                            'phone' => $record->phone,
-                            'company' => $record->company,
-                            'issue_date' => now(),
-                            'due_date' => now()->addDays(30),
-                            'status' => 'sent',
-                            'subtotal' => $record->subtotal,
-                            'tax_rate' => $record->tax_rate,
-                            'tax_amount' => $record->tax_amount,
-                            'total_amount' => $record->total_amount,
-                            'amount_due' => $record->total_amount,
-                            'notes' => $record->notes,
-                            'terms' => $record->terms,
-                            'banking_details' => $record->banking_details,
-                        ]);
-
-                        // Copy items
-                        foreach ($record->items as $item) {
-                            $invoice->items()->create([
-                                'description' => $item->description,
-                                'quantity' => $item->quantity,
-                                'unit_price' => $item->unit_price,
-                                'amount' => $item->amount,
-                            ]);
-                        }
-
-                        // Update quotation status
-                        $record->status = 'invoiced';
-                        $record->save();
-
-                        \Filament\Notifications\Notification::make()
-                            ->title('Invoice Created')
-                            ->success()
-                            ->body("Invoice #{$invoice->invoice_number} has been created.")
-                            ->send();
-
-                        return redirect()->route('filament.admin.billing.resources.invoices.edit', $invoice);
-                    }),
-                Tables\Actions\Action::make('send_quotation')
-                    ->label('Send Quotation')
-                    ->icon('heroicon-o-paper-airplane')
-                    ->color('info')
-                    ->button()
-                    ->size('sm')
-                    ->requiresConfirmation()
-                    ->modalHeading('Send Quotation to Client')
-                    ->modalDescription(fn (Quotation $record) => "Send quotation {$record->quotation_number} to {$record->email}?")
-                    ->modalSubmitActionLabel('Send Quotation')
-                    ->action(function (Quotation $record) {
-                        // Validate email
-                        if (empty($record->email)) {
-                            \Filament\Notifications\Notification::make()
-                                ->title('Email Required')
-                                ->danger()
-                                ->body('Please add an email address to the quotation before sending.')
-                                ->send();
-                            return;
-                        }
-
-                        // Generate PDF
-                        try {
-                            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('quotations.print', ['quotation' => $record]);
-
-                            // Send email notification to client
-                            \Illuminate\Support\Facades\Mail::send('emails.quotation', [
-                                'quotation' => $record,
-                            ], function ($message) use ($record, $pdf) {
-                                $message->to($record->email, $record->name)
-                                    ->subject('Quotation ' . $record->quotation_number . ' from RealNet Web Solutions')
-                                    ->attachData($pdf->output(), 'Quotation-' . $record->quotation_number . '.pdf', [
-                                        'mime' => 'application/pdf',
-                                    ]);
-                            });
-
-                            // Update status to sent if it was draft
-                            if ($record->status === 'draft') {
-                                $record->update(['status' => 'sent']);
-                            }
-
-                            \Filament\Notifications\Notification::make()
-                                ->title('Quotation Sent Successfully')
-                                ->success()
-                                ->body("Quotation {$record->quotation_number} has been sent to {$record->email} with PDF attachment.")
-                                ->send();
-                        } catch (\Exception $e) {
-                            \Filament\Notifications\Notification::make()
-                                ->title('Failed to Send Quotation')
-                                ->danger()
-                                ->body("Error: " . $e->getMessage() . ". Please check your email configuration.")
-                                ->send();
-                            Log::error('Failed to send quotation: ' . $e->getMessage(), [
-                                'quotation_id' => $record->id,
-                                'email' => $record->email,
-                            ]);
-                        }
-                    }),
-                Tables\Actions\Action::make('print')
-                    ->label('Print / PDF')
-                    ->icon('heroicon-o-printer')
-                    ->url(fn (Quotation $record) => route('quotation.print', $record))
-                    ->openUrlInNewTab(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('convertToInvoice')
+                    ->label('Convert to Invoice')
+                    ->icon('heroicon-o-document-currency-dollar')
+                    ->color('warning')
+                    ->requiresConfirmation()
+                    ->visible(fn (Quotation $record) => $record->status === 'accepted' && $record->items()->count() > 0)
+                    ->action(function (Quotation $record) {
+                        // Logic to convert to invoice would go here
+                        // For now just update status
+                        $record->update(['status' => 'invoiced']);
+                        
+                        // You would typically redirect to the create invoice page 
+                        // pre-filled with this quotation's data
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            ->defaultSort('created_at', 'desc')
-            ->groups([
-                Grouping\Group::make('status')
-                    ->label('Status')
-                    ->collapsible(),
-                Grouping\Group::make('issue_date')
-                    ->label('Issue Date')
-                    ->date()
-                    ->collapsible(),
-            ])
-            ->defaultGroup('status')
-            ->poll('30s');
+            ]);
     }
 
     public static function getRelations(): array

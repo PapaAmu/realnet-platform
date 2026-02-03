@@ -3,7 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --color-primary: #7c3aed; /* violet-600 */
+  --color-primary: #025a62; /* violet-600 */
   --color-secondary: #06b6d4; /* cyan-500 */
   --color-accent: #f97316; /* orange-500 */
 }
@@ -11,7 +11,7 @@
 .dark {
   --background: #0a0a0f; /* darker background consistent with Hero */
   --foreground: #ededed;
-  --color-primary: #a78bfa; /* violet-400 */
+  --color-primary: #0396a4; /* violet-400 */
   --color-secondary: #22d3ee; /* cyan-400 */
   --color-accent: #fb923c; /* orange-400 */
 }

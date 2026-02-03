@@ -13,7 +13,8 @@ import {
   FaArrowRight,
   FaWhatsapp,
   FaStar,
-  FaShieldAlt
+  FaHome,
+  FaRocket
 } from 'react-icons/fa';
 
 // Create a motion-enhanced Link component
@@ -22,14 +23,13 @@ const MotionLink = motion(Link);
 const FormSuccessPage = () => {
   const searchParams = useSearchParams();
   const formType = searchParams.get('type') || 'form';
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(7);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
-          // Optionally auto-redirect here
           return 0;
         }
         return prev - 1;
@@ -43,36 +43,33 @@ const FormSuccessPage = () => {
     switch (formType) {
       case 'contact':
         return {
-          title: 'Message Sent Successfully!',
-          description: 'Thank you for reaching out to us. We have received your message and will get back to you shortly.',
-          icon: '💬',
-          nextSteps: [
-            'We will review your message',
-            'Our team will contact you within 2-24 hours',
-            'We will provide detailed responses to your queries'
-          ]
+          title: 'Message Transmitted',
+          subtitle: 'We have received your transmission.',
+          description: 'Our team is analyzing your inquiry. You will receive a response at the provided coordinates shortly.',
+          icon: FaEnvelope,
+          color: 'text-cyan-400',
+          bg: 'bg-cyan-400/10',
+          border: 'border-cyan-400/20'
         };
       case 'quotation':
         return {
-          title: 'Quote Request Received!',
-          description: 'Thank you for your interest in our services. We are excited to work with you and will prepare a detailed quotation.',
-          icon: '💰',
-          nextSteps: [
-            'We are analyzing your requirements',
-            'Our experts are preparing your custom quote',
-            'You will receive the quotation within 2-24 hours'
-          ]
+          title: 'Quote Request Received',
+          subtitle: 'Initiating project analysis sequence.',
+          description: 'Our algorithms are processing your requirements. A detailed quotation will be compiled and sent to you shortly.',
+          icon: FaCheckCircle,
+          color: 'text-emerald-400',
+          bg: 'bg-emerald-400/10',
+          border: 'border-emerald-400/20'
         };
       default:
         return {
-          title: 'Form Submitted Successfully!',
-          description: 'Thank you for your submission. We have received your information and will process it shortly.',
-          icon: '✅',
-          nextSteps: [
-            'We are processing your submission',
-            'Our team will review the information',
-            'You will hear from us within 2-24 hours'
-          ]
+          title: 'Submission Confirmed',
+          subtitle: 'Data packet received successfully.',
+          description: 'Your information has been logged securely. We will process this and contact you within the next cycle.',
+          icon: FaCheckCircle,
+          color: 'text-emerald-400',
+          bg: 'bg-emerald-400/10',
+          border: 'border-emerald-400/20'
         };
     }
   };
@@ -83,307 +80,215 @@ const FormSuccessPage = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
+      transition: { staggerChildren: 0.15, delayChildren: 0.2 }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const pulseVariants = {
-    initial: { scale: 1 },
-    pulse: {
-      scale: [1, 1.05, 1],
-      transition: {
-        duration: 2,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 pt-20">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <motion.div
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+    <div className="min-h-screen bg-slate-950 text-slate-200 flex flex-col items-center justify-center p-4 pt-32 relative overflow-hidden selection:bg-indigo-500/30">
+      
+      {/* Background Ambient Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] -z-10 pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[600px] h-[400px] bg-violet-600/5 rounded-full blur-[100px] -z-10 pointer-events-none" />
+
+      <motion.div
+        className="w-full max-w-4xl"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {/* Header Card */}
+        <motion.div 
+          className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 md:p-12 mb-6 text-center relative overflow-hidden"
+          variants={itemVariants}
         >
+          {/* Animated Border Gradient (Subtle) */}
+          <div className="absolute inset-0 rounded-3xl border border-primary/20 [mask-image:linear-gradient(to_bottom,black,transparent)] pointer-events-none" />
+          
           <motion.div
-            className="text-6xl mb-6"
-            variants={pulseVariants}
-            initial="initial"
-            animate="pulse"
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            className={`w-20 h-20 mx-auto rounded-2xl ${details.bg} ${details.border} border flex items-center justify-center mb-6 shadow-[0_0_30px_-5px_rgba(99,102,241,0.3)]`}
           >
-            {details.icon}
+            <details.icon className={`w-10 h-10 ${details.color}`} />
           </motion.div>
-          <motion.h1
-            className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
+
+          <div className="space-y-2 mb-6">
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-green-700 text-xs font-mono text-slate-400 uppercase tracking-widest"
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              Status: Success
+            </motion.div>
+            
+            <motion.h1 
+              className="text-3xl md:text-5xl font-bold text-white tracking-tight"
+              variants={itemVariants}
+            >
+              {details.title}
+            </motion.h1>
+            <motion.p 
+              className="text-lg text-slate-400 max-w-2xl mx-auto"
+              variants={itemVariants}
+            >
+              {details.subtitle}
+            </motion.p>
+          </div>
+
+          <motion.div 
+            className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50 max-w-xl mx-auto"
             variants={itemVariants}
           >
-            {details.title}
-          </motion.h1>
-          <motion.p
-            className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto"
-            variants={itemVariants}
-          >
-            {details.description}
-          </motion.p>
+            <p className="text-sm text-slate-300 leading-relaxed">
+              {details.description}
+            </p>
+          </motion.div>
         </motion.div>
 
-        <motion.div
-          className="grid md:grid-cols-2 gap-8 mb-12"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {/* Success Card */}
-          <motion.div
-            className="bg-white rounded-3xl shadow-xl p-8 border border-green-200"
+        {/* Info Grid */}
+        <div className="grid md:grid-cols-2 gap-6">
+          
+          {/* Next Steps */}
+          <motion.div 
+            className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-2xl p-6 md:p-8"
             variants={itemVariants}
           >
-            <div className="flex items-center mb-6">
-              <div className="bg-green-100 p-3 rounded-full mr-4">
-                <FaCheckCircle className="text-green-600 text-2xl" />
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2 bg-indigo-500/10 rounded-lg border border-indigo-500/20">
+                <FaRocket className="text-indigo-400 w-5 h-5" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-900">What Happens Next?</h2>
+              <h3 className="text-lg font-semibold text-white">Next Steps</h3>
             </div>
-            
-            <ul className="space-y-4 mb-6">
-              {details.nextSteps.map((step, index) => (
-                <motion.li
-                  key={index}
-                  className="flex items-start"
-                  initial={{ opacity: 0, x: -20 }}
+
+            <ul className="space-y-4">
+              {[
+                'Analyzing your requirements',
+                'Assigning specialist consultant',
+                'Preparing detailed proposal',
+                'Contacting you via email/phone'
+              ].map((step, i) => (
+                <motion.li 
+                  key={i} 
+                  className="flex items-center gap-4 group"
+                  initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.2 + 0.5 }}
+                  transition={{ delay: 0.5 + (i * 0.1) }}
                 >
-                  <div className="bg-blue-100 p-1 rounded-full mr-3 mt-1">
-                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-slate-500 group-hover:border-indigo-500/50 group-hover:text-indigo-400 transition-colors">
+                    {i + 1}
                   </div>
-                  <span className="text-gray-700">{step}</span>
+                  <span className="text-slate-300 text-sm font-medium group-hover:text-white transition-colors">{step}</span>
                 </motion.li>
               ))}
             </ul>
 
-            <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4">
-              <div className="flex items-center mb-2">
-                <FaClock className="text-yellow-600 mr-2" />
-                <span className="font-semibold text-yellow-800">Response Time</span>
+            <div className="mt-6 pt-6 border-t border-slate-800">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-slate-500">Expected Response</span>
+                <span className="text-emerald-400 font-semibold flex items-center gap-2">
+                  <FaClock className="w-3 h-3" /> 2-24 Hours
+                </span>
               </div>
-              <p className="text-yellow-700 text-sm">
-                We typically respond within <strong>2 to 24 hours</strong> during business hours. 
-                For urgent matters, feel free to contact us directly.
-              </p>
             </div>
           </motion.div>
 
-          {/* Contact & Next Steps */}
-          <motion.div
-            className="space-y-6"
+          {/* Contact / Support */}
+          <motion.div 
+            className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-2xl p-6 md:p-8 flex flex-col"
             variants={itemVariants}
           >
-            {/* Quick Contact */}
-            <div className="bg-white rounded-3xl shadow-xl p-8 border border-blue-200">
-              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                <FaEnvelope className="text-blue-600 mr-2" />
-                Need Immediate Assistance?
-              </h3>
-              <div className="space-y-4">
-                <motion.a
-                  href="mailto:lukhele@realnet-web.co.za"
-                  className="flex items-center justify-between p-4 bg-blue-50 rounded-2xl hover:bg-blue-100 transition-colors group"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <div className="flex items-center">
-                    <div className="bg-blue-100 p-2 rounded-full mr-3">
-                      <FaEnvelope className="text-blue-600" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900">Email Us</div>
-                      <div className="text-sm text-gray-600">lukhele@realnet-web.co.za</div>
-                    </div>
-                  </div>
-                  <FaArrowRight className="text-blue-600 group-hover:translate-x-1 transition-transform" />
-                </motion.a>
-
-                <motion.a
-                  href="tel:+27640388883"
-                  className="flex items-center justify-between p-4 bg-green-50 rounded-2xl hover:bg-green-100 transition-colors group"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <div className="flex items-center">
-                    <div className="bg-green-100 p-2 rounded-full mr-3">
-                      <FaPhone className="text-green-600" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900">Call Us</div>
-                      <div className="text-sm text-gray-600">+27 64 038-8883</div>
-                    </div>
-                  </div>
-                  <FaArrowRight className="text-green-600 group-hover:translate-x-1 transition-transform" />
-                </motion.a>
-
-                <motion.a
-                  href="https://wa.me/27640388883"
-                  className="flex items-center justify-between p-4 bg-[#25D366] bg-opacity-10 rounded-2xl hover:bg-opacity-20 transition-colors group"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <div className="flex items-center">
-                    <div className="bg-[#25D366] bg-opacity-20 p-2 rounded-full mr-3">
-                      <FaWhatsapp className="text-[#25D366]" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900">WhatsApp</div>
-                      <div className="text-sm text-gray-600">Instant messaging</div>
-                    </div>
-                  </div>
-                  <FaArrowRight className="text-[#25D366] group-hover:translate-x-1 transition-transform" />
-                </motion.a>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2 bg-violet-500/10 rounded-lg border border-violet-500/20">
+                <FaPhone className="text-violet-400 w-5 h-5" />
               </div>
+              <h3 className="text-lg font-semibold text-white">Immediate Support</h3>
             </div>
 
-            {/* Trust Indicators */}
-            <div className="bg-white rounded-3xl shadow-xl p-6 border border-purple-200">
-              <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                <FaShieldAlt className="text-purple-600 mr-2" />
-                Why Choose RealNet?
-              </h3>
-              <div className="grid grid-cols-2 gap-4 text-center">
-                <div className="bg-purple-50 rounded-2xl p-3">
-                  <div className="text-2xl font-bold text-purple-600">24h</div>
-                  <div className="text-xs text-purple-700">Max Response</div>
+            <div className="space-y-3 flex-1">
+              <a href="mailto:lukhele@realnet-web.co.za" className="flex items-center gap-4 p-4 rounded-xl bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 hover:border-indigo-500/30 transition-all group">
+                <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center group-hover:bg-indigo-600 transition-colors">
+                  <FaEnvelope className="text-slate-300 group-hover:text-white" />
                 </div>
-                <div className="bg-orange-50 rounded-2xl p-3">
-                  <div className="text-2xl font-bold text-orange-600">100%</div>
-                  <div className="text-xs text-orange-700">Satisfaction</div>
+                <div className="flex-1">
+                  <div className="text-xs text-slate-500 uppercase tracking-wider">Email</div>
+                  <div className="text-sm font-medium text-slate-200">lukhele@realnet-web.co.za</div>
                 </div>
-                <div className="bg-green-50 rounded-2xl p-3">
-                  <div className="text-2xl font-bold text-green-600">50+</div>
-                  <div className="text-xs text-green-700">Projects</div>
+                <FaArrowRight className="text-slate-600 group-hover:text-indigo-400 group-hover:translate-x-1 transition-all" />
+              </a>
+
+              <a href="tel:+27640388883" className="flex items-center gap-4 p-4 rounded-xl bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 hover:border-emerald-500/30 transition-all group">
+                <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center group-hover:bg-emerald-600 transition-colors">
+                  <FaPhone className="text-slate-300 group-hover:text-white" />
                 </div>
-                <div className="bg-blue-50 rounded-2xl p-3">
-                  <div className="text-2xl font-bold text-blue-600">5★</div>
-                  <div className="text-xs text-blue-700">Rated</div>
+                <div className="flex-1">
+                  <div className="text-xs text-slate-500 uppercase tracking-wider">Phone</div>
+                  <div className="text-sm font-medium text-slate-200">+27 64 038-8883</div>
                 </div>
-              </div>
+                <FaArrowRight className="text-slate-600 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
+              </a>
+
+              <a href="https://wa.me/27640388883" target="_blank" rel="noreferrer" className="flex items-center gap-4 p-4 rounded-xl bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 hover:border-green-500/30 transition-all group">
+                <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center group-hover:bg-green-600 transition-colors">
+                  <FaWhatsapp className="text-slate-300 group-hover:text-white" />
+                </div>
+                <div className="flex-1">
+                  <div className="text-xs text-slate-500 uppercase tracking-wider">WhatsApp</div>
+                  <div className="text-sm font-medium text-slate-200">Instant Message</div>
+                </div>
+                <FaArrowRight className="text-slate-600 group-hover:text-green-400 group-hover:translate-x-1 transition-all" />
+              </a>
             </div>
           </motion.div>
-        </motion.div>
+        </div>
 
-        {/* Action Buttons */}
-        <motion.div
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1 }}
+        {/* Footer Actions - CORRECTED STYLING */}
+        <motion.div 
+          className="mt-12 flex flex-col sm:flex-row gap-4 justify-center items-center"
+          variants={itemVariants}
         >
+          {/* HOME BUTTON: White bg, rounded-full, icon only */}
           <MotionLink
             href="/"
-            className="px-8 py-4 bg-gradient-to-r from-orange-500 to-pink-500 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center group"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className="w-full sm:w-auto px-8 py-3.5 bg-white text-slate-950 font-semibold rounded-full shadow-lg shadow-white/10 hover:shadow-white/20 flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5"
+            whileTap={{ scale: 0.98 }}
           >
-            <span>Back to Homepage</span>
-            <FaArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+            <FaHome className="w-4 h-4" />
+            Return Home
           </MotionLink>
 
+          {/* VIEW WORK BUTTON: No bg, primary border, rounded-full */}
           <MotionLink
             href="/projects"
-            className="px-8 py-4 border border-gray-300 text-gray-700 font-semibold rounded-2xl hover:bg-gray-50 transition-all duration-200 flex items-center group"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className="w-full sm:w-auto px-8 py-3.5 bg-transparent text-indigo-400 font-semibold rounded-full border border-indigo-500/50 hover:bg-indigo-500/10 flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5"
+            whileTap={{ scale: 0.98 }}
           >
-            <span>View Our Work</span>
-            <FaStar className="ml-2 text-yellow-500 group-hover:scale-110 transition-transform" />
-          </MotionLink>
-
-          <MotionLink
-            href="/contact-us"
-            className="px-8 py-4 border border-blue-300 text-blue-600 font-semibold rounded-2xl hover:bg-blue-50 transition-all duration-200 flex items-center group"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <span>Contact Again</span>
-            <FaEnvelope className="ml-2 group-hover:scale-110 transition-transform" />
+            <FaStar className="w-4 h-4" />
+            View Our Work
           </MotionLink>
         </motion.div>
 
-        {/* Countdown Notice */}
-        <motion.div
-          className="text-center mt-12 p-6 bg-white rounded-2xl shadow-lg border border-gray-200 max-w-md mx-auto"
+        {/* Countdown Footer */}
+        <motion.div 
+          className="mt-12 text-center pb-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
+          transition={{ delay: 1 }}
         >
-          <div className="flex items-center justify-center mb-3">
-            <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-            <span className="text-sm font-medium text-gray-700">You will be redirected in</span>
-          </div>
-          <div className="text-2xl font-bold text-gray-900 mb-2">
-            {countdown} second{countdown !== 1 ? 's' : ''}
-          </div>
-          <p className="text-sm text-gray-600">
-            Or click any button above to navigate manually
+          <p className="text-xs text-slate-500 font-mono">
+            AUTO-REDIRECT IN <span className="text-indigo-400">{countdown}</span>S
           </p>
         </motion.div>
 
-        {/* Floating Elements */}
-        <motion.div
-          className="absolute top-1/4 left-10 w-4 h-4 bg-green-400 rounded-full opacity-20"
-          animate={{
-            y: [0, -20, 0],
-            opacity: [0.2, 0.5, 0.2],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div
-          className="absolute top-1/3 right-20 w-6 h-6 bg-blue-400 rounded-full opacity-30"
-          animate={{
-            y: [0, 30, 0],
-            opacity: [0.3, 0.6, 0.3],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1
-          }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 left-1/4 w-3 h-3 bg-purple-400 rounded-full opacity-25"
-          animate={{
-            y: [0, -15, 0],
-            opacity: [0.25, 0.5, 0.25],
-          }}
-          transition={{
-            duration: 2.5,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 0.5
-          }}
-        />
-      </div>
+      </motion.div>
     </div>
   );
 };

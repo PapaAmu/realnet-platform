@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import CookieConsent from "@/components/CookieConsent";
 import ThemeProvider from "@/components/ThemeProvider";
+import BackToTop from "@/components/BackToTop";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -123,12 +124,13 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Navbar />
-          {children}
-          <Footer />
-          <GoogleAnalytics />
-          <CookieConsent />
-        </ThemeProvider>
+            <Navbar />
+            {children}
+            <BackToTop />
+            <Footer />
+            <GoogleAnalytics />
+            <CookieConsent />
+          </ThemeProvider>
       </body>
     </html>
   );

@@ -51,7 +51,7 @@ class RecentInvoices extends BaseWidget
             ])
             ->actions([
                 Tables\Actions\Action::make('view')
-                    ->url(fn ($record) => route('filament.admin.billing.resources.invoices.edit', $record))
+                    ->url(fn ($record) => route('filament.admin.resources.invoices.edit', $record))
                     ->icon('heroicon-o-eye'),
             ]);
     }

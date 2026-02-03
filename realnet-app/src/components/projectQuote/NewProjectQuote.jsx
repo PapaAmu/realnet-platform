@@ -1,86 +1,146 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import {
   FaPhone,
   FaEnvelope,
-  FaMapMarkerAlt,
-  FaDollarSign,
-  FaCalendarAlt,
   FaFileAlt,
   FaCheckCircle,
   FaExclamationCircle,
+  FaArrowRight,
+  FaArrowLeft,
+  FaTimes,
+  FaPaperPlane,
+  FaUser,
+  FaBriefcase,
+  FaTag,
+  FaCommentAlt,
+  FaClock,
+  FaInfoCircle,
+  FaDollarSign
 } from "react-icons/fa";
-import { useAnalytics } from "@/hooks/useAnalytics";
 
-// Custom loader component with advanced animations (matching Contact page)
-const AdvancedLoader = () => {
-  return (
-    <div className="absolute inset-0 flex items-center justify-center">
-      {/* Main spinner */}
-      <motion.div
-        className="w-8 h-8 border-4 border-white border-t-transparent rounded-full"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+// Mocking the analytics hook if it doesn't exist in your file structure
+const useAnalytics = () => ({
+  trackFormSubmission: (label) => console.log("Track Form:", label),
+  trackServiceQuote: (service) => console.log("Track Service:", service),
+  trackEvent: (event) => console.log("Track Event:", event),
+});
+
+const InputField = ({ label, name, value, onChange, error, type = "text", required, icon: Icon, isTextarea, options, placeholder }) => (
+  <div className="flex flex-col gap-1.5 group relative z-10"> {/* Added relative z-10 */}
+    <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+      {Icon && <Icon className="w-3 h-3 text-indigo-400" />}
+      {label}
+      {required && <span className="text-rose-500">*</span>}
+    </label>
+    
+    {isTextarea ? (
+      <textarea
+        key={name} // Explicit key for stability
+        name={name}
+        value={value}
+        onChange={onChange}
+        rows={4}
+        placeholder={placeholder || `Enter ${label.toLowerCase()}...`}
+        className={`w-full bg-slate-800/50 border ${error ? 'border-rose-500/50 ring-1 ring-rose-500/20' : 'border-slate-700 hover:border-slate-600'} rounded-xl px-4 py-3 text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/30 transition-all duration-200 resize-none relative z-10`}
       />
-      
-      {/* Orbiting particles */}
-      {[0, 1, 2].map((i) => (
-        <motion.div
-          key={i}
-          className="absolute w-2 h-2 bg-white rounded-full"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{
-            repeat: Infinity,
-            duration: 1.5,
-            repeatType: "reverse",
-            delay: i * 0.2,
-          }}
+    ) : options ? (
+      <div className="relative">
+        <select
+          key={name} // Explicit key for stability
+          name={name}
+          value={value}
+          onChange={onChange}
+          className={`w-full bg-slate-800/50 border ${error ? 'border-rose-500/50 ring-1 ring-rose-500/20' : 'border-slate-700 hover:border-slate-600'} rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/30 transition-all duration-200 appearance-none cursor-pointer relative z-10`}
         >
-          <motion.div
-            className="absolute inset-0 rounded-full"
-            animate={{
-              x: [0, 20 * Math.cos((i * 2 * Math.PI) / 3)],
-              y: [0, 20 * Math.sin((i * 2 * Math.PI) / 3)],
-            }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              repeatType: "reverse",
-              delay: i * 0.2,
-            }}
-          />
-        </motion.div>
-      ))}
-      
-      {/* Pulsing rings */}
-      <motion.div
-        className="absolute inset-0 border-2 border-white rounded-full"
-        animate={{ scale: [1, 1.5, 1], opacity: [1, 0, 1] }}
-        transition={{ duration: 2, repeat: Infinity }}
+          <option value="" disabled className="bg-slate-800 text-slate-400">{placeholder || `Select ${label}`}</option>
+          {options.map((opt, i) => (
+            <option key={i} value={opt} className="bg-slate-800 text-slate-200">{opt}</option>
+          ))}
+        </select>
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 z-20">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+        </div>
+      </div>
+    ) : (
+      <input
+        key={name} // Explicit key for stability
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        autoComplete={name === "email" ? "email" : name === "name" ? "name" : "off"} // Help browser autofill
+        placeholder={placeholder || `Enter ${label.toLowerCase()}`}
+        className={`w-full bg-slate-800/50 border ${error ? 'border-rose-500/50 ring-1 ring-rose-500/20' : 'border-slate-700 hover:border-slate-600'} rounded-xl px-4 py-3 text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/30 transition-all duration-200 relative z-10`}
       />
-      
-      <motion.div
-        className="absolute inset-0 border border-white rounded-full"
-        animate={{ scale: [1, 1.8, 1], opacity: [0.7, 0, 0.7] }}
-        transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}
+    )}
+    
+    {error && (
+      <motion.p 
+        initial={{ opacity: 0, y: -5 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        className="text-xs text-rose-400 flex items-center gap-1 mt-1"
+      >
+        <FaExclamationCircle className="w-3 h-3" /> {error}
+      </motion.p>
+    )}
+  </div>
+);
+
+const StepIndicator = ({ currentStep }) => {
+  const steps = [
+    { id: 1, label: "Contact", icon: FaUser },
+    { id: 2, label: "Project", icon: FaBriefcase },
+    { id: 3, label: "Review", icon: FaCheckCircle },
+  ];
+
+  return (
+    <div className="flex justify-between mb-8 relative">
+      {/* Connecting Line Background */}
+      <div className="absolute top-5 left-0 w-full h-0.5 bg-slate-800 -z-10"></div>
+      {/* Progress Line */}
+      <motion.div 
+        className="absolute top-5 left-0 h-0.5 bg-indigo-500 -z-10"
+        initial={{ width: "0%" }}
+        animate={{ width: `${((currentStep - 1) / 2) * 100}%` }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
       />
+
+      {steps.map((step) => {
+        const isActive = currentStep === step.id;
+        const isCompleted = currentStep > step.id;
+        
+        return (
+          <div key={step.id} className="flex flex-col items-center gap-2 bg-slate-950 px-2">
+            <motion.div 
+              className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 transition-colors duration-300 z-10 ${
+                isActive ? 'bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-500/30' : 
+                isCompleted ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : 
+                'bg-slate-900 border-slate-800 text-slate-500'
+              }`}
+              initial={false}
+              animate={isActive ? { scale: [1, 1.1, 1] } : {}}
+              transition={{ duration: 0.3 }}
+            >
+              {isCompleted ? <FaCheckCircle className="w-5 h-5" /> : <step.icon className="w-4 h-4" />}
+            </motion.div>
+            <span className={`text-xs font-medium ${isActive ? 'text-indigo-400' : isCompleted ? 'text-slate-400' : 'text-slate-600'}`}>
+              {step.label}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 };
 
 const Quotation = ({ onClose }) => {
   const router = useRouter();
-  const { 
-    trackFormSubmission, 
-    trackServiceQuote, 
-    trackEvent,
-    trackServiceNavigation 
-  } = useAnalytics();
-  
+  const { trackFormSubmission, trackServiceQuote, trackEvent } = useAnalytics();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -104,201 +164,82 @@ const Quotation = ({ onClose }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [redirectTimer, setRedirectTimer] = useState(5);
 
-  // Handle redirect on success
+  // --- Effects ---
   useEffect(() => {
     let interval;
-    if (submitStatus === "success") {
-      if (redirectTimer > 0) {
-        interval = setInterval(() => {
-          setRedirectTimer((prev) => prev - 1);
-        }, 1000);
-      } else {
-        router.push('/form-success?type=quotation');
-        if (onClose) onClose();
-      }
+    if (submitStatus === "success" && redirectTimer > 0) {
+      interval = setInterval(() => setRedirectTimer((prev) => prev - 1), 1000);
+    } else if (submitStatus === "success" && redirectTimer === 0) {
+      router.push('/form-success?type=quotation');
+      if (onClose) onClose();
     }
     return () => clearInterval(interval);
   }, [submitStatus, redirectTimer, router, onClose]);
 
+  // --- Handlers ---
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    // Debugging log to see if handler fires
+    console.log(`Changing ${name} to:`, type === "checkbox" ? checked : value);
     
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-
-    // Track service selection for analytics
-    if (name === "service" && value) {
-      trackServiceNavigation(value);
-      trackEvent({
-        action: 'service_selected',
-        category: 'Quotation Form',
-        label: value
-      });
-    }
-
-    // Track budget selection for lead quality
-    if (name === "budget" && value) {
-      trackEvent({
-        action: 'budget_selected',
-        category: 'Quotation Form',
-        label: value
-      });
-    }
-
-    // Clear error when user starts typing
+    setFormData(prev => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
+    
+    // Clear error when user types
     if (formErrors[name]) {
-      setFormErrors(prev => ({
-        ...prev,
-        [name]: "",
-      }));
+      setFormErrors(prev => ({ ...prev, [name]: "" }));
+    }
+    
+    if (name === "service" && value) {
+      trackEvent({ action: 'service_selected', category: 'Quotation Form', label: value });
     }
   };
 
-  const validateStep1 = () => {
+  const validateStep = (step) => {
     const errors = {};
-    
-    if (!formData.name.trim()) {
-      errors.name = "Name is required";
+    if (step === 1) {
+      if (!formData.name.trim()) errors.name = "Name is required";
+      if (!formData.email.trim()) errors.email = "Email is required";
+      else if (!/\S+@\S+\.\S+/.test(formData.email)) errors.email = "Invalid email format";
+      if (!formData.phone.trim()) errors.phone = "Phone number is required";
     }
-    
-    if (!formData.email.trim()) {
-      errors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = "Email is invalid";
+    if (step === 2) {
+      if (!formData.service) errors.service = "Service is required";
+      if (!formData.projectDescription.trim()) errors.projectDescription = "Description is required";
     }
-    
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
-  const validateStep2 = () => {
-    const errors = {};
-    
-    if (!formData.service) {
-      errors.service = "Service selection is required";
-    }
-    
-    if (!formData.projectDescription.trim()) {
-      errors.projectDescription = "Project description is required";
-    }
-    
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!validateStep2()) {
-      return;
-    }
-    
-    if (!formData.agreeToTerms) {
-      setFormErrors({ agreeToTerms: "You must agree to the terms" });
+    if (!validateStep(2) || !formData.agreeToTerms) {
+      if (!formData.agreeToTerms) setFormErrors({ agreeToTerms: "You must agree to the terms" });
       return;
     }
     
     setIsSubmitting(true);
-
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/quotations`, {
-        method: "POST",
+      const response = await fetch('http://localhost:8009/api/quotations', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify(formData),
       });
 
-      const data = await res.json();
-
-      if (res.ok) {
-        // Track successful form submission for analytics
-        trackFormSubmission('quotation_request');
-        trackServiceQuote(formData.service);
-        
-        // Track detailed conversion event
-        trackEvent({
-          action: 'quote_submitted',
-          category: 'Conversions',
-          label: formData.service,
-          value: formData.budget ? parseInt(formData.budget.replace(/[^0-9]/g, '')) || 1 : 1
-        });
-        
-        // Track lead quality based on service and budget
-        if (formData.service) {
-          trackEvent({
-            action: 'service_interest',
-            category: 'Lead Quality',
-            label: formData.service
-          });
-        }
-        
-        // Track budget range for conversion value
-        if (formData.budget) {
-          trackEvent({
-            action: 'budget_range',
-            category: 'Lead Quality',
-            label: formData.budget
-          });
-        }
-
-        // Track project urgency
-        if (formData.urgency) {
-          trackEvent({
-            action: 'project_urgency',
-            category: 'Lead Quality',
-            label: formData.urgency
-          });
-        }
-
-        // Track form completion time and steps
-        trackEvent({
-          action: 'form_completed',
-          category: 'User Engagement',
-          label: `Steps: ${currentStep}, Service: ${formData.service}`
-        });
-        
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          company: "",
-          service: "",
-          projectDescription: "",
-          budget: "",
-          timeline: "",
-          reference: "",
-          agreeToTerms: false,
-          additionalDetails: "",
-          preferredContactMethod: "",
-          projectType: "",
-          urgency: "",
-        });
-        setSubmitStatus("success");
-        setRedirectTimer(5);
-        
-        // Timer handled by useEffect
-        
-      } else {
-        // Track form submission error
-        trackEvent({
-          action: 'form_submission_error',
-          category: 'Errors',
-          label: data.message || 'Unknown error'
-        });
-        
-        setSubmitStatus("error");
+      if (!response.ok) {
+        throw new Error('Failed to submit quotation');
       }
-    } catch (error) {
-      // Track network or other errors
-      trackEvent({
-        action: 'form_submission_failed',
-        category: 'Errors',
-        label: error.message || 'Network error'
-      });
+
+      const data = await response.json();
       
+      trackFormSubmission('quotation_request');
+      trackServiceQuote(formData.service);
+      setSubmitStatus("success");
+      
+    } catch (error) {
+      console.error('Submission error:', error);
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -306,651 +247,302 @@ const Quotation = ({ onClose }) => {
   };
 
   const nextStep = () => {
-    if (currentStep === 1 && !validateStep1()) {
-      return;
+    if (validateStep(currentStep)) {
+      trackEvent({ action: 'form_step_completed', category: 'User Engagement', label: `Step ${currentStep}` });
+      setCurrentStep(prev => prev + 1);
     }
-    
-    if (currentStep === 2 && !validateStep2()) {
-      return;
-    }
-
-    // Track step progression
-    trackEvent({
-      action: 'form_step_completed',
-      category: 'User Engagement',
-      label: `Step ${currentStep} completed`
-    });
-    
-    setCurrentStep(prev => prev + 1);
-    window.scrollTo(0, 0);
   };
 
-  const prevStep = () => {
-    setCurrentStep(prev => prev - 1);
-    window.scrollTo(0, 0);
-  };
+  const prevStep = () => setCurrentStep(prev => prev - 1);
 
   const handleClose = () => {
-    // Track modal closure
-    trackEvent({
-      action: 'quotation_modal_closed',
-      category: 'User Engagement',
-      label: `Closed at step ${currentStep}`
-    });
-    
-    router.push('/');
+    trackEvent({ action: 'quotation_modal_closed', category: 'User Engagement', label: `Step ${currentStep}` });
     if (onClose) onClose();
+    else router.push('/');
   };
 
+  // --- Data ---
   const services = [
-    "Website Development",
-    "Mobile App Development",
-    "Software Development",
-    "Hosting & Business Email",
-    "E-Commerce Solution",
-    "UI/UX Design",
-    "Digital Marketing",
-    "Not Sure / Consultation",
+    "Website Development", "Mobile App Development", "Software Development", 
+    "Hosting & Business Email", "E-Commerce Solution", "UI/UX Design", 
+    "Digital Marketing", "Not Sure / Consultation"
   ];
-
   const budgetRanges = [
-    "Less than R5,000",
-    "R5,000 - R15,000",
-    "R15,000 - R30,000",
-    "R30,000 - R50,000",
-    "R50,000 - R100,000",
-    "R100,000+",
+    "Less than R5,000", "R5,000 - R15,000", "R15,000 - R30,000", 
+    "R30,000 - R50,000", "R50,000 - R100,000", "R100,000+"
   ];
-
   const timelineOptions = [
-    "ASAP (Within 1 week)",
-    "Within 2 weeks",
-    "Within 1 month",
-    "Within 3 months",
-    "Within 6 months",
-    "Flexible",
+    "ASAP (Within 1 week)", "Within 2 weeks", "Within 1 month", 
+    "Within 3 months", "Within 6 months", "Flexible"
   ];
-
   const projectTypes = [
-    "New Project",
-    "Redesign/Rebuild",
-    "Ongoing Maintenance",
-    "Add New Features",
+    "New Project", "Redesign/Rebuild", "Ongoing Maintenance", "Add New Features"
   ];
-
   const urgencyLevels = [
-    "Low - Just exploring options",
-    "Medium - Planning phase",
-    "High - Ready to start soon",
-    "Critical - Need immediate assistance",
+    "Low - Just exploring", "Medium - Planning phase", 
+    "High - Ready to start", "Critical - Need immediate help"
   ];
+  const contactMethods = ["Email", "Phone", "WhatsApp"];
 
-  const preferredContactMethods = ["Email", "Phone", "WhatsApp"];
+  // --- Render Components ---
+  // Components moved outside to prevent focus loss issues
 
-  // Step 1: Contact Information
-  const renderStep1 = () => (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 20 }}
-      className="space-y-6"
-    >
-      <h3 className="text-2xl font-bold text-gray-800 mb-2">
-        Contact Information
-      </h3>
-      <p className="text-gray-600 mb-6">
-        Let us know how to reach you. All fields marked with <span className="text-red-500">*</span> are required.
-      </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Full Name <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            className={`w-full px-4 py-3 rounded-xl border text-gray-900 bg-white placeholder-gray-500 ${
-              formErrors.name ? "border-red-500" : "border-gray-300"
-            } focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200`}
-            placeholder="John Doe"
-          />
-          {formErrors.name && (
-            <p className="mt-1 text-sm text-red-500 flex items-center">
-              <FaExclamationCircle className="mr-1" /> {formErrors.name}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Email Address <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            className={`w-full px-4 py-3 rounded-xl border text-gray-900 bg-white placeholder-gray-500 ${
-              formErrors.email ? "border-red-500" : "border-gray-300"
-            } focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200`}
-            placeholder="john@example.com"
-          />
-          {formErrors.email && (
-            <p className="mt-1 text-sm text-red-500 flex items-center">
-              <FaExclamationCircle className="mr-1" /> {formErrors.email}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label
-            htmlFor="phone"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Phone Number
-          </label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white placeholder-gray-500 focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
-            placeholder="+27 12 345 6789"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="company"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Company (if applicable)
-          </label>
-          <input
-            type="text"
-            id="company"
-            name="company"
-            value={formData.company}
-            onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white placeholder-gray-500 focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
-            placeholder="Your Company Name"
-          />
-        </div>
-      </div>
-
-      <div className="flex justify-end pt-4">
-        <motion.button
-          type="button"
-          onClick={nextStep}
-          className="bg-gradient-to-r from-orange-400 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Next: Project Details
-        </motion.button>
-      </div>
-    </motion.div>
-  );
-
-  // Step 2: Project Details
-  const renderStep2 = () => (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 20 }}
-      className="space-y-6"
-    >
-      <h3 className="text-2xl font-bold text-gray-800 mb-2">
-        Project Details
-      </h3>
-      <p className="text-gray-600 mb-6">
-        Tell us about your project so we can provide an accurate quote. Fields marked with <span className="text-red-500">*</span> are required.
-      </p>
-
-      <div className="space-y-6">
-        <div>
-          <label
-            htmlFor="service"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Service Needed <span className="text-red-500">*</span>
-          </label>
-          <select
-            id="service"
-            name="service"
-            value={formData.service}
-            onChange={handleChange}
-            required
-            className={`w-full px-4 py-3 rounded-xl border text-gray-900 bg-white ${
-              formErrors.service ? "border-red-500" : "border-gray-300"
-            } focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200`}
-          >
-            <option value="">Select a service</option>
-            {services.map((service, index) => (
-              <option key={index} value={service}>
-                {service}
-              </option>
-            ))}
-          </select>
-          {formErrors.service && (
-            <p className="mt-1 text-sm text-red-500 flex items-center">
-              <FaExclamationCircle className="mr-1" /> {formErrors.service}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label
-            htmlFor="projectType"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Project Type
-          </label>
-          <select
-            id="projectType"
-            name="projectType"
-            value={formData.projectType}
-            onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
-          >
-            <option value="">Select project type</option>
-            {projectTypes.map((type, index) => (
-              <option key={index} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label
-            htmlFor="projectDescription"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Project Description <span className="text-red-500">*</span>
-          </label>
-          <textarea
-            id="projectDescription"
-            name="projectDescription"
-            value={formData.projectDescription}
-            onChange={handleChange}
-            required
-            rows={4}
-            placeholder="Please describe your project requirements, goals, and any specific features you need..."
-            className={`w-full px-4 py-3 rounded-xl border text-gray-900 bg-white placeholder-gray-500 ${
-              formErrors.projectDescription ? "border-red-500" : "border-gray-300"
-            } focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200`}
-          />
-          {formErrors.projectDescription && (
-            <p className="mt-1 text-sm text-red-500 flex items-center">
-              <FaExclamationCircle className="mr-1" /> {formErrors.projectDescription}
-            </p>
-          )}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label
-              htmlFor="budget"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Estimated Budget
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FaDollarSign className="text-gray-400" />
-              </div>
-          <select
-            id="budget"
-            name="budget"
-            value={formData.budget}
-            onChange={handleChange}
-            className="w-full pl-10 px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
-          >
-                <option value="">Select budget range</option>
-                {budgetRanges.map((range, index) => (
-                  <option key={index} value={range}>
-                    {range}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label
-              htmlFor="timeline"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Project Timeline
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FaCalendarAlt className="text-gray-400" />
-              </div>
-          <select
-            id="timeline"
-            name="timeline"
-            value={formData.timeline}
-            onChange={handleChange}
-            className="w-full pl-10 px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
-          >
-                <option value="">Select timeline</option>
-                {timelineOptions.map((option, index) => (
-                  <option key={index} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <label
-            htmlFor="urgency"
-            className="block text-sm font-medium text-gray-700 mb-2"
-            >
-            Project Urgency
-          </label>
-          <select
-            id="urgency"
-            name="urgency"
-            value={formData.urgency}
-            onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
-          >
-            <option value="">How urgent is your project?</option>
-            {urgencyLevels.map((level, index) => (
-              <option key={index} value={level}>
-                {level}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label
-            htmlFor="reference"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Reference Website or Example (if any)
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FaFileAlt className="text-gray-400" />
-            </div>
-          <input
-            type="url"
-            id="reference"
-            name="reference"
-            value={formData.reference}
-            onChange={handleChange}
-            placeholder="https://example.com"
-            className="w-full pl-10 px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white placeholder-gray-500 focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
-          />
-          </div>
-        </div>
-
-        <div>
-          <label
-            htmlFor="additionalDetails"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Additional Details
-          </label>
-          <textarea
-            id="additionalDetails"
-            name="additionalDetails"
-            value={formData.additionalDetails}
-            onChange={handleChange}
-            rows={3}
-            placeholder="Any other details you'd like to share, special requirements, etc."
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white placeholder-gray-500 focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
-          />
-        </div>
-      </div>
-
-      <div className="flex justify-between pt-4">
-        <motion.button
-          type="button"
-          onClick={prevStep}
-          className="bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-xl shadow-md hover:bg-gray-300 transition-all duration-200"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Back
-        </motion.button>
-        <motion.button
-          type="button"
-          onClick={nextStep}
-          className="bg-gradient-to-r from-orange-400 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Next: Contact Preferences
-        </motion.button>
-      </div>
-    </motion.div>
-  );
-
-  // Step 3: Contact Preferences & Submission
-  const renderStep3 = () => (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 20 }}
-      className="space-y-6"
-    >
-      <h3 className="text-2xl font-bold text-gray-800 mb-2">
-        Almost Done!
-      </h3>
-      <p className="text-gray-600 mb-6">
-        Just a few more details to complete your quotation request.
-      </p>
-
-      <div className="space-y-6">
-        <div>
-          <label
-            htmlFor="preferredContactMethod"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Preferred Contact Method
-          </label>
-          <select
-            id="preferredContactMethod"
-            name="preferredContactMethod"
-            value={formData.preferredContactMethod}
-            onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 bg-white focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200"
-          >
-            <option value="">How would you prefer we contact you?</option>
-            {preferredContactMethods.map((method, index) => (
-              <option key={index} value={method}>
-                {method}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="bg-orange-50 p-6 rounded-2xl border border-orange-200">
-          <h4 className="font-bold text-orange-800 mb-3 flex items-center">
-            <FaCheckCircle className="mr-2" /> What happens next?
-          </h4>
-          <ol className="list-decimal pl-5 space-y-2 text-orange-700">
-            <li>We'll review your project requirements</li>
-            <li>Our experts will prepare a detailed quotation</li>
-            <li>We'll contact you within 24 hours to discuss</li>
-            <li>You'll receive a formal proposal with timeline and cost</li>
-          </ol>
-        </div>
-
-        <div className="flex items-start">
-          <div className="flex items-center h-5">
-            <input
-              id="agreeToTerms"
-              name="agreeToTerms"
-              type="checkbox"
-              checked={formData.agreeToTerms}
-              onChange={handleChange}
-              required
-              className="w-4 h-4 bg-gray-800 border-gray-700 rounded focus:ring-orange-500 focus:ring-2"
-            />
-          </div>
-          <div className="ml-3 text-sm">
-            <label
-              htmlFor="agreeToTerms"
-              className="font-medium text-gray-700"
-            >
-              I agree to the processing of my personal data to receive a quotation <span className="text-red-500">*</span>
-            </label>
-            <p className="text-gray-500 mt-1">
-              We respect your privacy and will never share your information with third parties.
-            </p>
-            {formErrors.agreeToTerms && (
-              <p className="mt-1 text-sm text-red-500 flex items-center">
-                <FaExclamationCircle className="mr-1" /> {formErrors.agreeToTerms}
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="flex justify-between pt-4">
-        <motion.button
-          type="button"
-          onClick={prevStep}
-          className="bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-xl shadow-md hover:bg-gray-300 transition-all duration-200"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Back
-        </motion.button>
-        <motion.button
-          type="submit"
-          disabled={isSubmitting || !formData.agreeToTerms}
-          className={`bg-gradient-to-r from-orange-400 to-pink-500 text-white font-semibold py-3 px-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 relative overflow-hidden ${
-            isSubmitting || !formData.agreeToTerms ? "opacity-75" : ""
-          }`}
-          whileHover={isSubmitting || !formData.agreeToTerms ? {} : { scale: 1.05 }}
-          whileTap={isSubmitting || !formData.agreeToTerms ? {} : { scale: 0.95 }}
-        >
-          <motion.span
-            animate={{ opacity: isSubmitting ? 0 : 1, y: isSubmitting ? 10 : 0 }}
-            transition={{ duration: 0.3 }}
-            className="flex items-center justify-center"
-          >
-            Submit Request
-          </motion.span>
-          
-          {isSubmitting && <AdvancedLoader />}
-          
-          {/* Animated progress bar that fills from left to right */}
-          {isSubmitting && (
-            <motion.div
-              className="absolute bottom-0 left-0 h-1 bg-white/50"
-              initial={{ width: 0 }}
-              animate={{ width: "100%" }}
-              transition={{ duration: 3, ease: "linear" }}
-            />
-          )}
-        </motion.button>
-      </div>
-    </motion.div>
-  );
-
+  // --- Main Layout ---
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        className="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl w-full max-w-5xl min-h-[600px] overflow-hidden grid grid-cols-1 lg:grid-cols-3 relative"
       >
-        <div className="p-6 border-b border-gray-200 flex justify-between items-center bg-gradient-to-r from-orange-400 to-pink-500 text-white rounded-t-3xl">
-          <div>
-            <h2 className="text-2xl font-bold">Request a Custom Quote</h2>
-            <p className="text-white/90">Step {currentStep} of 3</p>
+        
+        {/* Close Button (Top Right) */}
+        <button 
+          onClick={handleClose} 
+          className="absolute top-6 right-6 z-50 w-10 h-10 rounded-full bg-slate-800/50 hover:bg-rose-500/20 hover:text-rose-400 border border-slate-700 hover:border-rose-500/30 flex items-center justify-center text-slate-400 transition-all duration-300 group"
+        >
+          <FaTimes className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
+        </button>
+
+        {/* Left Sidebar (Info Panel) */}
+        <div className="hidden lg:flex flex-col justify-between bg-gradient-to-br from-slate-900 to-indigo-950/30 p-10 border-r border-slate-800 relative overflow-hidden">
+          {/* Decorative Blobs - Added pointer-events-none to ensure they don't block clicks */}
+          <div className="absolute top-0 left-0 w-64 h-64 bg-indigo-600/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+          <div className="absolute bottom-0 right-0 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
+
+          <div className="z-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold mb-6">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+              </span>
+              Free Quote
+            </div>
+            <h2 className="text-3xl font-bold text-white mb-2 leading-tight">
+              Let's Build Something <br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
+                Extraordinary.
+              </span>
+            </h2>
+            <p className="text-slate-400 text-sm mt-4 leading-relaxed">
+              Tell us about your project. We'll get back to you with a detailed proposal within 24 hours.
+            </p>
           </div>
-          <button
-            onClick={handleClose}
-            className="text-white hover:text-gray-200 transition-colors"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
 
-        {/* Progress Bar */}
-        <div className="px-6 pt-6">
-          <div className="w-full bg-gray-200 rounded-full h-2.5">
-            <motion.div 
-              className="bg-gradient-to-r from-orange-400 to-pink-500 h-2.5 rounded-full"
-              initial={{ width: `${(currentStep-1)/3*100}%` }}
-              animate={{ width: `${(currentStep-1)/3*100}%` }}
-              transition={{ duration: 0.5 }}
-            />
-          </div>
-        </div>
-
-        <form onSubmit={handleSubmit} className="p-6">
-          {currentStep === 1 && renderStep1()}
-          {currentStep === 2 && renderStep2()}
-          {currentStep === 3 && renderStep3()}
-
-          {/* Submission Status */}
-          {submitStatus === "success" && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="p-4 mt-4 bg-green-100 border border-green-200 rounded-2xl text-green-700"
-            >
-              <div className="flex items-center">
-                <FaCheckCircle className="text-green-500 mr-2" />
-                <span>
-                  Thank you! Your quotation request has been submitted. We'll contact
-                  you shortly. Redirecting to home in {redirectTimer} seconds...
-                </span>
+          {/* Live Summary Card */}
+          <div className="z-10 bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 backdrop-blur-sm mt-auto">
+            <h3 className="text-slate-200 font-semibold mb-4 text-sm uppercase tracking-wider">Summary</h3>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-slate-500">Service</span>
+                <span className="text-slate-300 font-medium truncate max-w-[150px]">{formData.service || '-'}</span>
               </div>
-            </motion.div>
-          )}
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-slate-500">Budget</span>
+                <span className="text-slate-300 font-medium">{formData.budget || '-'}</span>
+              </div>
+              <div className="w-full h-px bg-slate-700/50 my-2"></div>
+              <div className="flex items-center gap-2 text-emerald-400 text-xs">
+                <FaCheckCircle />
+                <span>No commitment required</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          {submitStatus === "error" && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="p-4 mt-4 bg-red-100 border border-red-200 rounded-2xl text-red-700"
-            >
-              Sorry, there was an error submitting your request. Please try
-              again.
-            </motion.div>
-          )}
-        </form>
+        {/* Right Content (Form) */}
+        <div className="lg:col-span-2 p-6 lg:p-12 flex flex-col relative bg-slate-900">
+          
+          {/* Mobile Header (Visible only on small screens) */}
+          <div className="lg:hidden mb-8">
+            <h2 className="text-2xl font-bold text-white">Request a Quote</h2>
+            <p className="text-slate-400 text-sm">Step {currentStep} of 3</p>
+          </div>
+
+          {/* Step Indicator */}
+          <div className="mb-8">
+            <StepIndicator currentStep={currentStep} />
+          </div>
+
+          {/* Form Container */}
+          <form onSubmit={handleSubmit} className="flex-1 flex flex-col">
+            
+            <AnimatePresence mode="wait">
+              
+              {/* STEP 1 */}
+              {currentStep === 1 && (
+                <motion.div 
+                  key="step1" 
+                  initial={{ opacity: 0, x: 20 }} 
+                  animate={{ opacity: 1, x: 0 }} 
+                  exit={{ opacity: 0, x: -20 }} 
+                  transition={{ duration: 0.3 }}
+                  className="space-y-5"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <InputField label="Full Name" name="name" value={formData.name} onChange={handleChange} error={formErrors.name} required icon={FaUser} />
+                    <InputField label="Email Address" name="email" value={formData.email} onChange={handleChange} error={formErrors.email} type="email" required icon={FaEnvelope} />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <InputField label="Phone Number" name="phone" value={formData.phone} onChange={handleChange} error={formErrors.phone} required icon={FaPhone} />
+                    <InputField label="Company Name" name="company" value={formData.company} onChange={handleChange} error={formErrors.company} icon={FaBriefcase} placeholder="Optional" />
+                  </div>
+                  
+                  <div className="p-4 bg-blue-500/5 border border-blue-500/10 rounded-xl flex gap-3 items-start mt-4">
+                    <FaInfoCircle className="text-blue-400 mt-0.5 flex-shrink-0" />
+                    <p className="text-xs text-blue-200/70 leading-relaxed">
+                      We protect your privacy. Your contact details will only be used to send your quote and follow-up communication regarding this specific request.
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* STEP 2 */}
+              {currentStep === 2 && (
+                <motion.div 
+                  key="step2" 
+                  initial={{ opacity: 0, x: 20 }} 
+                  animate={{ opacity: 1, x: 0 }} 
+                  exit={{ opacity: 0, x: -20 }} 
+                  transition={{ duration: 0.3 }}
+                  className="space-y-5"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <InputField label="Service Needed" name="service" value={formData.service} onChange={handleChange} error={formErrors.service} required options={services} icon={FaTag} />
+                    <InputField label="Project Type" name="projectType" value={formData.projectType} onChange={handleChange} error={formErrors.projectType} options={projectTypes} icon={FaFileAlt} />
+                  </div>
+                  
+                  <InputField label="Project Description" name="projectDescription" value={formData.projectDescription} onChange={handleChange} error={formErrors.projectDescription} isTextarea required icon={FaCommentAlt} placeholder="Describe your goals, requirements, and any specific features..." />
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <InputField label="Budget Range" name="budget" value={formData.budget} onChange={handleChange} error={formErrors.budget} options={budgetRanges} icon={FaDollarSign} />
+                    <InputField label="Timeline" name="timeline" value={formData.timeline} onChange={handleChange} error={formErrors.timeline} options={timelineOptions} icon={FaClock} />
+                  </div>
+                  
+                  <InputField label="Urgency Level" name="urgency" value={formData.urgency} onChange={handleChange} error={formErrors.urgency} options={urgencyLevels} icon={FaClock} />
+                </motion.div>
+              )}
+
+              {/* STEP 3 */}
+              {currentStep === 3 && (
+                <motion.div 
+                  key="step3" 
+                  initial={{ opacity: 0, x: 20 }} 
+                  animate={{ opacity: 1, x: 0 }} 
+                  exit={{ opacity: 0, x: -20 }} 
+                  transition={{ duration: 0.3 }}
+                  className="space-y-6"
+                >
+                  <InputField label="Preferred Contact Method" name="preferredContactMethod" value={formData.preferredContactMethod} onChange={handleChange} error={formErrors.preferredContactMethod} options={contactMethods} />
+                  <InputField label="Reference / Inspiration URL" name="reference" value={formData.reference} onChange={handleChange} error={formErrors.reference} icon={FaFileAlt} placeholder="https://..." />
+                  <InputField label="Additional Details" name="additionalDetails" value={formData.additionalDetails} onChange={handleChange} error={formErrors.additionalDetails} isTextarea placeholder="Any other information you'd like us to know..." />
+
+                  <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mt-4">
+                    <h4 className="font-semibold text-emerald-400 mb-2 flex items-center gap-2 text-sm">
+                      <FaCheckCircle /> What happens next?
+                    </h4>
+                    <ul className="text-xs text-emerald-200/70 space-y-1.5 list-disc list-inside">
+                      <li>Our team reviews your requirements.</li>
+                      <li>We contact you to clarify details if needed.</li>
+                      <li>You receive a detailed PDF proposal within 24 hours.</li>
+                    </ul>
+                  </div>
+
+                  <div className="flex items-start gap-3 pt-2">
+                    <input 
+                      type="checkbox" 
+                      id="agreeToTerms"
+                      name="agreeToTerms" 
+                      checked={formData.agreeToTerms} 
+                      onChange={handleChange} 
+                      className="mt-1 w-4 h-4 rounded border-slate-700 bg-slate-800 text-indigo-600 focus:ring-indigo-500/20 focus:ring-offset-0 cursor-pointer"
+                    />
+                    <label htmlFor="agreeToTerms" className="text-sm text-slate-400 leading-relaxed cursor-pointer select-none">
+                      I agree to the processing of my personal data for the purpose of receiving a quotation and communication regarding this request. <span className="text-rose-500">*</span>
+                    </label>
+                  </div>
+                  {formErrors.agreeToTerms && <p className="text-xs text-rose-400 -mt-4">{formErrors.agreeToTerms}</p>}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Navigation Footer */}
+            <div className="mt-auto pt-8 flex items-center justify-between border-t border-slate-800 ">
+              
+              {currentStep > 1 ? (
+                <button 
+                  type="button" 
+                  onClick={prevStep} 
+                  className="group flex items-center gap-2 px-6 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-all text-sm font-medium"
+                >
+                  <FaArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
+                </button>
+              ) : (
+                <div></div> // Spacer
+              )}
+
+              {currentStep < 3 ? (
+                <button 
+                  type="button" 
+                  onClick={nextStep} 
+                  className="group flex items-center gap-2 px-8 py-2.5 rounded-xl bg-white text-slate-900 font-semibold hover:bg-slate-200 hover:shadow-lg hover:shadow-white/10 transition-all text-sm"
+                >
+                  Next Step <FaArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
+              ) : (
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting || !formData.agreeToTerms} 
+                  className={`flex items-center gap-2 px-8 py-2.5 rounded-xl font-semibold transition-all text-sm ${
+                    isSubmitting || !formData.agreeToTerms 
+                    ? 'bg-slate-800 text-slate-500 cursor-not-allowed' 
+                    : 'bg-indigo-600 text-white hover:bg-indigo-500 hover:shadow-lg hover:shadow-indigo-500/25 hover:-translate-y-0.5'
+                  }`}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <motion.div 
+                        className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full" 
+                        animate={{ rotate: 360 }} 
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }} 
+                      /> 
+                      Processing...
+                    </>
+                  ) : (
+                    <>Submit Request <FaPaperPlane className="w-4 h-4" /></>
+                  )}
+                </button>
+              )}
+            </div>
+
+            {/* Status Messages */}
+            <AnimatePresence>
+              {submitStatus && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }} 
+                  animate={{ opacity: 1, y: 0 }} 
+                  exit={{ opacity: 0, y: -10 }}
+                  className={`mt-4 p-4 rounded-xl text-sm flex items-center gap-3 ${
+                    submitStatus === "success" 
+                    ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400' 
+                    : 'bg-rose-500/10 border border-rose-500/20 text-rose-400'
+                  }`}
+                >
+                  {submitStatus === "success" ? <FaCheckCircle className="w-5 h-5" /> : <FaExclamationCircle className="w-5 h-5" />}
+                  <div>
+                    {submitStatus === "success" 
+                      ? <span>Success! Redirecting you in {redirectTimer}s...</span>
+                      : "Something went wrong. Please try again later."}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+          </form>
+        </div>
       </motion.div>
     </div>
   );

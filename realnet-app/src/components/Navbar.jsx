@@ -93,7 +93,7 @@ export default function Navbar() {
     { name: 'Home', href: '/' },
     { 
       name: 'Solutions', 
-      href: '/solutions',
+      href: '/services',
       children: [
         { name: 'Web Development', href: '/solutions/web-development', desc: 'Custom websites & apps' },
         { name: 'Mobile Apps', href: '/solutions/mobile-app-development', desc: 'iOS & Android solutions' },

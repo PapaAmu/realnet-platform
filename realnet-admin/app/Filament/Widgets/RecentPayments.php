@@ -31,7 +31,7 @@ class RecentPayments extends BaseWidget
                     ->sortable(),
                 Tables\Columns\TextColumn::make('invoice.invoice_number')
                     ->label('Invoice')
-                    ->url(fn ($record) => route('filament.admin.billing.resources.invoices.edit', $record->invoice_id)),
+                    ->url(fn ($record) => route('filament.admin.resources.invoices.edit', $record->invoice_id)),
                 Tables\Columns\TextColumn::make('client.name')
                     ->label('Client'),
                 Tables\Columns\TextColumn::make('amount')

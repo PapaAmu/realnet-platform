@@ -165,7 +165,7 @@ const deploy = async () => {
             
             <div className="flex gap-4">
               <motion.a
-                href="/contact"
+                href="/contact-us"
                 className="group flex items-center gap-3 px-8 py-4 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
