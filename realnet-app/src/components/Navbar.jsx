@@ -18,7 +18,7 @@ export default function Navbar() {
   const [mobileSubmenu, setMobileSubmenu] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const pathname = usePathname();
   
   // Use refs for scroll values to avoid re-renders
@@ -146,9 +146,9 @@ export default function Navbar() {
                   priority
                 />
               </div>
-              <span className={`font-semibold text-lg transition-colors ${
-                isOpen ? 'text-white' : 'text-gray-900 dark:text-white'
-              }`}>RealNet</span>
+              <span className={`font-semibold uppercase text-lg transition-colors ${
+                isOpen ? 'text-primary' : 'text-gray-900 dark:text-white'
+              }`}>RealNet Web</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -229,10 +229,10 @@ export default function Navbar() {
             {/* Desktop Actions */}
             <div className="hidden lg:flex items-center gap-4">
               <button
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
                 className="w-10 h-10 rounded-full bg-gray-100 dark:bg-white/5 flex items-center justify-center text-gray-600 dark:text-white/60 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors"
               >
-                {theme === 'dark' ? (
+                {resolvedTheme === 'dark' ? (
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                   </svg>
@@ -469,10 +469,10 @@ export default function Navbar() {
                   
                   <div className="flex items-center justify-between">
                     <button
-                      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                      onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
                       className="flex items-center gap-2 text-sm text-gray-600 dark:text-white/60"
                     >
-                      {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+                      {resolvedTheme === 'dark' ? 'Light Mode' : 'Dark Mode'}
                     </button>
                     <span className="text-sm text-gray-400 dark:text-white/30">
                       © 2024
