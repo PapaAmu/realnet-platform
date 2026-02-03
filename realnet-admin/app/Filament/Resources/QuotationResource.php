@@ -28,6 +28,11 @@ class QuotationResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'quotation_number';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('status', 'pending')->count() ?: null;
+    }
+
     public static function getGloballySearchableAttributes(): array
     {
         return ['quotation_number', 'client.name', 'company', 'name', 'email'];
@@ -88,6 +93,7 @@ class QuotationResource extends Resource
                                 Forms\Components\Select::make('status')
                                     ->options([
                                         'draft' => 'Draft',
+                                        'pending' => 'Pending Review',
                                         'sent' => 'Sent',
                                         'accepted' => 'Accepted',
                                         'rejected' => 'Rejected',
@@ -298,10 +304,11 @@ class QuotationResource extends Resource
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'draft' => 'gray',
+                        'pending' => 'warning',
                         'sent' => 'info',
                         'accepted' => 'success',
                         'rejected' => 'danger',
-                        'invoiced' => 'warning',
+                        'invoiced' => 'primary',
                     }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -313,6 +320,7 @@ class QuotationResource extends Resource
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
                         'draft' => 'Draft',
+                        'pending' => 'Pending Review',
                         'sent' => 'Sent',
                         'accepted' => 'Accepted',
                         'rejected' => 'Rejected',
