@@ -170,7 +170,7 @@ export default function Navbar() {
                       {item.name}
                       {item.children && (
                         <FaChevronRight className={`w-3 h-3 transition-transform duration-200 group-hover:rotate-90 ${
-                          childActive ? 'text-violet-500' : ''
+                          childActive ? 'text-primary-500' : ''
                         }`} />
                       )}
                       
@@ -179,7 +179,7 @@ export default function Navbar() {
                         <motion.span
                           layoutId="activeNav"
                           className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
-                            childActive ? 'bg-violet-500' : 'bg-blue-500 dark:bg-violet-400'
+                            childActive ? 'bg-primary-500' : 'bg-blue-500 dark:bg-primary-400'
                           }`}
                           transition={{ type: "spring", stiffness: 380, damping: 30 }}
                         />
@@ -198,13 +198,13 @@ export default function Navbar() {
                                 href={child.href}
                                 className={`flex items-center justify-between p-3 rounded-lg transition-all ${
                                   childIsActive
-                                    ? 'bg-blue-50 dark:bg-violet-500/10 border-l-2 border-blue-500 dark:border-violet-400'
+                                    ? 'bg-blue-50 dark:bg-primary-500/10 border-l-2 border-blue-500 dark:border-primary-400'
                                     : 'hover:bg-gray-50 dark:hover:bg-white/5'
                                 }`}
                               >
                                 <div>
                                   <div className={`text-sm font-medium ${
-                                    childIsActive ? 'text-blue-600 dark:text-violet-400' : 'text-gray-700 dark:text-white/80'
+                                    childIsActive ? 'text-blue-600 dark:text-primary-400' : 'text-gray-700 dark:text-white/80'
                                   }`}>
                                     {child.name}
                                   </div>
@@ -213,7 +213,7 @@ export default function Navbar() {
                                   </div>
                                 </div>
                                 {childIsActive && (
-                                  <span className="w-2 h-2 rounded-full bg-blue-500 dark:bg-violet-400" />
+                                  <span className="w-2 h-2 rounded-full bg-blue-500 dark:bg-primary-400" />
                                 )}
                               </Link>
                             );
@@ -337,7 +337,7 @@ export default function Navbar() {
                   {mobileSubmenu ? (
                     <button
                       onClick={() => setMobileSubmenu(null)}
-                      className="text-sm text-blue-600 dark:text-violet-400 font-medium"
+                      className="text-sm text-blue-600 dark:text-primary-400 font-medium"
                     >
                       Back
                     </button>
@@ -378,13 +378,13 @@ export default function Navbar() {
                                   onClick={() => setMobileSubmenu(item)}
                                   className={`w-full flex items-center justify-between p-4 rounded-xl transition-colors ${
                                     childActive 
-                                      ? 'bg-blue-50 dark:bg-violet-500/10 text-blue-600 dark:text-violet-400' 
+                                      ? 'bg-blue-50 dark:bg-primary-500/10 text-blue-600 dark:text-primary-400' 
                                       : 'hover:bg-gray-100 dark:hover:bg-white/5 text-gray-900 dark:text-white'
                                   }`}
                                 >
                                   <div className="flex items-center gap-3">
                                     {(active || childActive) && (
-                                      <span className="w-2 h-2 rounded-full bg-blue-500 dark:bg-violet-400" />
+                                      <span className="w-2 h-2 rounded-full bg-blue-500 dark:bg-primary-400" />
                                     )}
                                     <span className="font-medium">{item.name}</span>
                                   </div>
@@ -396,11 +396,11 @@ export default function Navbar() {
                                   onClick={() => setIsOpen(false)}
                                   className={`flex items-center gap-3 p-4 rounded-xl transition-colors ${
                                     active
-                                      ? 'bg-blue-50 dark:bg-violet-500/10 text-blue-600 dark:text-violet-400'
+                                      ? 'bg-blue-50 dark:bg-primary-500/10 text-blue-600 dark:text-primary-400'
                                       : 'hover:bg-gray-100 dark:hover:bg-white/5 text-gray-900 dark:text-white'
                                   }`}
                                 >
-                                  {active && <span className="w-2 h-2 rounded-full bg-blue-500 dark:bg-violet-400" />}
+                                  {active && <span className="w-2 h-2 rounded-full bg-blue-500 dark:bg-primary-400" />}
                                   <span className="font-medium">{item.name}</span>
                                 </Link>
                               )}
@@ -430,18 +430,18 @@ export default function Navbar() {
                                 onClick={() => setIsOpen(false)}
                                 className={`block p-4 rounded-xl transition-colors ${
                                   childIsActive
-                                    ? 'bg-blue-50 dark:bg-violet-500/10 border-l-2 border-blue-500 dark:border-violet-400'
+                                    ? 'bg-blue-50 dark:bg-primary-500/10 border-l-2 border-blue-500 dark:border-primary-400'
                                     : 'hover:bg-gray-100 dark:hover:bg-white/5'
                                 }`}
                               >
                                 <div className="flex items-center justify-between mb-1">
                                   <span className={`font-medium ${
-                                    childIsActive ? 'text-blue-600 dark:text-violet-400' : 'text-gray-900 dark:text-white'
+                                    childIsActive ? 'text-blue-600 dark:text-primary-400' : 'text-gray-900 dark:text-white'
                                   }`}>
                                     {child.name}
                                   </span>
                                   {childIsActive && (
-                                    <span className="w-2 h-2 rounded-full bg-blue-500 dark:bg-violet-400" />
+                                    <span className="w-2 h-2 rounded-full bg-blue-500 dark:bg-primary-400" />
                                   )}
                                 </div>
                                 <p className="text-sm text-gray-500 dark:text-white/40">

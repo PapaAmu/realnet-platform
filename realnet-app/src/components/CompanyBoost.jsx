@@ -83,7 +83,7 @@ const CompanyBoost = () => {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="space-y-4">
-              <span className="inline-flex items-center gap-2 text-sm font-medium text-violet-600 dark:text-violet-400 tracking-wider uppercase">
+              <span className="inline-flex items-center gap-2 text-sm font-medium text-primary-600 dark:text-primary-400 tracking-wider uppercase">
                 <FaCheck className="w-4 h-4" />
                 Why Choose Us
               </span>
@@ -91,7 +91,7 @@ const CompanyBoost = () => {
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-[1.1] tracking-tight">
                 Empower Your
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-cyan-500">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-cyan-500">
                   Business Growth
                 </span>
               </h2>
@@ -122,7 +122,7 @@ const CompanyBoost = () => {
             >
               <Link
                 href="/about-us"
-                className="group inline-flex items-center gap-3 px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-black rounded-full font-medium transition-all duration-300 hover:shadow-2xl hover:shadow-violet-500/20"
+                className="group inline-flex items-center gap-3 px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-black rounded-full font-medium transition-all duration-300 hover:shadow-2xl hover:shadow-primary-500/20"
               >
                 <span>More About Us</span>
                 <FaArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -175,10 +175,10 @@ const CompanyBoost = () => {
                     delay: 0.4 + index * 0.1,
                     ease: [0.22, 1, 0.36, 1]
                   }}
-                  className="group p-6 rounded-xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06] hover:border-violet-500/30 dark:hover:border-violet-500/30 hover:bg-white dark:hover:bg-white/[0.04] transition-all duration-300"
+                  className="group p-6 rounded-xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06] hover:border-primary-500/30 dark:hover:border-primary-500/30 hover:bg-white dark:hover:bg-white/[0.04] transition-all duration-300"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <feature.icon className="w-5 h-5 text-violet-600 dark:text-violet-400" />
+                  <div className="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <feature.icon className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                   </div>
                   <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
                     {feature.title}

@@ -119,7 +119,7 @@ const WebsiteDevelopment = () => {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-6"
               >
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-violet-400">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-primary-400">
                   Web Development Services
                 </span>
               </motion.div>
@@ -132,7 +132,7 @@ const WebsiteDevelopment = () => {
               >
                 Websites That
                 <br />
-                <span className="text-violet-400">Drive Revenue</span>
+                <span className="text-primary-400">Drive Revenue</span>
               </motion.h1>
               
               <motion.p
@@ -197,7 +197,7 @@ const WebsiteDevelopment = () => {
               className="relative hidden lg:block"
             >
               <div className="relative rounded-2xl overflow-hidden bg-white/5 border border-white/10 aspect-[4/3]">
-                <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 to-transparent" />
                 <div className="absolute inset-0 flex items-center justify-center text-white/20">
                   <div className="text-center">
                     <div className="w-32 h-32 rounded-2xl bg-white/5 mx-auto mb-4 flex items-center justify-center">
@@ -247,17 +247,17 @@ const WebsiteDevelopment = () => {
               <motion.div
                 key={index}
                 variants={fadeInUp}
-                className="group p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-violet-500/30 transition-all duration-300"
+                className="group p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-primary-500/30 transition-all duration-300"
               >
-                <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <span className="text-violet-400 font-bold text-xl">0{index + 1}</span>
+                <div className="w-12 h-12 rounded-xl bg-primary-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <span className="text-primary-400 font-bold text-xl">0{index + 1}</span>
                 </div>
                 <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
                 <p className="text-white/50 mb-6 text-sm leading-relaxed">{service.description}</p>
                 <ul className="space-y-2">
                   {service.features.map((feature, i) => (
                     <li key={i} className="flex items-center gap-2 text-sm text-white/40">
-                      <FaCheck className="w-3 h-3 text-violet-400" />
+                      <FaCheck className="w-3 h-3 text-primary-400" />
                       {feature}
                     </li>
                   ))}
@@ -286,8 +286,8 @@ const WebsiteDevelopment = () => {
                     transition={{ delay: index * 0.1 }}
                     className="flex gap-6"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center shrink-0">
-                      <span className="text-violet-400 font-bold">{item.step}</span>
+                    <div className="w-12 h-12 rounded-xl bg-primary-500/10 flex items-center justify-center shrink-0">
+                      <span className="text-primary-400 font-bold">{item.step}</span>
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
@@ -299,10 +299,10 @@ const WebsiteDevelopment = () => {
             </div>
 
             <div className="relative">
-              <div className="aspect-square rounded-2xl bg-gradient-to-br from-violet-500/10 to-transparent border border-white/10 p-8 flex items-center justify-center">
+              <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary-500/10 to-transparent border border-white/10 p-8 flex items-center justify-center">
                 <div className="text-center">
-                  <div className="w-24 h-24 rounded-full bg-violet-500/20 flex items-center justify-center mx-auto mb-6">
-                    <FaClock className="w-10 h-10 text-violet-400" />
+                  <div className="w-24 h-24 rounded-full bg-primary-500/20 flex items-center justify-center mx-auto mb-6">
+                    <FaClock className="w-10 h-10 text-primary-400" />
                   </div>
                   <div className="text-5xl font-bold text-white mb-2">2-4 Weeks</div>
                   <p className="text-white/50">Average project delivery time</p>
@@ -345,7 +345,7 @@ const WebsiteDevelopment = () => {
                 }`}
               >
                 {pkg.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-violet-500 text-white text-xs font-medium rounded-full">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary-500 text-white text-xs font-medium rounded-full">
                     Recommended
                   </div>
                 )}
@@ -365,7 +365,7 @@ const WebsiteDevelopment = () => {
                 <ul className="space-y-3 mb-8">
                   {pkg.features.map((feature, i) => (
                     <li key={i} className="flex items-center gap-3 text-sm">
-                      <FaCheck className={`w-4 h-4 ${pkg.popular ? 'text-violet-600' : 'text-violet-400'}`} />
+                      <FaCheck className={`w-4 h-4 ${pkg.popular ? 'text-primary-600' : 'text-primary-400'}`} />
                       <span className={pkg.popular ? 'text-black/70' : 'text-white/70'}>{feature}</span>
                     </li>
                   ))}
@@ -400,7 +400,7 @@ const WebsiteDevelopment = () => {
                 transition={{ delay: index * 0.1 }}
                 className="p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06]"
               >
-                <FaQuoteRight className="w-8 h-8 text-violet-400/30 mb-6" />
+                <FaQuoteRight className="w-8 h-8 text-primary-400/30 mb-6" />
                 <p className="text-lg text-white/80 leading-relaxed mb-6">
                   "{testimonial.quote}"
                 </p>
@@ -419,22 +419,22 @@ const WebsiteDevelopment = () => {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <div className="p-6">
-              <div className="w-16 h-16 rounded-2xl bg-violet-500/10 flex items-center justify-center mx-auto mb-4">
-                <FaShieldAlt className="w-8 h-8 text-violet-400" />
+              <div className="w-16 h-16 rounded-2xl bg-primary-500/10 flex items-center justify-center mx-auto mb-4">
+                <FaShieldAlt className="w-8 h-8 text-primary-400" />
               </div>
               <h3 className="font-semibold mb-2">Quality Guarantee</h3>
               <p className="text-sm text-white/50">30-day free fixes for any issues post-launch</p>
             </div>
             <div className="p-6">
-              <div className="w-16 h-16 rounded-2xl bg-violet-500/10 flex items-center justify-center mx-auto mb-4">
-                <FaClock className="w-8 h-8 text-violet-400" />
+              <div className="w-16 h-16 rounded-2xl bg-primary-500/10 flex items-center justify-center mx-auto mb-4">
+                <FaClock className="w-8 h-8 text-primary-400" />
               </div>
               <h3 className="font-semibold mb-2">On-Time Delivery</h3>
               <p className="text-sm text-white/50">Milestone-based payments, deliverables on schedule</p>
             </div>
             <div className="p-6">
-              <div className="w-16 h-16 rounded-2xl bg-violet-500/10 flex items-center justify-center mx-auto mb-4">
-                <FaHeadset className="w-8 h-8 text-violet-400" />
+              <div className="w-16 h-16 rounded-2xl bg-primary-500/10 flex items-center justify-center mx-auto mb-4">
+                <FaHeadset className="w-8 h-8 text-primary-400" />
               </div>
               <h3 className="font-semibold mb-2">Ongoing Support</h3>
               <p className="text-sm text-white/50">Dedicated account manager and technical support</p>
@@ -447,7 +447,7 @@ const WebsiteDevelopment = () => {
       <section className="py-24 border-t border-white/10">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Ready to <span className="text-violet-400">transform</span> your digital presence?
+            Ready to <span className="text-primary-400">transform</span> your digital presence?
           </h2>
           <p className="text-lg text-white/50 mb-8">
             Join 150+ South African businesses that trust RealNet with their digital success.

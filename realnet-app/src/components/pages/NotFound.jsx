@@ -51,7 +51,7 @@ const NotFoundComponent = () => {
         </div>
         
         {/* Glow Effects */}
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-violet-600/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary-600/10 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-cyan-600/10 rounded-full blur-3xl" />
       </div>
 
@@ -68,7 +68,7 @@ const NotFoundComponent = () => {
           </div>
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="text-6xl md:text-8xl font-bold text-white tracking-tighter">
-              4<span className="text-violet-400">0</span>4
+              4<span className="text-primary-400">0</span>4
             </span>
           </div>
         </motion.div>
@@ -93,9 +93,9 @@ const NotFoundComponent = () => {
               <Link
                 key={link.label}
                 href={link.href}
-                className="group flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-white/10 text-white/70 hover:text-white hover:border-violet-500/30 hover:bg-white/10 transition-all duration-300"
+                className="group flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-white/10 text-white/70 hover:text-white hover:border-primary-500/30 hover:bg-white/10 transition-all duration-300"
               >
-                <link.icon className="w-4 h-4 text-violet-400" />
+                <link.icon className="w-4 h-4 text-primary-400" />
                 <span className="text-sm font-medium">{link.label}</span>
               </Link>
             ))}

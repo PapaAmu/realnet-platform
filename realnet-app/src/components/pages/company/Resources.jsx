@@ -166,7 +166,7 @@ const Resources = () => {
             transition={{ duration: 0.6 }}
             className="max-w-3xl"
           >
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-violet-400 mb-6">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-primary-400 mb-6">
               <FaBookmark className="w-4 h-4" />
               Knowledge Base
             </span>
@@ -174,7 +174,7 @@ const Resources = () => {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-6 leading-tight">
               Resources &
               <br />
-              <span className="text-violet-400">Insights</span>
+              <span className="text-primary-400">Insights</span>
             </h1>
             
             <p className="text-lg lg:text-xl text-white/50 leading-relaxed max-w-2xl mb-10">
@@ -189,7 +189,7 @@ const Resources = () => {
                 placeholder="Search articles..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-violet-500/50 transition-colors"
+                className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-primary-500/50 transition-colors"
               />
               <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
             </div>
@@ -222,7 +222,7 @@ const Resources = () => {
       {/* Loading State */}
       {loading && (
         <div className="flex items-center justify-center py-20">
-          <div className="w-12 h-12 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-12 h-12 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
         </div>
       )}
 
@@ -232,7 +232,7 @@ const Resources = () => {
           <p className="text-white/60 mb-4">Failed to load resources</p>
           <button 
             onClick={fetchResources}
-            className="px-6 py-2 bg-violet-600 text-white rounded-full hover:bg-violet-700 transition-colors"
+            className="px-6 py-2 bg-primary-600 text-white rounded-full hover:bg-primary-700 transition-colors"
           >
             Try Again
           </button>
@@ -265,7 +265,7 @@ const Resources = () => {
                     <motion.article
                       key={resource.id}
                       variants={fadeInUp}
-                      className="group relative bg-white/[0.02] border border-white/[0.06] rounded-2xl hover:border-violet-500/30 transition-all duration-500 overflow-hidden flex flex-col"
+                      className="group relative bg-white/[0.02] border border-white/[0.06] rounded-2xl hover:border-primary-500/30 transition-all duration-500 overflow-hidden flex flex-col"
                     >
                       <Link href={`/resources/${resource.slug}`} className="block relative h-48 sm:h-64 overflow-hidden">
                         <ResourceCardImage 
@@ -276,11 +276,11 @@ const Resources = () => {
                         <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-60" />
                       </Link>
 
-                      <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                       
                       <div className="relative z-10 p-6 sm:p-8 flex flex-col flex-grow">
                         <div className="flex items-center gap-3 mb-4">
-                          <span className="px-3 py-1 rounded-full bg-violet-500/10 text-violet-400 text-xs font-medium">
+                          <span className="px-3 py-1 rounded-full bg-primary-500/10 text-primary-400 text-xs font-medium">
                             {resource.category}
                           </span>
                           <span className="flex items-center gap-1 text-xs text-white/40">
@@ -290,7 +290,7 @@ const Resources = () => {
                         </div>
                         
                         <Link href={`/resources/${resource.slug}`} className="block">
-                          <h3 className="text-xl sm:text-2xl font-bold mb-3 group-hover:text-violet-400 transition-colors duration-300 line-clamp-2">
+                          <h3 className="text-xl sm:text-2xl font-bold mb-3 group-hover:text-primary-400 transition-colors duration-300 line-clamp-2">
                             {resource.title}
                           </h3>
                         </Link>
@@ -305,7 +305,7 @@ const Resources = () => {
                           </span>
                           <Link 
                             href={`/resources/${resource.slug}`}
-                            className="inline-flex items-center gap-2 text-sm font-medium text-violet-400 group-hover:text-violet-300 transition-colors"
+                            className="inline-flex items-center gap-2 text-sm font-medium text-primary-400 group-hover:text-primary-300 transition-colors"
                           >
                             Read Article <FaArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                           </Link>
@@ -348,7 +348,7 @@ const Resources = () => {
                     <motion.article
                       key={resource.id}
                       variants={fadeInUp}
-                      className="group relative bg-white/[0.02] border border-white/[0.06] rounded-xl hover:border-violet-500/30 hover:bg-white/[0.04] transition-all duration-300 overflow-hidden flex flex-col"
+                      className="group relative bg-white/[0.02] border border-white/[0.06] rounded-xl hover:border-primary-500/30 hover:bg-white/[0.04] transition-all duration-300 overflow-hidden flex flex-col"
                     >
                       <Link href={`/resources/${resource.slug}`} className="block relative h-48 overflow-hidden">
                         <ResourceCardImage 
@@ -367,7 +367,7 @@ const Resources = () => {
                         </div>
                         
                         <Link href={`/resources/${resource.slug}`} className="block">
-                          <h3 className="font-semibold mb-2 group-hover:text-violet-400 transition-colors duration-300 line-clamp-2 text-sm sm:text-base">
+                          <h3 className="font-semibold mb-2 group-hover:text-primary-400 transition-colors duration-300 line-clamp-2 text-sm sm:text-base">
                             {resource.title}
                           </h3>
                         </Link>
@@ -388,7 +388,7 @@ const Resources = () => {
                             </span>
                           </div>
                           <Link href={`/resources/${resource.slug}`}>
-                            <FaArrowRight className="w-4 h-4 text-white/20 group-hover:text-violet-400 group-hover:translate-x-1 transition-all" />
+                            <FaArrowRight className="w-4 h-4 text-white/20 group-hover:text-primary-400 group-hover:translate-x-1 transition-all" />
                           </Link>
                         </div>
                       </div>

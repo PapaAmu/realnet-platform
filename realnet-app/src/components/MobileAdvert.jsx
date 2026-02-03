@@ -32,7 +32,7 @@ const Advert = () => {
       <div className="absolute inset-0">
         {/* Gradient Orbs */}
         <motion.div 
-          className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-400/10 dark:bg-violet-600/10 rounded-full blur-3xl"
+          className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-400/10 dark:bg-primary-600/10 rounded-full blur-3xl"
           style={{ y: backgroundY }}
         />
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-cyan-400/10 dark:bg-cyan-600/10 rounded-full blur-3xl" />
@@ -62,7 +62,7 @@ const Advert = () => {
           >
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 backdrop-blur-sm">
-              <FaRocket className="w-4 h-4 text-blue-600 dark:text-violet-400" />
+              <FaRocket className="w-4 h-4 text-blue-600 dark:text-primary-400" />
               <span className="text-sm text-gray-600 dark:text-white/60 font-medium">Mobile Development</span>
             </div>
 
@@ -71,7 +71,7 @@ const Advert = () => {
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-[1.1] tracking-tight">
                 Native Apps for
                 <br />
-                <span className="text-blue-600 dark:text-violet-400">
+                <span className="text-blue-600 dark:text-primary-400">
                   iOS & Android
                 </span>
               </h2>
@@ -92,7 +92,7 @@ const Advert = () => {
                   transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
                   className="flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-700 dark:text-white/70"
                 >
-                  <feature.icon className="w-4 h-4 text-blue-600 dark:text-violet-400" />
+                  <feature.icon className="w-4 h-4 text-blue-600 dark:text-primary-400" />
                   {feature.text}
                 </motion.div>
               ))}
@@ -141,7 +141,7 @@ const Advert = () => {
                 {[1, 2, 3, 4].map((i) => (
                   <div
                     key={i}
-                    className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gradient-to-br dark:from-violet-500 dark:to-cyan-500 border-2 border-gray-50 dark:border-[#050505] flex items-center justify-center text-xs text-gray-600 dark:text-white font-medium"
+                    className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gradient-to-br dark:from-primary-500 dark:to-cyan-500 border-2 border-gray-50 dark:border-[#050505] flex items-center justify-center text-xs text-gray-600 dark:text-white font-medium"
                   >
                     {String.fromCharCode(64 + i)}
                   </div>
@@ -163,7 +163,7 @@ const Advert = () => {
               style={{ y: phoneY }}
             >
               {/* Phone Frame */}
-              <div className="relative w-[300px] h-[600px] bg-gray-800 dark:bg-gray-900 rounded-[3rem] border-8 border-gray-300 dark:border-gray-800 shadow-2xl shadow-gray-900/20 dark:shadow-violet-500/20 overflow-hidden">
+              <div className="relative w-[300px] h-[600px] bg-gray-800 dark:bg-gray-900 rounded-[3rem] border-8 border-gray-300 dark:border-gray-800 shadow-2xl shadow-gray-900/20 dark:shadow-primary-500/20 overflow-hidden">
                 {/* Notch */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-gray-300 dark:bg-gray-800 rounded-b-2xl z-20" />
                 
@@ -173,7 +173,7 @@ const Advert = () => {
                   <div className="p-6 pt-12 space-y-6">
                     {/* Header */}
                     <div className="flex items-center justify-between">
-                      <div className="w-10 h-10 rounded-full bg-blue-500 dark:bg-gradient-to-br dark:from-violet-500 dark:to-cyan-500" />
+                      <div className="w-10 h-10 rounded-full bg-blue-500 dark:bg-gradient-to-br dark:from-primary-500 dark:to-cyan-500" />
                       <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-white/10" />
                     </div>
 
@@ -185,8 +185,8 @@ const Advert = () => {
 
                     {/* Cards */}
                     <div className="space-y-3">
-                      <div className="h-24 rounded-2xl bg-blue-50 dark:bg-gradient-to-br dark:from-violet-500/20 dark:to-transparent border border-gray-100 dark:border-white/10 p-4">
-                        <div className="w-8 h-8 rounded-lg bg-blue-200 dark:bg-violet-500/30 mb-2" />
+                      <div className="h-24 rounded-2xl bg-blue-50 dark:bg-gradient-to-br dark:from-primary-500/20 dark:to-transparent border border-gray-100 dark:border-white/10 p-4">
+                        <div className="w-8 h-8 rounded-lg bg-blue-200 dark:bg-primary-500/30 mb-2" />
                         <div className="h-2 w-24 bg-gray-200 dark:bg-white/20 rounded-full" />
                       </div>
                       <div className="h-24 rounded-2xl bg-cyan-50 dark:bg-gradient-to-br dark:from-cyan-500/20 dark:to-transparent border border-gray-100 dark:border-white/10 p-4">
@@ -197,14 +197,14 @@ const Advert = () => {
 
                     {/* Bottom Nav */}
                     <div className="absolute bottom-6 left-6 right-6 h-16 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 flex items-center justify-around">
-                      <div className="w-6 h-6 rounded-full bg-blue-500/50 dark:bg-violet-500/50" />
+                      <div className="w-6 h-6 rounded-full bg-blue-500/50 dark:bg-primary-500/50" />
                       <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-white/10" />
                       <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-white/10" />
                     </div>
                   </div>
 
                   {/* Glow Effect */}
-                  <div className="absolute -top-20 -right-20 w-40 h-40 bg-blue-400/20 dark:bg-violet-500/30 rounded-full blur-3xl" />
+                  <div className="absolute -top-20 -right-20 w-40 h-40 bg-blue-400/20 dark:bg-primary-500/30 rounded-full blur-3xl" />
                   <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-cyan-400/20 dark:bg-cyan-500/20 rounded-full blur-3xl" />
                 </div>
               </div>
@@ -213,7 +213,7 @@ const Advert = () => {
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-4 -right-4 w-20 h-20 rounded-2xl bg-gray-900 dark:bg-gradient-to-br dark:from-violet-500 dark:to-purple-600 flex items-center justify-center shadow-xl shadow-gray-900/20 dark:shadow-violet-500/30"
+                className="absolute -top-4 -right-4 w-20 h-20 rounded-2xl bg-gray-900 dark:bg-gradient-to-br dark:from-primary-500 dark:to-purple-600 flex items-center justify-center shadow-xl shadow-gray-900/20 dark:shadow-primary-500/30"
               >
                 <FaApple className="w-8 h-8 text-white" />
               </motion.div>

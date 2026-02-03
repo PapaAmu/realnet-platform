@@ -83,7 +83,7 @@ const BackToTop = () => {
     >
       {/* Glow effect */}
       <motion.div
-        className="absolute inset-0 rounded-full bg-violet-500 blur-xl"
+        className="absolute inset-0 rounded-full bg-primary-500 blur-xl"
         animate={{
           opacity: isHovering ? 0.5 : 0,
           scale: isHovering ? 1.5 : 1,
@@ -93,7 +93,7 @@ const BackToTop = () => {
       
       {/* Outer ring */}
       <motion.div
-        className="absolute -inset-1.5 rounded-full border border-violet-500/30"
+        className="absolute -inset-1.5 rounded-full border border-primary-500/30"
         animate={{
           scale: isHovering ? 1.1 : 1,
           opacity: isHovering ? 1 : 0,
@@ -106,7 +106,7 @@ const BackToTop = () => {
         
         {/* Background fill on hover */}
         <motion.div
-          className="absolute inset-0 bg-violet-600"
+          className="absolute inset-0 bg-primary-600"
           initial={{ y: '100%' }}
           animate={{ y: isHovering ? '0%' : '100%' }}
           transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
@@ -161,7 +161,7 @@ const BackToTop = () => {
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
-          className="text-violet-500"
+          className="text-primary-500"
           strokeLinecap="round"
           strokeDasharray="289"
           strokeDashoffset="289"

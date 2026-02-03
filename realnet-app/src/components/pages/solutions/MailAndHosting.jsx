@@ -103,7 +103,7 @@ const HostingAndEmail = () => {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-6"
               >
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-violet-400">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-primary-400">
                   <FaServer className="w-4 h-4" />
                   Managed Services
                 </span>
@@ -117,7 +117,7 @@ const HostingAndEmail = () => {
               >
                 Email & VPS
                 <br />
-                <span className="text-violet-400">Hosting</span>
+                <span className="text-primary-400">Hosting</span>
               </motion.h1>
               
               <motion.p
@@ -163,8 +163,8 @@ const HostingAndEmail = () => {
                   {/* Email Card */}
                   <div className="p-5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
                     <div className="flex items-center gap-4 mb-3">
-                      <div className="w-12 h-12 rounded-lg bg-violet-500/10 flex items-center justify-center">
-                        <FaEnvelope className="w-6 h-6 text-violet-400" />
+                      <div className="w-12 h-12 rounded-lg bg-primary-500/10 flex items-center justify-center">
+                        <FaEnvelope className="w-6 h-6 text-primary-400" />
                       </div>
                       <div>
                         <div className="text-sm text-white/40">Business Email</div>
@@ -217,14 +217,14 @@ const HostingAndEmail = () => {
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
             >
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-violet-400 mb-6">
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-primary-400 mb-6">
                 <FaEnvelope className="w-4 h-4" />
                 Professional Email
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
                 Business Email
                 <br />
-                <span className="text-violet-400">That Builds Trust</span>
+                <span className="text-primary-400">That Builds Trust</span>
               </h2>
               <p className="text-white/50 text-base sm:text-lg mb-8 leading-relaxed">
                 Stop using free email addresses for business. Professional email 
@@ -243,8 +243,8 @@ const HostingAndEmail = () => {
                     variants={fadeInUp}
                     className="flex items-start gap-3"
                   >
-                    <div className="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center shrink-0">
-                      <feature.icon className="w-5 h-5 text-violet-400" />
+                    <div className="w-10 h-10 rounded-lg bg-primary-500/10 flex items-center justify-center shrink-0">
+                      <feature.icon className="w-5 h-5 text-primary-400" />
                     </div>
                     <div>
                       <h4 className="font-medium mb-1 text-sm">{feature.title}</h4>
@@ -262,7 +262,7 @@ const HostingAndEmail = () => {
                   </div>
                   <div className="text-right">
                     <div className="text-sm text-white/40 mb-1">Includes</div>
-                    <div className="text-violet-400 font-medium">Up to 7 accounts</div>
+                    <div className="text-primary-400 font-medium">Up to 7 accounts</div>
                   </div>
                 </div>
                 <Link
@@ -290,7 +290,7 @@ const HostingAndEmail = () => {
                   </div>
                   <div className="flex-1 p-4 space-y-3">
                     <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5">
-                      <div className="w-8 h-8 rounded-full bg-violet-500/20" />
+                      <div className="w-8 h-8 rounded-full bg-primary-500/20" />
                       <div className="flex-1">
                         <div className="h-2 w-32 bg-white/20 rounded mb-1" />
                         <div className="h-1.5 w-48 bg-white/10 rounded" />
@@ -303,13 +303,13 @@ const HostingAndEmail = () => {
                         <div className="h-1.5 w-40 bg-white/10 rounded" />
                       </div>
                     </div>
-                    <div className="flex items-center gap-3 p-3 rounded-lg bg-violet-500/10 border border-violet-500/20">
-                      <div className="w-8 h-8 rounded-full bg-violet-500/30" />
+                    <div className="flex items-center gap-3 p-3 rounded-lg bg-primary-500/10 border border-primary-500/20">
+                      <div className="w-8 h-8 rounded-full bg-primary-500/30" />
                       <div className="flex-1">
-                        <div className="h-2 w-36 bg-violet-200/30 rounded mb-1" />
-                        <div className="h-1.5 w-44 bg-violet-200/20 rounded" />
+                        <div className="h-2 w-36 bg-primary-200/30 rounded mb-1" />
+                        <div className="h-1.5 w-44 bg-primary-200/20 rounded" />
                       </div>
-                      <div className="w-2 h-2 rounded-full bg-violet-400" />
+                      <div className="w-2 h-2 rounded-full bg-primary-400" />
                     </div>
                   </div>
                 </div>
@@ -451,17 +451,17 @@ const HostingAndEmail = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-white/40">
             <div className="flex items-center gap-2">
-              <FaShieldAlt className="w-4 h-4 text-violet-400" />
+              <FaShieldAlt className="w-4 h-4 text-primary-400" />
               <span>99.9% Uptime SLA</span>
             </div>
             <div className="hidden sm:block w-px h-4 bg-white/10" />
             <div className="flex items-center gap-2">
-              <FaHeadset className="w-4 h-4 text-violet-400" />
+              <FaHeadset className="w-4 h-4 text-primary-400" />
               <span>Local South African Support</span>
             </div>
             <div className="hidden sm:block w-px h-4 bg-white/10" />
             <div className="flex items-center gap-2">
-              <FaLock className="w-4 h-4 text-violet-400" />
+              <FaLock className="w-4 h-4 text-primary-400" />
               <span>Secure & Reliable</span>
             </div>
           </div>

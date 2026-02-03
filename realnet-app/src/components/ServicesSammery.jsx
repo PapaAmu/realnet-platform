@@ -94,7 +94,7 @@ const ServicesSummaryCompact = () => {
         <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         
         {/* Gradient Orbs */}
-        <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-primary-600/10 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-cyan-600/10 rounded-full blur-3xl" />
       </div>
 
@@ -108,7 +108,7 @@ const ServicesSummaryCompact = () => {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-2xl"
           >
-            <span className="inline-flex items-center gap-2 text-sm text-violet-400 font-medium tracking-wider uppercase mb-4">
+            <span className="inline-flex items-center gap-2 text-sm text-primary-400 font-medium tracking-wider uppercase mb-4">
               <FaRocket className="w-4 h-4" />
               Our Services
             </span>
@@ -133,7 +133,7 @@ const ServicesSummaryCompact = () => {
             </button>
             <button
               onClick={() => scroll('right')}
-              className="w-12 h-12 rounded-full bg-white dark:bg-white text-black dark:text-black flex items-center justify-center hover:scale-105 transition-transform duration-300 shadow-lg shadow-violet-500/20"
+              className="w-12 h-12 rounded-full bg-white dark:bg-white text-black dark:text-black flex items-center justify-center hover:scale-105 transition-transform duration-300 shadow-lg shadow-primary-500/20"
               aria-label="Next service"
             >
               <FaArrowRight className="w-4 h-4" />
@@ -174,7 +174,7 @@ const ServicesSummaryCompact = () => {
                   <div className="relative h-full bg-gray-50/50 dark:bg-white/[0.02] backdrop-blur-sm border border-gray-200 dark:border-white/[0.06] rounded-2xl p-8 hover:bg-white dark:hover:bg-white/[0.04] hover:border-gray-300 dark:hover:border-white/[0.12] transition-all duration-500 overflow-hidden">
                     
                     {/* Hover Gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-violet-500/0 via-transparent to-cyan-500/0 group-hover:from-violet-500/5 group-hover:to-cyan-500/5 transition-all duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary-500/0 via-transparent to-cyan-500/0 group-hover:from-primary-500/5 group-hover:to-cyan-500/5 transition-all duration-700" />
                     
                     {/* Number */}
                     <div className="absolute top-6 right-6 text-6xl font-bold text-gray-200 dark:text-white/[0.03] select-none">
@@ -184,12 +184,12 @@ const ServicesSummaryCompact = () => {
                     {/* Content */}
                     <div className="relative z-10">
                       {/* Icon */}
-                      <div className="w-14 h-14 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:border-violet-500/30 transition-all duration-300">
-                        <service.icon className="w-6 h-6 text-gray-700 dark:text-white/70 group-hover:text-violet-500 dark:group-hover:text-violet-400 transition-colors duration-300" />
+                      <div className="w-14 h-14 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:border-primary-500/30 transition-all duration-300">
+                        <service.icon className="w-6 h-6 text-gray-700 dark:text-white/70 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300" />
                       </div>
 
                       {/* Title */}
-                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-300">
+                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300">
                         {service.title}
                       </h3>
 
@@ -211,14 +211,14 @@ const ServicesSummaryCompact = () => {
                       </div>
 
                       {/* Link */}
-                      <div className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white/80 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-300">
+                      <div className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white/80 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300">
                         <span>Learn more</span>
                         <FaArrowRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" />
                       </div>
                     </div>
 
                     {/* Corner Accent */}
-                    <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-violet-500/10 to-transparent rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-primary-500/10 to-transparent rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
                 </Link>
               </motion.div>
@@ -232,7 +232,7 @@ const ServicesSummaryCompact = () => {
               className="snap-start shrink-0 w-[340px] md:w-[380px]"
             >
               <Link href="/services" className="group block h-full">
-                <div className="relative h-full min-h-[400px] bg-gradient-to-br from-violet-600 to-cyan-600 rounded-2xl p-8 flex flex-col justify-between overflow-hidden hover:shadow-2xl hover:shadow-violet-500/25 transition-all duration-500">
+                <div className="relative h-full min-h-[400px] bg-gradient-to-br from-primary-600 to-cyan-600 rounded-2xl p-8 flex flex-col justify-between overflow-hidden hover:shadow-2xl hover:shadow-primary-500/25 transition-all duration-500">
                   
                   {/* Background Pattern */}
                   <div className="absolute inset-0 opacity-10">
@@ -256,7 +256,7 @@ const ServicesSummaryCompact = () => {
 
                   <div className="relative z-10 flex items-center gap-2 text-white font-medium">
                     <span>Get Started</span>
-                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-violet-600 transition-all duration-300">
+                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-primary-600 transition-all duration-300">
                       <FaArrowRight className="w-4 h-4" />
                     </div>
                   </div>
@@ -280,7 +280,7 @@ const ServicesSummaryCompact = () => {
                 }}
                 className={`h-1 rounded-full transition-all duration-300 ${
                   index === activeIndex 
-                    ? 'w-8 bg-violet-500' 
+                    ? 'w-8 bg-primary-500' 
                     : 'w-2 bg-gray-300 dark:bg-white/20 hover:bg-gray-400 dark:hover:bg-white/40'
                 }`}
                 aria-label={`Go to service ${index + 1}`}

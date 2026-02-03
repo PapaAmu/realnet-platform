@@ -160,7 +160,7 @@ const ServicesOverview = () => {
       <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-0 left-0 w-full h-px bg-gray-200 dark:bg-white/10" />
-          <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-blue-100/50 dark:bg-violet-600/10 rounded-full blur-3xl" />
+          <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-blue-100/50 dark:bg-primary-600/10 rounded-full blur-3xl" />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-6">
@@ -170,7 +170,7 @@ const ServicesOverview = () => {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6 }}
             >
-              <span className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-violet-400 mb-6">
+              <span className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-primary-400 mb-6">
                 <FaRocket className="w-4 h-4" />
                 Our Services
               </span>
@@ -249,17 +249,17 @@ const ServicesOverview = () => {
               onMouseEnter={() => setActiveService(index)}
             >
               <Link href={service.link} className="block h-full">
-                <div className="h-full p-8 rounded-2xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06] hover:border-blue-500/30 dark:hover:border-violet-500/30 hover:bg-white dark:hover:bg-white/[0.04] transition-all duration-300">
+                <div className="h-full p-8 rounded-2xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06] hover:border-blue-500/30 dark:hover:border-primary-500/30 hover:bg-white dark:hover:bg-white/[0.04] transition-all duration-300">
                   <div className="flex items-start justify-between mb-6">
-                    <div className="w-12 h-12 rounded-xl bg-gray-200 dark:bg-white/5 flex items-center justify-center group-hover:bg-blue-100 dark:group-hover:bg-violet-500/10 transition-colors">
-                      <service.icon className="w-6 h-6 text-gray-700 dark:text-white/70 group-hover:text-blue-600 dark:group-hover:text-violet-400 transition-colors" />
+                    <div className="w-12 h-12 rounded-xl bg-gray-200 dark:bg-white/5 flex items-center justify-center group-hover:bg-blue-100 dark:group-hover:bg-primary-500/10 transition-colors">
+                      <service.icon className="w-6 h-6 text-gray-700 dark:text-white/70 group-hover:text-blue-600 dark:group-hover:text-primary-400 transition-colors" />
                     </div>
                     <span className="text-xs font-medium text-gray-400 dark:text-white/30 px-3 py-1 rounded-full bg-gray-200 dark:bg-white/5">
                       {service.stat}
                     </span>
                   </div>
 
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-violet-400 transition-colors">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-primary-400 transition-colors">
                     {service.title}
                   </h3>
                   
@@ -270,13 +270,13 @@ const ServicesOverview = () => {
                   <ul className="space-y-2">
                     {service.features.map((feature, i) => (
                       <li key={i} className="flex items-center gap-2 text-sm text-gray-500 dark:text-white/40">
-                        <div className="w-1 h-1 rounded-full bg-blue-500 dark:bg-violet-400" />
+                        <div className="w-1 h-1 rounded-full bg-blue-500 dark:bg-primary-400" />
                         {feature}
                       </li>
                     ))}
                   </ul>
 
-                  <div className="mt-6 pt-6 border-t border-gray-200 dark:border-white/10 flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-violet-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="mt-6 pt-6 border-t border-gray-200 dark:border-white/10 flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-primary-400 opacity-0 group-hover:opacity-100 transition-opacity">
                     Learn more <FaArrowRight className="w-3 h-3" />
                   </div>
                 </div>
@@ -312,7 +312,7 @@ const ServicesOverview = () => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className={`relative rounded-2xl border transition-all duration-300 ${
                   pkg.popular 
-                    ? 'border-blue-500 dark:border-violet-500 bg-blue-50/50 dark:bg-violet-500/5' 
+                    ? 'border-blue-500 dark:border-primary-500 bg-blue-50/50 dark:bg-primary-500/5' 
                     : 'border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.02] hover:border-gray-300 dark:hover:border-white/10'
                 }`}
                 onMouseEnter={() => setHoveredPackage(index)}
@@ -325,7 +325,7 @@ const ServicesOverview = () => {
                         {pkg.name}
                       </h3>
                       {pkg.popular && (
-                        <span className="px-3 py-1 text-xs font-medium bg-blue-100 dark:bg-violet-500/20 text-blue-700 dark:text-violet-300 rounded-full">
+                        <span className="px-3 py-1 text-xs font-medium bg-blue-100 dark:bg-primary-500/20 text-blue-700 dark:text-primary-300 rounded-full">
                           Popular
                         </span>
                       )}
@@ -342,7 +342,7 @@ const ServicesOverview = () => {
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                       {pkg.features.map((feature, i) => (
                         <div key={i} className="flex items-center gap-2 text-sm text-gray-600 dark:text-white/60">
-                          <FaCheck className={`w-3 h-3 flex-shrink-0 ${pkg.popular ? 'text-blue-500 dark:text-violet-400' : 'text-gray-400 dark:text-white/30'}`} />
+                          <FaCheck className={`w-3 h-3 flex-shrink-0 ${pkg.popular ? 'text-blue-500 dark:text-primary-400' : 'text-gray-400 dark:text-white/30'}`} />
                           <span>{feature}</span>
                         </div>
                       ))}
@@ -395,8 +395,8 @@ const ServicesOverview = () => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="text-center group"
               >
-                <div className="w-16 h-16 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 flex items-center justify-center mx-auto mb-6 group-hover:border-blue-500/30 dark:group-hover:border-violet-500/30 transition-colors">
-                  <item.icon className="w-7 h-7 text-gray-700 dark:text-white/70 group-hover:text-blue-600 dark:group-hover:text-violet-400 transition-colors" />
+                <div className="w-16 h-16 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 flex items-center justify-center mx-auto mb-6 group-hover:border-blue-500/30 dark:group-hover:border-primary-500/30 transition-colors">
+                  <item.icon className="w-7 h-7 text-gray-700 dark:text-white/70 group-hover:text-blue-600 dark:group-hover:text-primary-400 transition-colors" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                   {item.title}

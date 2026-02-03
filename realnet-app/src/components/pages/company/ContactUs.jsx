@@ -102,7 +102,7 @@ const Contact = () => {
       
       {/* Hero Section */}
       <section className="relative px-6 mb-16">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-violet-900/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary-900/20 rounded-full blur-3xl pointer-events-none" />
         
         <div className="max-w-6xl mx-auto relative">
           <motion.div
@@ -112,13 +112,13 @@ const Contact = () => {
             className="max-w-2xl"
           >
             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-white/60 mb-6">
-              <FaPaperPlane className="w-4 h-4 text-violet-400" />
+              <FaPaperPlane className="w-4 h-4 text-primary-400" />
               Get In Touch
             </span>
             <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6">
               Let's Start a
               <br />
-              <span className="text-violet-400">Conversation</span>
+              <span className="text-primary-400">Conversation</span>
             </h1>
             <p className="text-lg text-white/50 leading-relaxed">
               Have a project in mind or want to discuss how we can help your business grow? 
@@ -159,7 +159,7 @@ const Contact = () => {
                         required
                         className={`w-full px-4 py-3 rounded-xl bg-white/5 border text-white placeholder:text-white/30 focus:outline-none transition-all ${
                           focusedField === 'name' 
-                            ? 'border-violet-500/50 ring-2 ring-violet-500/10' 
+                            ? 'border-primary-500/50 ring-2 ring-primary-500/10' 
                             : 'border-white/10 hover:border-white/20'
                         }`}
                         placeholder="John Doe"
@@ -180,7 +180,7 @@ const Contact = () => {
                         required
                         className={`w-full px-4 py-3 rounded-xl bg-white/5 border text-white placeholder:text-white/30 focus:outline-none transition-all ${
                           focusedField === 'email' 
-                            ? 'border-violet-500/50 ring-2 ring-violet-500/10' 
+                            ? 'border-primary-500/50 ring-2 ring-primary-500/10' 
                             : 'border-white/10 hover:border-white/20'
                         }`}
                         placeholder="john@example.com"
@@ -202,7 +202,7 @@ const Contact = () => {
                       required
                       className={`w-full px-4 py-3 rounded-xl bg-white/5 border text-white placeholder:text-white/30 focus:outline-none transition-all ${
                         focusedField === 'subject' 
-                          ? 'border-violet-500/50 ring-2 ring-violet-500/10' 
+                          ? 'border-primary-500/50 ring-2 ring-primary-500/10' 
                           : 'border-white/10 hover:border-white/20'
                       }`}
                       placeholder="What is this regarding?"
@@ -223,7 +223,7 @@ const Contact = () => {
                       rows={5}
                       className={`w-full px-4 py-3 rounded-xl bg-white/5 border text-white placeholder:text-white/30 focus:outline-none transition-all resize-none ${
                         focusedField === 'message' 
-                          ? 'border-violet-500/50 ring-2 ring-violet-500/10' 
+                          ? 'border-primary-500/50 ring-2 ring-primary-500/10' 
                           : 'border-white/10 hover:border-white/20'
                       }`}
                       placeholder="Tell us about your project..."
@@ -286,10 +286,10 @@ const Contact = () => {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3 + index * 0.1 }}
-                    className="flex items-start gap-4 p-5 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-violet-500/30 hover:bg-white/[0.04] transition-all group"
+                    className="flex items-start gap-4 p-5 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-primary-500/30 hover:bg-white/[0.04] transition-all group"
                   >
-                    <div className="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                      <item.icon className="w-5 h-5 text-violet-400" />
+                    <div className="w-10 h-10 rounded-lg bg-primary-500/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                      <item.icon className="w-5 h-5 text-primary-400" />
                     </div>
                     <div>
                       <p className="text-sm text-white/40 mb-1">{item.label}</p>
@@ -302,7 +302,7 @@ const Contact = () => {
               </div>
 
               {/* Quick Actions */}
-              <div className="p-6 rounded-xl bg-violet-600/10 border border-violet-500/20">
+              <div className="p-6 rounded-xl bg-primary-600/10 border border-primary-500/20">
                 <h3 className="font-semibold text-white mb-4">Quick Actions</h3>
                 <div className="space-y-3">
                   <a
@@ -323,7 +323,7 @@ const Contact = () => {
               {/* Business Hours */}
               <div className="p-6 rounded-xl bg-white/[0.02] border border-white/[0.06]">
                 <div className="flex items-center gap-3 mb-4">
-                  <FaClock className="w-5 h-5 text-violet-400" />
+                  <FaClock className="w-5 h-5 text-primary-400" />
                   <h3 className="font-semibold text-white">Business Hours</h3>
                 </div>
                 <div className="space-y-3">
@@ -347,7 +347,7 @@ const Contact = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       whileHover={{ y: -3 }}
-                      className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-violet-500/30 hover:bg-violet-500/10 transition-all"
+                      className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-primary-500/30 hover:bg-primary-500/10 transition-all"
                       aria-label={social.label}
                     >
                       <social.icon className="w-4 h-4" />
@@ -357,9 +357,9 @@ const Contact = () => {
               </div>
 
               {/* Trust Badge */}
-              <div className="p-6 rounded-xl bg-gradient-to-br from-violet-600/20 to-cyan-600/20 border border-violet-500/20">
+              <div className="p-6 rounded-xl bg-gradient-to-br from-primary-600/20 to-cyan-600/20 border border-primary-500/20">
                 <div className="flex items-start gap-3">
-                  <FaCheckCircle className="w-5 h-5 text-violet-400 shrink-0 mt-0.5" />
+                  <FaCheckCircle className="w-5 h-5 text-primary-400 shrink-0 mt-0.5" />
                   <div>
                     <p className="font-medium text-white mb-1">B-BBEE Level 1</p>
                     <p className="text-sm text-white/60">

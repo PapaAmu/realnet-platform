@@ -102,7 +102,7 @@ const WebProjects = () => {
       <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-0 left-0 w-full h-px bg-white/10" />
-          <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-violet-900/20 rounded-full blur-3xl" />
+          <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-primary-900/20 rounded-full blur-3xl" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-6">
@@ -118,7 +118,7 @@ const WebProjects = () => {
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
               Projects That
               <br />
-              <span className="text-violet-400">Drive Results</span>
+              <span className="text-primary-400">Drive Results</span>
             </h1>
             <p className="text-xl text-white/50 leading-relaxed max-w-2xl">
               A curated selection of websites and applications we've built for 
@@ -211,7 +211,7 @@ const WebProjects = () => {
                         <span className="text-xs text-white/50">{project.year}</span>
                       </div>
                       
-                      <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-violet-400 transition-colors">
+                      <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-primary-400 transition-colors">
                         {project.title}
                       </h3>
                       
@@ -222,7 +222,7 @@ const WebProjects = () => {
                       </p>
 
                       {/* View Indicator */}
-                      <div className={`flex items-center gap-2 mt-4 text-violet-400 text-sm font-medium transition-all duration-300 ${
+                      <div className={`flex items-center gap-2 mt-4 text-primary-400 text-sm font-medium transition-all duration-300 ${
                         hoveredProject === project.id ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                       }`}>
                         View Project <FaArrowRight className="w-4 h-4" />
@@ -315,7 +315,7 @@ const WebProjects = () => {
       <section className="py-24 border-t border-white/10">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Ready to build something <span className="text-violet-400">extraordinary</span>?
+            Ready to build something <span className="text-primary-400">extraordinary</span>?
           </h2>
           <p className="text-lg text-white/50 mb-8 max-w-2xl mx-auto">
             Let's discuss how we can create a digital experience that drives growth 

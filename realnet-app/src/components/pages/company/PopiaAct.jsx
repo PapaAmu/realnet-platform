@@ -249,7 +249,7 @@ const POPIA = () => {
       
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-violet-900/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary-900/10 rounded-full blur-3xl pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-6 relative">
           <motion.div
@@ -259,13 +259,13 @@ const POPIA = () => {
             className="max-w-3xl"
           >
             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-white/60 mb-6">
-              <FaShieldAlt className="w-4 h-4 text-violet-400" />
+              <FaShieldAlt className="w-4 h-4 text-primary-400" />
               Data Protection
             </span>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
               POPIA
               <br />
-              <span className="text-violet-400">Compliance</span>
+              <span className="text-primary-400">Compliance</span>
             </h1>
             <p className="text-xl text-white/50 leading-relaxed mb-8">
               Your privacy is fundamental. Learn how REALNET Web Solutions protects 
@@ -339,10 +339,10 @@ const POPIA = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-violet-500/30 transition-all duration-300"
+                className="group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-primary-500/30 transition-all duration-300"
               >
-                <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <principle.icon className="w-6 h-6 text-violet-400" />
+                <div className="w-12 h-12 rounded-xl bg-primary-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <principle.icon className="w-6 h-6 text-primary-400" />
                 </div>
                 <h3 className="font-semibold text-white mb-2">{principle.title}</h3>
                 <p className="text-sm text-white/50 mb-3">{principle.description}</p>
@@ -383,8 +383,8 @@ const POPIA = () => {
                   className="w-full flex items-center justify-between p-6 text-left hover:bg-white/[0.02] transition-colors"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center">
-                      <section.icon className="w-5 h-5 text-violet-400" />
+                    <div className="w-10 h-10 rounded-lg bg-primary-500/10 flex items-center justify-center">
+                      <section.icon className="w-5 h-5 text-primary-400" />
                     </div>
                     <span className="font-semibold text-white">{section.title}</span>
                   </div>
@@ -455,12 +455,12 @@ const POPIA = () => {
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="p-8 rounded-2xl bg-gradient-to-br from-violet-600/20 to-cyan-600/20 border border-violet-500/20"
+              className="p-8 rounded-2xl bg-gradient-to-br from-primary-600/20 to-cyan-600/20 border border-primary-500/20"
             >
               <h3 className="text-xl font-semibold mb-6">Children's Privacy</h3>
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
-                  <FaChild className="w-6 h-6 text-violet-400" />
+                  <FaChild className="w-6 h-6 text-primary-400" />
                 </div>
                 <div>
                   <p className="text-white/70 text-sm leading-relaxed mb-4">
@@ -536,32 +536,32 @@ const POPIA = () => {
               
               <div className="space-y-6">
                 <div className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
-                  <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center">
-                    <FaEnvelope className="w-5 h-5 text-violet-400" />
+                  <div className="w-12 h-12 rounded-xl bg-primary-500/10 flex items-center justify-center">
+                    <FaEnvelope className="w-5 h-5 text-primary-400" />
                   </div>
                   <div>
                     <p className="text-sm text-white/40 mb-1">Email</p>
-                    <a href="mailto:info@realnet-web.co.za" className="text-white hover:text-violet-400 transition-colors">
+                    <a href="mailto:info@realnet-web.co.za" className="text-white hover:text-primary-400 transition-colors">
                       info@realnet-web.co.za
                     </a>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
-                  <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center">
-                    <FaPhone className="w-5 h-5 text-violet-400" />
+                  <div className="w-12 h-12 rounded-xl bg-primary-500/10 flex items-center justify-center">
+                    <FaPhone className="w-5 h-5 text-primary-400" />
                   </div>
                   <div>
                     <p className="text-sm text-white/40 mb-1">Phone</p>
-                    <a href="tel:+27640388883" className="text-white hover:text-violet-400 transition-colors">
+                    <a href="tel:+27640388883" className="text-white hover:text-primary-400 transition-colors">
                       +27 64 038 8883
                     </a>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
-                  <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center">
-                    <FaFileContract className="w-5 h-5 text-violet-400" />
+                  <div className="w-12 h-12 rounded-xl bg-primary-500/10 flex items-center justify-center">
+                    <FaFileContract className="w-5 h-5 text-primary-400" />
                   </div>
                   <div>
                     <p className="text-sm text-white/40 mb-1">Physical Address</p>
@@ -584,7 +584,7 @@ const POPIA = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="p-8 rounded-2xl bg-gradient-to-br from-violet-600/10 to-cyan-600/10 border border-white/[0.06]"
+              className="p-8 rounded-2xl bg-gradient-to-br from-primary-600/10 to-cyan-600/10 border border-white/[0.06]"
             >
               <h3 className="text-xl font-semibold mb-6">Information Regulator</h3>
               <p className="text-white/50 text-sm mb-6 leading-relaxed">
@@ -595,13 +595,13 @@ const POPIA = () => {
               <div className="space-y-4 text-sm">
                 <div>
                   <p className="text-white/40 mb-1">Website</p>
-                  <a href="https://inforegulator.org.za" target="_blank" rel="noopener noreferrer" className="text-white hover:text-violet-400 transition-colors">
+                  <a href="https://inforegulator.org.za" target="_blank" rel="noopener noreferrer" className="text-white hover:text-primary-400 transition-colors">
                     inforegulator.org.za
                   </a>
                 </div>
                 <div>
                   <p className="text-white/40 mb-1">Email</p>
-                  <a href="mailto:inforeg@justice.gov.za" className="text-white hover:text-violet-400 transition-colors">
+                  <a href="mailto:inforeg@justice.gov.za" className="text-white hover:text-primary-400 transition-colors">
                     inforeg@justice.gov.za
                   </a>
                 </div>

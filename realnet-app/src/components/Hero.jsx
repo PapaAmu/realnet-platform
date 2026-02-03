@@ -73,7 +73,7 @@ const deploy = async () => {
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[600px] opacity-30"
           style={{ y: backgroundY }}
         >
-          <div className="w-full h-full bg-gradient-radial from-violet-600/20 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="w-full h-full bg-gradient-radial from-primary-600/20 via-transparent to-transparent rounded-full blur-3xl" />
         </motion.div>
 
         {/* Grid lines */}
@@ -193,7 +193,7 @@ const deploy = async () => {
             className="relative max-w-3xl mx-auto"
           >
             {/* Glow effect */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-violet-500/20 to-cyan-500/20 rounded-2xl blur-xl opacity-50" />
+            <div className="absolute -inset-1 bg-gradient-to-r from-primary-500/20 to-cyan-500/20 rounded-2xl blur-xl opacity-50" />
             
             <div className="relative bg-[#0a0a0a]/90 backdrop-blur-xl rounded-2xl border border-white/[0.08] overflow-hidden">
               {/* Window Header */}
@@ -222,7 +222,7 @@ const deploy = async () => {
                           dangerouslySetInnerHTML={{
                             __html: line
                               .replace(/(\/\/.*)/, '<span class="text-white/30">$1</span>')
-                              .replace(/\b(const|let|var|async|await|return|if|else)\b/g, '<span class="text-violet-400">$1</span>')
+                              .replace(/\b(const|let|var|async|await|return|if|else)\b/g, '<span class="text-primary-400">$1</span>')
                               .replace(/\b(true|false|null|undefined)\b/g, '<span class="text-orange-400">$1</span>')
                               .replace(/(".*?"|'.*?')/g, '<span class="text-emerald-400">$1</span>')
                               .replace(/\b(\d+)\b/g, '<span class="text-cyan-400">$1</span>')
@@ -276,10 +276,10 @@ const deploy = async () => {
                     onMouseLeave={() => setHoveredTech(null)}
                   >
                     <div className={`w-12 h-12 rounded-xl border border-white/[0.08] bg-white/[0.03] flex items-center justify-center transition-all duration-300 ${
-                      hoveredTech === tech.name ? 'border-violet-500/50 bg-violet-500/10 scale-110' : 'group-hover:border-white/20'
+                      hoveredTech === tech.name ? 'border-primary-500/50 bg-primary-500/10 scale-110' : 'group-hover:border-white/20'
                     }`}>
                       <tech.icon className={`w-6 h-6 transition-colors duration-300 ${
-                        hoveredTech === tech.name ? 'text-violet-400' : 'text-white/50 group-hover:text-white/80'
+                        hoveredTech === tech.name ? 'text-primary-400' : 'text-white/50 group-hover:text-white/80'
                       }`} />
                     </div>
                     <span className={`text-xs transition-colors duration-300 ${

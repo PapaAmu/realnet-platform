@@ -157,7 +157,7 @@ const WebSoftware = () => {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-6"
               >
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-violet-400">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-primary-400">
                   <FaRocket className="w-4 h-4" />
                   Enterprise Software Development
                 </span>
@@ -171,7 +171,7 @@ const WebSoftware = () => {
               >
                 Sophisticated
                 <br />
-                <span className="text-violet-400">Business Systems</span>
+                <span className="text-primary-400">Business Systems</span>
                 <br />
                 That Scale
               </motion.h1>
@@ -219,19 +219,19 @@ const WebSoftware = () => {
                 <div className="relative h-full flex flex-col justify-center gap-4">
                   {/* Client Layer */}
                   <div className="flex justify-center gap-4">
-                    <div className="px-4 py-2 rounded-lg bg-violet-500/20 border border-violet-500/30 text-sm text-violet-300">
+                    <div className="px-4 py-2 rounded-lg bg-primary-500/20 border border-primary-500/30 text-sm text-primary-300">
                       Web App
                     </div>
-                    <div className="px-4 py-2 rounded-lg bg-violet-500/20 border border-violet-500/30 text-sm text-violet-300">
+                    <div className="px-4 py-2 rounded-lg bg-primary-500/20 border border-primary-500/30 text-sm text-primary-300">
                       Mobile
                     </div>
-                    <div className="px-4 py-2 rounded-lg bg-violet-500/20 border border-violet-500/30 text-sm text-violet-300">
+                    <div className="px-4 py-2 rounded-lg bg-primary-500/20 border border-primary-500/30 text-sm text-primary-300">
                       API Clients
                     </div>
                   </div>
                   
                   {/* Connection */}
-                  <div className="h-8 w-px bg-gradient-to-b from-violet-500/50 to-cyan-500/50 mx-auto" />
+                  <div className="h-8 w-px bg-gradient-to-b from-primary-500/50 to-cyan-500/50 mx-auto" />
                   
                   {/* Gateway Layer */}
                   <div className="px-6 py-3 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-center">
@@ -285,7 +285,7 @@ const WebSoftware = () => {
                   transition={{ duration: 3.5, repeat: Infinity, delay: 0.5 }}
                   className="absolute bottom-4 right-4 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs"
                 >
-                  <span className="text-violet-400">●</span> Auto-Scaling
+                  <span className="text-primary-400">●</span> Auto-Scaling
                 </motion.div>
               </div>
             </motion.div>
@@ -302,14 +302,14 @@ const WebSoftware = () => {
             animate={isInView ? "visible" : "hidden"}
             className="text-center max-w-2xl mx-auto mb-12 lg:mb-16"
           >
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-violet-400 mb-6">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-primary-400 mb-6">
               <FaCogs className="w-4 h-4" />
               Core Capabilities
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 tracking-tight">
               Enterprise-Grade
               <br />
-              <span className="text-violet-400">System Architecture</span>
+              <span className="text-primary-400">System Architecture</span>
             </h2>
             <p className="text-white/50 text-base sm:text-lg">
               We design and build sophisticated platforms that handle complex business logic, 
@@ -327,10 +327,10 @@ const WebSoftware = () => {
               <motion.div
                 key={index}
                 variants={fadeInUp}
-                className="group relative p-6 sm:p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-violet-500/30 transition-all duration-500"
+                className="group relative p-6 sm:p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-primary-500/30 transition-all duration-500"
               >
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-violet-500/10 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <cap.icon className="w-6 h-6 sm:w-7 sm:h-7 text-violet-400" />
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-primary-500/10 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <cap.icon className="w-6 h-6 sm:w-7 sm:h-7 text-primary-400" />
                 </div>
                 
                 <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">{cap.title}</h3>
@@ -339,7 +339,7 @@ const WebSoftware = () => {
                 <div className="flex flex-wrap gap-2">
                   {cap.features.map((feature, i) => (
                     <span key={i} className="flex items-center gap-1.5 text-xs text-white/40">
-                      <FaCheck className="w-3 h-3 text-violet-400" />
+                      <FaCheck className="w-3 h-3 text-primary-400" />
                       {feature}
                     </span>
                   ))}
@@ -377,13 +377,13 @@ const WebSoftware = () => {
               <motion.div
                 key={index}
                 variants={fadeInUp}
-                className="group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-violet-500/30 hover:bg-white/[0.04] transition-all duration-300"
+                className="group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-primary-500/30 hover:bg-white/[0.04] transition-all duration-300"
               >
-                <div className="text-xs text-violet-400 font-medium uppercase tracking-wider mb-3">
+                <div className="text-xs text-primary-400 font-medium uppercase tracking-wider mb-3">
                   {sol.category}
                 </div>
-                <div className="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center mb-4">
-                  <sol.icon className="w-5 h-5 text-violet-400" />
+                <div className="w-10 h-10 rounded-lg bg-primary-500/10 flex items-center justify-center mb-4">
+                  <sol.icon className="w-5 h-5 text-primary-400" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{sol.title}</h3>
                 <p className="text-sm text-white/50 leading-relaxed">
@@ -405,14 +405,14 @@ const WebSoftware = () => {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-violet-400 mb-6">
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-primary-400 mb-6">
                 <FaServer className="w-4 h-4" />
                 Technical Excellence
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
                 Built for
                 <br />
-                <span className="text-violet-400">Reliability & Scale</span>
+                <span className="text-primary-400">Reliability & Scale</span>
               </h2>
               <p className="text-white/50 text-base sm:text-lg mb-8 leading-relaxed">
                 Every system we architect is designed with growth in mind. From day one, 
@@ -422,8 +422,8 @@ const WebSoftware = () => {
               <div className="space-y-4 sm:space-y-6">
                 {architectureFeatures.map((feat, index) => (
                   <div key={index} className="flex gap-4">
-                    <div className="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center shrink-0">
-                      <FaCheck className="w-4 h-4 text-violet-400" />
+                    <div className="w-8 h-8 rounded-lg bg-primary-500/10 flex items-center justify-center shrink-0">
+                      <FaCheck className="w-4 h-4 text-primary-400" />
                     </div>
                     <div>
                       <h4 className="font-semibold mb-1 text-sm sm:text-base">{feat.title}</h4>
@@ -445,9 +445,9 @@ const WebSoftware = () => {
                 {/* Abstract Infrastructure Visualization */}
                 <div className="h-full flex flex-col justify-center gap-4 sm:gap-6">
                   <div className="flex items-center gap-4">
-                    <div className="flex-1 h-12 rounded-lg bg-violet-500/10 border border-violet-500/30 flex items-center px-4">
-                      <div className="w-3 h-3 rounded-full bg-violet-400 mr-3 animate-pulse" />
-                      <span className="text-sm text-violet-300">Load Balancer</span>
+                    <div className="flex-1 h-12 rounded-lg bg-primary-500/10 border border-primary-500/30 flex items-center px-4">
+                      <div className="w-3 h-3 rounded-full bg-primary-400 mr-3 animate-pulse" />
+                      <span className="text-sm text-primary-300">Load Balancer</span>
                     </div>
                   </div>
                   
@@ -473,7 +473,7 @@ const WebSoftware = () => {
                 </div>
                 
                 {/* Glow Effect */}
-                <div className="absolute -top-20 -right-20 w-40 h-40 bg-violet-500/20 rounded-full blur-3xl" />
+                <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary-500/20 rounded-full blur-3xl" />
               </div>
             </motion.div>
           </div>
@@ -510,12 +510,12 @@ const WebSoftware = () => {
                   index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
                 }`}
               >
-                <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-violet-500 ring-2 sm:ring-4 ring-[#050505]" />
+                <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-primary-500 ring-2 sm:ring-4 ring-[#050505]" />
                 
                 <div className={`ml-10 sm:ml-12 md:ml-0 md:w-1/2 ${
                   index % 2 === 0 ? 'md:pr-8 md:text-right lg:pr-12' : 'md:pl-8 lg:pl-12'
                 }`}>
-                  <span className="inline-block px-2 sm:px-3 py-0.5 sm:py-1 rounded-full bg-violet-500/10 text-violet-400 text-xs font-medium mb-2">
+                  <span className="inline-block px-2 sm:px-3 py-0.5 sm:py-1 rounded-full bg-primary-500/10 text-primary-400 text-xs font-medium mb-2">
                     {item.step}
                   </span>
                   <h3 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">{item.title}</h3>
@@ -539,7 +539,7 @@ const WebSoftware = () => {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 leading-tight">
               Ready to Build Your
               <br />
-              <span className="text-violet-400">Business Platform?</span>
+              <span className="text-primary-400">Business Platform?</span>
             </h2>
             <p className="text-base sm:text-lg lg:text-xl text-white/50 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
               Let's discuss how we can architect a scalable, secure system that transforms 
@@ -568,22 +568,22 @@ const WebSoftware = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid sm:grid-cols-3 gap-6 sm:gap-8 text-center">
             <div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <FaGlobe className="w-5 h-5 sm:w-6 sm:h-6 text-violet-400" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary-500/10 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <FaGlobe className="w-5 h-5 sm:w-6 sm:h-6 text-primary-400" />
               </div>
               <h4 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Cloud-Native</h4>
               <p className="text-white/40 text-xs sm:text-sm">AWS, Azure, Google Cloud</p>
             </div>
             <div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <FaShieldAlt className="w-5 h-5 sm:w-6 sm:h-6 text-violet-400" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary-500/10 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <FaShieldAlt className="w-5 h-5 sm:w-6 sm:h-6 text-primary-400" />
               </div>
               <h4 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Enterprise Security</h4>
               <p className="text-white/40 text-xs sm:text-sm">SOC 2, ISO 27001 Ready</p>
             </div>
             <div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <FaChartLine className="w-5 h-5 sm:w-6 sm:h-6 text-violet-400" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary-500/10 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <FaChartLine className="w-5 h-5 sm:w-6 sm:h-6 text-primary-400" />
               </div>
               <h4 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Performance Optimized</h4>
               <p className="text-white/40 text-xs sm:text-sm">Sub-100ms Response Times</p>

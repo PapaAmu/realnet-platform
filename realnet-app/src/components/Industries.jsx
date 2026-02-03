@@ -43,7 +43,7 @@ const Industries = () => {
       description: "E-learning platforms, student management systems, and virtual classroom solutions.",
       stats: "60% engagement increase",
       icon: FaGraduationCap,
-      color: "violet"
+      color: "primary"
     },
     { 
       id: 4, 
@@ -108,14 +108,14 @@ const Industries = () => {
           className="max-w-3xl mb-16"
         >
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-600 dark:text-white/60 font-medium mb-6">
-            <FaIndustry className="w-4 h-4 text-blue-600 dark:text-violet-400" />
+            <FaIndustry className="w-4 h-4 text-blue-600 dark:text-primary-400" />
             Industry Expertise
           </span>
           
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white tracking-tight leading-tight">
             Solutions For Every
             <br />
-            <span className="text-blue-600 dark:text-violet-400">
+            <span className="text-blue-600 dark:text-primary-400">
               Industry Vertical
             </span>
           </h2>
@@ -154,7 +154,7 @@ const Industries = () => {
               {/* Border */}
               <div className={`absolute inset-0 rounded-2xl border transition-colors duration-500 ${
                 activeIndustry === index
-                  ? "border-blue-500/30 dark:border-violet-500/30"
+                  ? "border-blue-500/30 dark:border-primary-500/30"
                   : "border-gray-200 dark:border-white/[0.06]"
               }`} />
 
@@ -167,12 +167,12 @@ const Industries = () => {
                 }`}>
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-300 ${
                     activeIndustry === index 
-                      ? "bg-blue-500/10 dark:bg-violet-500/10" 
+                      ? "bg-blue-500/10 dark:bg-primary-500/10" 
                       : "bg-white dark:bg-white/5"
                   }`}>
                     <industry.icon className={`w-6 h-6 transition-colors duration-300 ${
                       activeIndustry === index 
-                        ? "text-blue-600 dark:text-violet-400" 
+                        ? "text-blue-600 dark:text-primary-400" 
                         : "text-gray-600 dark:text-white/60"
                     }`} />
                   </div>
@@ -210,7 +210,7 @@ const Industries = () => {
 
                       <Link 
                         href={`/industries/${industry.name.toLowerCase().replace(/ /g, '-')}`}
-                        className="inline-flex items-center gap-2 text-sm font-medium text-blue-400 dark:text-violet-400 hover:text-blue-300 dark:hover:text-violet-300 transition-colors"
+                        className="inline-flex items-center gap-2 text-sm font-medium text-blue-400 dark:text-primary-400 hover:text-blue-300 dark:hover:text-primary-300 transition-colors"
                       >
                         View Solutions
                         <FaArrowRight className="w-4 h-4" />
@@ -230,7 +230,7 @@ const Industries = () => {
               </div>
 
               {/* Active Indicator Line */}
-              <div className={`absolute bottom-0 left-0 right-0 h-1 bg-blue-500 dark:bg-violet-500 transition-transform duration-500 origin-left ${
+              <div className={`absolute bottom-0 left-0 right-0 h-1 bg-blue-500 dark:bg-primary-500 transition-transform duration-500 origin-left ${
                 activeIndustry === index ? "scale-x-100" : "scale-x-0"
               }`} />
             </motion.div>

@@ -51,7 +51,7 @@ const Brand = () => {
         <div className="absolute bottom-0 left-0 w-full h-px bg-gray-200 dark:bg-white/10" />
         
         {/* Subtle gradient */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-blue-50 dark:bg-violet-900/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-blue-50 dark:bg-primary-900/10 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10">
@@ -65,14 +65,14 @@ const Brand = () => {
               className="max-w-2xl"
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 mb-6">
-                <FaStar className="w-4 h-4 text-blue-600 dark:text-violet-400" />
+                <FaStar className="w-4 h-4 text-blue-600 dark:text-primary-400" />
                 <span className="text-sm text-gray-600 dark:text-white/60 font-medium">Trusted Partnerships</span>
               </div>
               
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white tracking-tight leading-tight">
                 Brands That Trust
                 <br />
-                <span className="text-blue-600 dark:text-violet-400">Our Expertise</span>
+                <span className="text-blue-600 dark:text-primary-400">Our Expertise</span>
               </h2>
             </motion.div>
 
@@ -116,10 +116,10 @@ const Brand = () => {
               {duplicatedBrands.map((brand, index) => (
                 <div
                   key={`${brand.id}-${index}`}
-                  className="group/logo relative flex-shrink-0 w-64 h-32 rounded-xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06] hover:border-blue-500/30 dark:hover:border-violet-500/30 transition-all duration-500 overflow-hidden"
+                  className="group/logo relative flex-shrink-0 w-64 h-32 rounded-xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06] hover:border-blue-500/30 dark:hover:border-primary-500/30 transition-all duration-500 overflow-hidden"
                 >
                   {/* Hover Background */}
-                  <div className="absolute inset-0 bg-blue-50 dark:bg-violet-500/5 opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-blue-50 dark:bg-primary-500/5 opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500" />
                   
                   {/* Content */}
                   <div className="relative z-10 h-full flex flex-col items-center justify-center p-6">
@@ -138,7 +138,7 @@ const Brand = () => {
                   </div>
 
                   {/* Corner Accent */}
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-blue-100 dark:from-violet-500/10 to-transparent opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-blue-100 dark:from-primary-500/10 to-transparent opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500" />
                 </div>
               ))}
             </motion.div>
@@ -171,9 +171,9 @@ const Brand = () => {
               {[...duplicatedBrands].reverse().map((brand, index) => (
                 <div
                   key={`reverse-${brand.id}-${index}`}
-                  className="group/logo relative flex-shrink-0 w-64 h-32 rounded-xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06] hover:border-blue-500/30 dark:hover:border-violet-500/30 transition-all duration-500 overflow-hidden"
+                  className="group/logo relative flex-shrink-0 w-64 h-32 rounded-xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06] hover:border-blue-500/30 dark:hover:border-primary-500/30 transition-all duration-500 overflow-hidden"
                 >
-                  <div className="absolute inset-0 bg-blue-50 dark:bg-violet-500/5 opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-blue-50 dark:bg-primary-500/5 opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500" />
                   
                   <div className="relative z-10 h-full flex flex-col items-center justify-center p-6">
                     <img
@@ -189,7 +189,7 @@ const Brand = () => {
                     </div>
                   </div>
 
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-blue-100 dark:from-violet-500/10 to-transparent opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-blue-100 dark:from-primary-500/10 to-transparent opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500" />
                 </div>
               ))}
             </motion.div>

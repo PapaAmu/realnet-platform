@@ -94,7 +94,7 @@ const FormSuccessPage = () => {
       
       {/* Background Ambient Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] -z-10 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-[600px] h-[400px] bg-violet-600/5 rounded-full blur-[100px] -z-10 pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[600px] h-[400px] bg-primary-600/5 rounded-full blur-[100px] -z-10 pointer-events-none" />
 
       <motion.div
         className="w-full max-w-4xl"
@@ -207,8 +207,8 @@ const FormSuccessPage = () => {
             variants={itemVariants}
           >
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-violet-500/10 rounded-lg border border-violet-500/20">
-                <FaPhone className="text-violet-400 w-5 h-5" />
+              <div className="p-2 bg-primary-500/10 rounded-lg border border-primary-500/20">
+                <FaPhone className="text-primary-400 w-5 h-5" />
               </div>
               <h3 className="text-lg font-semibold text-white">Immediate Support</h3>
             </div>

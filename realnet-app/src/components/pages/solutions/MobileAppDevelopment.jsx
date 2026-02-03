@@ -46,7 +46,7 @@ const MobileAppDevelopment = () => {
       technologies: ["React Native", "Flutter"],
       bestFor: "Startups, MVPs, content-driven apps",
       icon: FaSync,
-      color: "violet"
+      color: "primary"
     },
     {
       type: "Native Development",
@@ -137,7 +137,7 @@ const MobileAppDevelopment = () => {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-6"
               >
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-violet-400">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-primary-400">
                   <FaRocket className="w-4 h-4" />
                   Mobile App Development
                 </span>
@@ -151,7 +151,7 @@ const MobileAppDevelopment = () => {
               >
                 Native & Cross-Platform
                 <br />
-                <span className="text-violet-400">Apps That Scale</span>
+                <span className="text-primary-400">Apps That Scale</span>
               </motion.h1>
               
               <motion.p
@@ -200,7 +200,7 @@ const MobileAppDevelopment = () => {
                     <div className="w-full h-full bg-[#0a0a0a] rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden relative">
                       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-12 sm:w-16 h-4 sm:h-5 bg-gray-800 rounded-b-xl" />
                       <div className="p-3 sm:p-4 pt-6 sm:pt-8">
-                        <div className="w-10 sm:w-12 h-10 sm:h-12 rounded-xl bg-violet-500/20 mb-3 sm:mb-4" />
+                        <div className="w-10 sm:w-12 h-10 sm:h-12 rounded-xl bg-primary-500/20 mb-3 sm:mb-4" />
                         <div className="h-2 w-16 sm:w-24 bg-white/10 rounded mb-2" />
                         <div className="h-2 w-10 sm:w-16 bg-white/10 rounded" />
                       </div>
@@ -271,11 +271,11 @@ const MobileAppDevelopment = () => {
                 variants={fadeInUp}
                 className="group relative p-6 sm:p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-white/20 transition-all duration-300"
               >
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-violet-500/10 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
-                  <approach.icon className="w-6 h-6 sm:w-7 sm:h-7 text-violet-400" />
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-primary-500/10 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
+                  <approach.icon className="w-6 h-6 sm:w-7 sm:h-7 text-primary-400" />
                 </div>
                 
-                <div className="text-xs sm:text-sm text-violet-400 font-medium mb-2">{approach.type}</div>
+                <div className="text-xs sm:text-sm text-primary-400 font-medium mb-2">{approach.type}</div>
                 <h3 className="text-xl sm:text-2xl font-bold mb-2 sm:mb-3">{approach.tagline}</h3>
                 <p className="text-white/50 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">{approach.description}</p>
                 
@@ -326,11 +326,11 @@ const MobileAppDevelopment = () => {
               <motion.div
                 key={index}
                 variants={fadeInUp}
-                className="p-5 sm:p-6 lg:p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-violet-500/30 transition-all duration-300"
+                className="p-5 sm:p-6 lg:p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-primary-500/30 transition-all duration-300"
               >
                 <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-violet-500/10 flex items-center justify-center shrink-0">
-                    <span className="text-violet-400 font-bold text-sm sm:text-base">0{index + 1}</span>
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary-500/10 flex items-center justify-center shrink-0">
+                    <span className="text-primary-400 font-bold text-sm sm:text-base">0{index + 1}</span>
                   </div>
                   <div>
                     <h3 className="text-lg sm:text-xl font-semibold mb-2">{service.title}</h3>
@@ -338,7 +338,7 @@ const MobileAppDevelopment = () => {
                     <div className="flex flex-wrap gap-2 sm:gap-x-4 sm:gap-y-2">
                       {service.features.map((feature, i) => (
                         <span key={i} className="flex items-center gap-1 text-xs text-white/40">
-                          <FaCheck className="w-3 h-3 text-violet-400 shrink-0" />
+                          <FaCheck className="w-3 h-3 text-primary-400 shrink-0" />
                           {feature}
                         </span>
                       ))}
@@ -379,12 +379,12 @@ const MobileAppDevelopment = () => {
                   index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
                 }`}
               >
-                <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-violet-500 ring-2 sm:ring-4 ring-[#050505]" />
+                <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-primary-500 ring-2 sm:ring-4 ring-[#050505]" />
                 
                 <div className={`ml-10 sm:ml-12 md:ml-0 md:w-1/2 ${
                   index % 2 === 0 ? 'md:pr-8 md:text-right lg:pr-12' : 'md:pl-8 lg:pl-12'
                 }`}>
-                  <span className="inline-block px-2 sm:px-3 py-0.5 sm:py-1 rounded-full bg-violet-500/10 text-violet-400 text-xs font-medium mb-2">
+                  <span className="inline-block px-2 sm:px-3 py-0.5 sm:py-1 rounded-full bg-primary-500/10 text-primary-400 text-xs font-medium mb-2">
                     Step {item.step}
                   </span>
                   <h3 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">{item.title}</h3>
@@ -428,7 +428,7 @@ const MobileAppDevelopment = () => {
                 }`}
               >
                 {pkg.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 sm:px-4 py-1 bg-violet-500 text-white text-xs font-medium rounded-full">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 sm:px-4 py-1 bg-primary-500 text-white text-xs font-medium rounded-full">
                     Most Popular
                   </div>
                 )}
@@ -455,7 +455,7 @@ const MobileAppDevelopment = () => {
                 <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
                   {pkg.features.map((feature, i) => (
                     <li key={i} className="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm">
-                      <FaCheck className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 mt-0.5 ${pkg.popular ? 'text-violet-600' : 'text-violet-400'}`} />
+                      <FaCheck className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 mt-0.5 ${pkg.popular ? 'text-primary-600' : 'text-primary-400'}`} />
                       <span className={pkg.popular ? 'text-black/70' : 'text-white/70'}>{feature}</span>
                     </li>
                   ))}
@@ -527,7 +527,7 @@ const MobileAppDevelopment = () => {
       <section className="py-16 sm:py-20 lg:py-24 border-t border-white/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 leading-tight">
-            Ready to launch your <span className="text-violet-400">mobile app</span>?
+            Ready to launch your <span className="text-primary-400">mobile app</span>?
           </h2>
           <p className="text-base sm:text-lg text-white/50 mb-6 sm:mb-8 px-4 sm:px-0">
             Let's discuss whether cross-platform or native development is right for your product.

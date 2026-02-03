@@ -123,7 +123,7 @@ const AboutUs = () => {
           className="absolute inset-0 opacity-20"
           style={{ opacity: heroOpacity }}
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-violet-900/40 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary-900/40 via-transparent to-transparent" />
         </motion.div>
 
         <motion.div 
@@ -137,7 +137,7 @@ const AboutUs = () => {
             className="mb-6"
           >
             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-white/70 text-sm font-medium">
-              <FaAward className="w-4 h-4 text-violet-400" />
+              <FaAward className="w-4 h-4 text-primary-400" />
               B-BBEE Level 1 Certified
             </span>
           </motion.div>
@@ -150,7 +150,7 @@ const AboutUs = () => {
           >
             Building Digital
             <br />
-            <span className="text-violet-400">Excellence</span>
+            <span className="text-primary-400">Excellence</span>
           </motion.h1>
           
           <motion.p
@@ -177,7 +177,7 @@ const AboutUs = () => {
       </section>
 
       {/* B-BBEE Banner */}
-      <section className="py-8 bg-violet-600 dark:bg-violet-700">
+      <section className="py-8 bg-primary-600 dark:bg-primary-700">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-white">
             <div className="flex items-center gap-4">
@@ -191,7 +191,7 @@ const AboutUs = () => {
             </div>
             <Link 
               href="/contact-us"
-              className="px-6 py-3 bg-white text-violet-600 rounded-full font-medium hover:bg-white/90 transition-colors flex items-center gap-2"
+              className="px-6 py-3 bg-white text-primary-600 rounded-full font-medium hover:bg-white/90 transition-colors flex items-center gap-2"
             >
               Partner With Us <FaArrowRight className="w-4 h-4" />
             </Link>
@@ -256,11 +256,11 @@ const AboutUs = () => {
                 {/* Floating stats */}
                 <div className="absolute bottom-4 left-4 right-4 grid grid-cols-2 gap-3">
                   <div className="bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200 dark:border-white/10">
-                    <div className="text-2xl font-bold text-violet-600 dark:text-violet-400">100%</div>
+                    <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">100%</div>
                     <div className="text-xs text-gray-600 dark:text-white/60">Black Owned</div>
                   </div>
                   <div className="bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200 dark:border-white/10">
-                    <div className="text-2xl font-bold text-violet-600 dark:text-violet-400">Level 1</div>
+                    <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">Level 1</div>
                     <div className="text-xs text-gray-600 dark:text-white/60">B-BBEE Status</div>
                   </div>
                 </div>
@@ -299,10 +299,10 @@ const AboutUs = () => {
               <motion.div
                 key={index}
                 variants={fadeInUp}
-                className="group p-6 rounded-2xl bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] hover:border-violet-500/30 dark:hover:border-violet-500/30 transition-all duration-300"
+                className="group p-6 rounded-2xl bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] hover:border-primary-500/30 dark:hover:border-primary-500/30 transition-all duration-300"
               >
-                <div className="w-12 h-12 rounded-xl bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <value.icon className="w-6 h-6 text-violet-600 dark:text-violet-400" />
+                <div className="w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <value.icon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                   {value.title}
@@ -333,7 +333,7 @@ const AboutUs = () => {
                 className="text-center p-6 rounded-2xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06]"
               >
                 <div className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-2">
-                  {stat.number}<span className="text-violet-600 dark:text-violet-400">{stat.suffix}</span>
+                  {stat.number}<span className="text-primary-600 dark:text-primary-400">{stat.suffix}</span>
                 </div>
                 <div className="text-sm text-gray-500 dark:text-white/40 uppercase tracking-wider">
                   {stat.label}
@@ -373,16 +373,16 @@ const AboutUs = () => {
               <motion.div
                 key={index}
                 variants={fadeInUp}
-                className="flex gap-6 p-6 rounded-2xl bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] hover:border-violet-500/30 transition-all duration-300"
+                className="flex gap-6 p-6 rounded-2xl bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] hover:border-primary-500/30 transition-all duration-300"
               >
-                <div className="w-16 h-16 rounded-2xl bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center shrink-0">
-                  <FaUsers className="w-8 h-8 text-violet-600 dark:text-violet-400" />
+                <div className="w-16 h-16 rounded-2xl bg-primary-100 dark:bg-primary-500/10 flex items-center justify-center shrink-0">
+                  <FaUsers className="w-8 h-8 text-primary-600 dark:text-primary-400" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
                     {member.name}
                   </h3>
-                  <p className="text-sm text-violet-600 dark:text-violet-400 font-medium mb-2">
+                  <p className="text-sm text-primary-600 dark:text-primary-400 font-medium mb-2">
                     {member.role}
                   </p>
                   <p className="text-sm text-gray-600 dark:text-white/50 leading-relaxed">
@@ -429,13 +429,13 @@ const AboutUs = () => {
                 }`}
               >
                 {/* Dot */}
-                <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-violet-600 dark:bg-violet-400 ring-4 ring-white dark:ring-[#050505]" />
+                <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-primary-600 dark:bg-primary-400 ring-4 ring-white dark:ring-[#050505]" />
 
                 {/* Content */}
                 <div className={`ml-12 md:ml-0 md:w-1/2 ${
                   index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'
                 }`}>
-                  <span className="inline-block px-3 py-1 rounded-full bg-violet-100 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 text-sm font-medium mb-2">
+                  <span className="inline-block px-3 py-1 rounded-full bg-primary-100 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400 text-sm font-medium mb-2">
                     {item.year}
                   </span>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
@@ -484,10 +484,10 @@ const AboutUs = () => {
               <motion.div
                 key={index}
                 variants={fadeInUp}
-                className="group p-8 rounded-2xl bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] text-center hover:border-violet-500/30 transition-all duration-300"
+                className="group p-8 rounded-2xl bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] text-center hover:border-primary-500/30 transition-all duration-300"
               >
-                <div className="w-16 h-16 rounded-2xl bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <service.icon className="w-8 h-8 text-violet-600 dark:text-violet-400" />
+                <div className="w-16 h-16 rounded-2xl bg-primary-100 dark:bg-primary-500/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <service.icon className="w-8 h-8 text-primary-600 dark:text-primary-400" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
                   {service.title}
@@ -520,8 +520,8 @@ const AboutUs = () => {
               
               <div className="space-y-4">
                 <div className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06]">
-                  <div className="w-10 h-10 rounded-lg bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center">
-                    <FaMapMarkerAlt className="w-5 h-5 text-violet-600 dark:text-violet-400" />
+                  <div className="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-500/10 flex items-center justify-center">
+                    <FaMapMarkerAlt className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-500 dark:text-white/40">Address</p>
@@ -530,8 +530,8 @@ const AboutUs = () => {
                 </div>
                 
                 <div className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06]">
-                  <div className="w-10 h-10 rounded-lg bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center">
-                    <FaPhone className="w-5 h-5 text-violet-600 dark:text-violet-400" />
+                  <div className="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-500/10 flex items-center justify-center">
+                    <FaPhone className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-500 dark:text-white/40">Phone</p>
@@ -540,8 +540,8 @@ const AboutUs = () => {
                 </div>
                 
                 <div className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06]">
-                  <div className="w-10 h-10 rounded-lg bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center">
-                    <FaEnvelope className="w-5 h-5 text-violet-600 dark:text-violet-400" />
+                  <div className="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-500/10 flex items-center justify-center">
+                    <FaEnvelope className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-500 dark:text-white/40">Email</p>
@@ -550,8 +550,8 @@ const AboutUs = () => {
                 </div>
                 
                 <div className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06]">
-                  <div className="w-10 h-10 rounded-lg bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center">
-                    <FaClock className="w-5 h-5 text-violet-600 dark:text-violet-400" />
+                  <div className="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-500/10 flex items-center justify-center">
+                    <FaClock className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-500 dark:text-white/40">Hours</p>
@@ -581,7 +581,7 @@ const AboutUs = () => {
                     "Dedicated support and long-term partnership approach"
                   ].map((item, index) => (
                     <li key={index} className="flex items-start gap-3 text-gray-600 dark:text-white/60">
-                      <FaCheckCircle className="w-5 h-5 text-violet-600 dark:text-violet-400 shrink-0 mt-0.5" />
+                      <FaCheckCircle className="w-5 h-5 text-primary-600 dark:text-primary-400 shrink-0 mt-0.5" />
                       <span className="text-sm leading-relaxed">{item}</span>
                     </li>
                   ))}
@@ -590,7 +590,7 @@ const AboutUs = () => {
                 <div className="mt-8 flex gap-4">
                   <Link
                     href="/contact-us"
-                    className="flex-1 py-3 bg-violet-600 dark:bg-violet-500 text-white rounded-xl font-medium text-center hover:opacity-90 transition-opacity"
+                    className="flex-1 py-3 bg-primary-600 dark:bg-primary-500 text-white rounded-xl font-medium text-center hover:opacity-90 transition-opacity"
                   >
                     Contact Us
                   </Link>

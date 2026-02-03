@@ -82,7 +82,7 @@ const Footer = () => {
       <div className="absolute top-0 left-0 w-full h-px bg-white/10" />
       
       {/* Background glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-violet-900/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary-900/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-20">
         
@@ -96,7 +96,7 @@ const Footer = () => {
             variants={fadeIn}
           >
             <h3 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
-              Stay <span className="text-violet-400">Updated</span>
+              Stay <span className="text-primary-400">Updated</span>
             </h3>
             <p className="text-white/50 mb-8 max-w-md">
               Get exclusive web development tips, industry insights, and special offers delivered to your inbox.
@@ -120,7 +120,7 @@ const Footer = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
-                    className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-violet-500/50 transition-colors"
+                    className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-primary-500/50 transition-colors"
                     required
                   />
                 </div>
@@ -147,15 +147,15 @@ const Footer = () => {
           >
             <div className="inline-flex flex-col items-start lg:items-end gap-6">
               <div className="flex items-center gap-3 text-white/60">
-                <FaMapMarkerAlt className="w-5 h-5 text-violet-400" />
+                <FaMapMarkerAlt className="w-5 h-5 text-primary-400" />
                 <span>Matsau Str, Midrand, South Africa</span>
               </div>
               <div className="flex items-center gap-3 text-white/60">
-                <FaPhone className="w-5 h-5 text-violet-400" />
+                <FaPhone className="w-5 h-5 text-primary-400" />
                 <span>+27 (0) 64 038 8883 | +27 (0) 71 002 0008</span>
               </div>
               <div className="flex items-center gap-3 text-white/60">
-                <FaEnvelope className="w-5 h-5 text-violet-400" />
+                <FaEnvelope className="w-5 h-5 text-primary-400" />
                 <span>lukhele@realnet-web.co.za</span>
               </div>
             </div>
@@ -181,7 +181,7 @@ const Footer = () => {
                     {link.onClick ? (
                       <button
                         onClick={link.onClick}
-                        className="group flex items-center gap-2 text-white/50 hover:text-violet-400 transition-colors text-sm"
+                        className="group flex items-center gap-2 text-white/50 hover:text-primary-400 transition-colors text-sm"
                       >
                         {link.icon && <link.icon className="w-4 h-4" />}
                         <span className="group-hover:translate-x-1 transition-transform">
@@ -191,7 +191,7 @@ const Footer = () => {
                     ) : (
                       <a
                         href={link.href}
-                        className="group inline-flex items-center gap-2 text-white/50 hover:text-violet-400 transition-colors text-sm"
+                        className="group inline-flex items-center gap-2 text-white/50 hover:text-primary-400 transition-colors text-sm"
                       >
                         <span className="group-hover:translate-x-1 transition-transform">
                           {link.label}
@@ -238,7 +238,7 @@ const Footer = () => {
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-violet-400 hover:border-violet-500/30 transition-all"
+                className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-primary-400 hover:border-primary-500/30 transition-all"
                 whileHover={{ y: -2 }}
                 aria-label={social.label}
               >

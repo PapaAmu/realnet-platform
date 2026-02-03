@@ -123,13 +123,13 @@ export default function CookieConsent() {
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="fixed bottom-6 left-6 right-6 z-50 md:left-auto md:right-6 md:w-[420px]"
         >
-          <div className="relative bg-white dark:bg-[#0a0a0a] rounded-2xl shadow-2xl shadow-black/20 dark:shadow-violet-500/10 border border-gray-200 dark:border-white/10 overflow-hidden">
+          <div className="relative bg-white dark:bg-[#0a0a0a] rounded-2xl shadow-2xl shadow-black/20 dark:shadow-primary-500/10 border border-gray-200 dark:border-white/10 overflow-hidden">
             
             {/* Header Bar */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-white/5">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center">
-                  <FaCookieBite className="w-4 h-4 text-violet-600 dark:text-violet-400" />
+                <div className="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-500/10 flex items-center justify-center">
+                  <FaCookieBite className="w-4 h-4 text-primary-600 dark:text-primary-400" />
                 </div>
                 <span className="font-semibold text-gray-900 dark:text-white text-sm">
                   Cookie Settings
@@ -153,7 +153,7 @@ export default function CookieConsent() {
                     View our{' '}
                     <a 
                       href="/popia-act" 
-                      className="text-violet-600 dark:text-violet-400 underline hover:no-underline"
+                      className="text-primary-600 dark:text-primary-400 underline hover:no-underline"
                     >
                       Privacy Policy
                     </a>
@@ -170,7 +170,7 @@ export default function CookieConsent() {
                     </button>
                     <button
                       onClick={handleAcceptAll}
-                      className="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-gray-900 dark:bg-violet-600 hover:bg-gray-800 dark:hover:bg-violet-500 rounded-lg transition-colors shadow-lg shadow-gray-900/20 dark:shadow-violet-600/20"
+                      className="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-gray-900 dark:bg-primary-600 hover:bg-gray-800 dark:hover:bg-primary-500 rounded-lg transition-colors shadow-lg shadow-gray-900/20 dark:shadow-primary-600/20"
                     >
                       Accept All
                     </button>
@@ -213,7 +213,7 @@ export default function CookieConsent() {
                           disabled={cookie.locked}
                           className={`relative w-11 h-6 rounded-full transition-colors duration-200 ${
                             preferences[cookie.key] 
-                              ? 'bg-violet-600' 
+                              ? 'bg-primary-600' 
                               : 'bg-gray-300 dark:bg-white/10'
                           } ${cookie.locked ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                         >
@@ -242,7 +242,7 @@ export default function CookieConsent() {
                       </button>
                       <button
                         onClick={handleSavePreferences}
-                        className="px-5 py-2 text-sm font-medium text-white bg-violet-600 hover:bg-violet-500 rounded-lg transition-colors shadow-lg shadow-violet-600/20"
+                        className="px-5 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-500 rounded-lg transition-colors shadow-lg shadow-primary-600/20"
                       >
                         Save
                       </button>
@@ -260,7 +260,7 @@ export default function CookieConsent() {
               </div>
               <a 
                 href="/popia-act" 
-                className="text-xs text-violet-600 dark:text-violet-400 hover:underline"
+                className="text-xs text-primary-600 dark:text-primary-400 hover:underline"
               >
                 Learn more
               </a>
