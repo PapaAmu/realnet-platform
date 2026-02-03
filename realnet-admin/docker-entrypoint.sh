@@ -5,6 +5,13 @@ set -e
 echo "Running migrations..."
 php artisan migrate --force
 
+# Optimization commands
+echo "Running optimizations..."
+php artisan optimize:clear
+php artisan optimize
+php artisan event:cache
+php artisan filament:optimize
+
 # Cache configuration, events, routes, and views
 if [ "$APP_ENV" != "local" ]; then
     echo "Caching configuration..."

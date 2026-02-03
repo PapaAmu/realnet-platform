@@ -30,18 +30,18 @@ ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
 # Don't run as root
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN addgroup --system --gid 1001 node
+RUN adduser --system --uid 1001 node
 
 # Copy public folder
 COPY --from=builder /app/public ./public
 
 # Copy standalone build
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=node:node /app/.next/standalone ./
+COPY --from=builder --chown=node:node /app/.next/static ./.next/static
 
-USER nextjs
+USER node
 
 EXPOSE 3000
 
