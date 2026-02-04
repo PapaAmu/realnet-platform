@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build --no-lint",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "analyze": "ANALYZE=true next build --no-lint"
+    "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
     "framer-motion": "^12.23.24",

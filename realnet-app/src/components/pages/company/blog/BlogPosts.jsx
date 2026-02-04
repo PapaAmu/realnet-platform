@@ -106,7 +106,7 @@ const BlogCard = ({ post }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -4 }}
-      className="group bg-white dark:bg-white/[0.02] rounded-2xl border border-gray-200 dark:border-white/[0.06] overflow-hidden hover:border-blue-500/30 dark:hover:border-violet-500/30 transition-all duration-300"
+      className="group bg-white dark:bg-white/[0.02] rounded-2xl border border-gray-200 dark:border-white/[0.06] overflow-hidden hover:border-blue-500/30 dark:hover:border-primary-500/30 transition-all duration-300"
     >
       <Link href={`/updates/blogs/${post.slug}`} className="block">
         <div className="relative h-48 overflow-hidden">
@@ -126,17 +126,17 @@ const BlogCard = ({ post }) => {
       <div className="p-6">
         <div className="flex items-center gap-4 mb-3 text-xs text-gray-500 dark:text-white/40">
           <span className="flex items-center gap-1">
-            <FaCalendarAlt className="text-blue-600 dark:text-violet-400" />
+            <FaCalendarAlt className="text-blue-600 dark:text-primary-400" />
             {new Date(post.created_at).toLocaleDateString()}
           </span>
           <span className="flex items-center gap-1">
-            <FaClock className="text-blue-600 dark:text-violet-400" />
+            <FaClock className="text-blue-600 dark:text-primary-400" />
             {post.read_time}
           </span>
         </div>
         
         <Link href={`/updates/blogs/${post.slug}`} className="block mb-3">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-violet-400 transition-colors line-clamp-2">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2">
             {post.title}
           </h3>
         </Link>
@@ -160,13 +160,13 @@ const BlogCard = ({ post }) => {
 
         <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-white/[0.06]">
           <span className="flex items-center gap-2 text-sm text-gray-600 dark:text-white/50">
-            <FaUser className="text-blue-600 dark:text-violet-400 text-xs" />
+            <FaUser className="text-blue-600 dark:text-primary-400 text-xs" />
             {post.author || 'Unknown'}
           </span>
           
           <Link
             href={`/updates/blogs/${post.slug}`}
-            className="flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-violet-400 hover:gap-3 transition-all"
+            className="flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-primary-400 hover:gap-3 transition-all"
           >
             Read
             <FaArrowRight className="text-xs" />
@@ -185,7 +185,7 @@ const FeaturedBlogCard = ({ post }) => {
     <motion.article
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="group bg-white dark:bg-white/[0.02] rounded-2xl border border-gray-200 dark:border-white/[0.06] overflow-hidden hover:border-blue-500/30 dark:hover:border-violet-500/30 transition-all duration-300"
+      className="group bg-white dark:bg-white/[0.02] rounded-2xl border border-gray-200 dark:border-white/[0.06] overflow-hidden hover:border-blue-500/30 dark:hover:border-primary-500/30 transition-all duration-300"
     >
       <Link href={`/updates/blogs/${post.slug}`} className="block">
         <div className="lg:flex">
@@ -196,7 +196,7 @@ const FeaturedBlogCard = ({ post }) => {
               className="w-full h-full group-hover:scale-105 transition-transform duration-500"
             />
             <div className="absolute top-4 left-4 flex gap-2">
-              <span className="px-3 py-1 bg-blue-600 dark:bg-violet-500 text-white text-xs font-medium rounded-full">
+              <span className="px-3 py-1 bg-blue-600 dark:bg-primary-500 text-white text-xs font-medium rounded-full">
                 Featured
               </span>
               <span className="px-3 py-1 bg-white/90 dark:bg-black/80 backdrop-blur-sm text-xs font-medium text-gray-900 dark:text-white rounded-full capitalize">
@@ -208,20 +208,20 @@ const FeaturedBlogCard = ({ post }) => {
           <div className="lg:w-1/2 p-8 flex flex-col justify-center">
             <div className="flex items-center gap-4 mb-4 text-sm text-gray-500 dark:text-white/40">
               <span className="flex items-center gap-1">
-                <FaUser className="text-blue-600 dark:text-violet-400" />
+                <FaUser className="text-blue-600 dark:text-primary-400" />
                 {post.author || 'Unknown'}
               </span>
               <span className="flex items-center gap-1">
-                <FaCalendarAlt className="text-blue-600 dark:text-violet-400" />
+                <FaCalendarAlt className="text-blue-600 dark:text-primary-400" />
                 {new Date(post.created_at).toLocaleDateString()}
               </span>
               <span className="flex items-center gap-1">
-                <FaClock className="text-blue-600 dark:text-violet-400" />
+                <FaClock className="text-blue-600 dark:text-primary-400" />
                 {post.read_time}
               </span>
             </div>
             
-            <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-blue-600 dark:group-hover:text-violet-400 transition-colors">
+            <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-blue-600 dark:group-hover:text-primary-400 transition-colors">
               {post.title}
             </h3>
             
@@ -242,7 +242,7 @@ const FeaturedBlogCard = ({ post }) => {
               </div>
             )}
             
-            <div className="flex items-center gap-2 text-blue-600 dark:text-violet-400 font-medium">
+            <div className="flex items-center gap-2 text-blue-600 dark:text-primary-400 font-medium">
               Read Article
               <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
             </div>
@@ -301,7 +301,7 @@ const MobileFilters = ({
                     placeholder="Search articles..."
                     value={searchQuery}
                     onChange={(e) => onSearchChange(e.target.value)}
-                    className="w-full px-4 py-3 pl-11 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-violet-500"
+                    className="w-full px-4 py-3 pl-11 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-primary-500"
                   />
                   <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                 </div>
@@ -321,7 +321,7 @@ const MobileFilters = ({
                       }}
                       className={`w-full text-left px-4 py-3 rounded-xl transition-colors ${
                         selectedCategory === category
-                          ? 'bg-blue-600 dark:bg-violet-500 text-white'
+                          ? 'bg-blue-600 dark:bg-primary-500 text-white'
                           : 'bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-white/70 hover:bg-gray-200 dark:hover:bg-white/10'
                       }`}
                     >
@@ -414,7 +414,7 @@ const BlogPage = () => {
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-12 h-12 border-2 border-blue-600 dark:border-violet-500 border-t-transparent rounded-full"
+          className="w-12 h-12 border-2 border-blue-600 dark:border-primary-500 border-t-transparent rounded-full"
         />
       </div>
     );
@@ -429,7 +429,7 @@ const BlogPage = () => {
           <p className="text-gray-600 dark:text-white/50 mb-6">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="px-6 py-3 bg-blue-600 dark:bg-violet-500 text-white rounded-xl font-medium hover:opacity-90 transition-opacity"
+            className="px-6 py-3 bg-blue-600 dark:bg-primary-500 text-white rounded-xl font-medium hover:opacity-90 transition-opacity"
           >
             Try Again
           </button>
@@ -449,12 +449,12 @@ const BlogPage = () => {
             className="max-w-2xl"
           >
             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-600 dark:text-white/60 mb-6">
-              <FaTags className="text-blue-600 dark:text-violet-400" />
+              <FaTags className="text-blue-600 dark:text-primary-400" />
               Our Blog
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight">
               Insights &<br />
-              <span className="text-blue-600 dark:text-violet-400">Perspectives</span>
+              <span className="text-blue-600 dark:text-primary-400">Perspectives</span>
             </h1>
             <p className="text-lg text-gray-600 dark:text-white/50 mb-8">
               Thoughts on technology, design, and building great digital products.
@@ -467,7 +467,7 @@ const BlogPage = () => {
                 placeholder="Search articles..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-6 py-4 pl-14 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/30 focus:outline-none focus:border-blue-500 dark:focus:border-violet-500 transition-colors"
+                className="w-full px-6 py-4 pl-14 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/30 focus:outline-none focus:border-blue-500 dark:focus:border-primary-500 transition-colors"
               />
               <FaSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-white/30" />
               {(searchQuery || selectedCategory !== 'all') && (
@@ -495,7 +495,7 @@ const BlogPage = () => {
                 onClick={() => setMobileFiltersOpen(true)}
                 className="flex items-center gap-2 px-4 py-3 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl text-gray-700 dark:text-white font-medium"
               >
-                <FaFilter className="text-blue-600 dark:text-violet-400" />
+                <FaFilter className="text-blue-600 dark:text-primary-400" />
                 Filter
               </button>
               <span className="text-sm text-gray-500 dark:text-white/40">
@@ -507,7 +507,7 @@ const BlogPage = () => {
             {searchQuery === '' && selectedCategory === 'all' && featuredPosts.length > 0 && (
               <section className="mb-16">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
-                  <span className="w-8 h-px bg-blue-600 dark:bg-violet-400" />
+                  <span className="w-8 h-px bg-blue-600 dark:bg-primary-400" />
                   Featured
                 </h2>
                 <div className="space-y-8">
@@ -541,7 +541,7 @@ const BlogPage = () => {
                   <p className="text-gray-500 dark:text-white/40 mb-4">No articles found</p>
                   <button
                     onClick={clearFilters}
-                    className="px-6 py-3 bg-blue-600 dark:bg-violet-500 text-white rounded-xl font-medium hover:opacity-90 transition-opacity"
+                    className="px-6 py-3 bg-blue-600 dark:bg-primary-500 text-white rounded-xl font-medium hover:opacity-90 transition-opacity"
                   >
                     Clear Filters
                   </button>
@@ -564,7 +564,7 @@ const BlogPage = () => {
                       onClick={() => setSelectedCategory(category)}
                       className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 flex items-center justify-between ${
                         selectedCategory === category
-                          ? 'bg-blue-600 dark:bg-violet-500 text-white'
+                          ? 'bg-blue-600 dark:bg-primary-500 text-white'
                           : 'text-gray-700 dark:text-white/70 hover:bg-white dark:hover:bg-white/5'
                       }`}
                     >
@@ -584,9 +584,9 @@ const BlogPage = () => {
                 <input
                   type="email"
                   placeholder="your@email.com"
-                  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white placeholder:text-white/30 mb-3 focus:outline-none focus:border-violet-500"
+                  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white placeholder:text-white/30 mb-3 focus:outline-none focus:border-primary-500"
                 />
-                <button className="w-full py-3 bg-white dark:bg-violet-500 text-gray-900 dark:text-white rounded-xl font-medium hover:opacity-90 transition-opacity">
+                <button className="w-full py-3 bg-white dark:bg-primary-500 text-gray-900 dark:text-white rounded-xl font-medium hover:opacity-90 transition-opacity">
                   Subscribe
                 </button>
               </div>
@@ -599,7 +599,7 @@ const BlogPage = () => {
                     <button
                       key={tag}
                       onClick={() => setSearchQuery(tag)}
-                      className="px-3 py-1.5 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/[0.06] text-gray-600 dark:text-white/60 text-sm rounded-full hover:border-blue-500 dark:hover:border-violet-500 hover:text-blue-600 dark:hover:text-violet-400 transition-colors"
+                      className="px-3 py-1.5 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/[0.06] text-gray-600 dark:text-white/60 text-sm rounded-full hover:border-blue-500 dark:hover:border-primary-500 hover:text-blue-600 dark:hover:text-primary-400 transition-colors"
                     >
                       {tag}
                     </button>
