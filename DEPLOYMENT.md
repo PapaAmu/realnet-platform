@@ -47,10 +47,10 @@ LOG_LEVEL=error
 
 After pulling the changes and rebuilding:
 
-1.  **Build and Start:**
+1.  **Build and Start (Production):**
     ```bash
     docker compose down
-    docker compose up -d --build
+    docker compose -f docker-compose.prod.yml up -d --build
     ```
 
 2.  **Verify Non-Root Execution:**

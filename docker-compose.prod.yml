@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  realnet-admin:
+    container_name: realnet-admin
+    build:
+      context: ./realnet-admin
+      dockerfile: Dockerfile.prod
+    user: "33:33"
+    expose:
+      - "8080"
+    restart: always
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,noexec,size=128m
+      - /run:rw,nosuid,nodev,noexec,size=128m
+      - /var/log/apache2:rw,nosuid,nodev,size=128m
+      # Laravel needs to write to storage and bootstrap/cache, which are bind mounted or volume mounted?
+      # In prod, we usually use named volumes or bind mounts.
+      # The user had ./realnet-admin:/var/www/html in local.
+      # In prod, we should use named volumes for persistence of storage/logs, but code should be immutable.
+      # However, Laravel's storage folder needs to be writable.
+    volumes:
+      # Mount storage directory for persistence and writability
+      - realnet_storage:/var/www/html/storage
+      - realnet_bootstrap_cache:/var/www/html/bootstrap/cache
+    env_file:
+      - ./realnet-admin/.env
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+        reservations:
+          memory: 128M
+    networks:
+      - realnet-network
+
+  realnet-app:
+    container_name: realnet-app
+    build:
+      context: ./realnet-app
+      dockerfile: Dockerfile
+    expose:
+      - "3000"
+    restart: always
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,noexec,size=128m
+    environment:
+      - NODE_ENV=production
+      - HOSTNAME=0.0.0.0
+      - INTERNAL_API_URL=http://realnet-admin:8080
+      # Public URL for client-side fetches
+      - NEXT_PUBLIC_API_BASE_URL=https://admin.realnet-web.co.za
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+        reservations:
+          memory: 128M
+    networks:
+      - realnet-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: realnet_db
+    restart: always
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: RealNet1
+      MYSQL_DATABASE: realnet
+    networks:
+      - realnet-network
+
+volumes:
+  mysql_data:
+  realnet_storage:
+  realnet_bootstrap_cache:
+
+networks:
+  realnet-network:
+    driver: bridge

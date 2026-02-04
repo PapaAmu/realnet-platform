@@ -30,8 +30,10 @@ ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
 # Don't run as root
-RUN addgroup --system --gid 1001 node
-RUN adduser --system --uid 1001 node
+# User 'node' already exists in node:alpine images, so we just use it.
+# If you want to use a specific UID/GID, you might need to modify the existing user or use a different name.
+# RUN addgroup --system --gid 1001 node
+# RUN adduser --system --uid 1001 node
 
 # Copy public folder
 COPY --from=builder /app/public ./public

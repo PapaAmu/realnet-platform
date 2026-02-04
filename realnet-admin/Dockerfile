@@ -21,8 +21,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     intl \
     xml \
     mbstring \
-    gd \
-    opcache
+    gd
 
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
@@ -32,42 +31,30 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Copy PHP configuration
-COPY opcache.ini /usr/local/etc/php/conf.d/opcache.ini
-
-# Configure Apache to run on port 8080 (for non-root)
-RUN sed -i 's/80/8080/g' /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
-
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Copy composer files first for caching
+# In development, we rely on volume mounts, so we don't strictly need to copy code or run composer install here.
+# However, running composer install ensures the image has dependencies if used without volume, 
+# and populates the anonymous volume for vendor.
 COPY composer.json composer.lock ./
+RUN composer install --no-interaction --prefer-dist --no-scripts
 
-# Install dependencies (production optimized)
-RUN composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader --no-scripts
-
-# Copy application code
+# Copy application code (will be hidden by volume mount in dev)
 COPY . .
-
-# Generate optimized autoload files (triggers scripts like package:discover)
-RUN composer dump-autoload --optimize
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Expose port 8080
-EXPOSE 8080
+# Expose port 80 (standard)
+EXPOSE 80
 
 # Copy entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Switch to non-root user
-USER www-data
-
-# Use the entrypoint script
+# Entrypoint
 ENTRYPOINT ["docker-entrypoint.sh"]

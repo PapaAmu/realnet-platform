@@ -6,26 +6,16 @@ services:
     build:
       context: ./realnet-admin
       dockerfile: Dockerfile
-    expose:
-      - "8080"
+    ports:
+      - "8009:80"
     volumes:
       - ./realnet-admin:/var/www/html
       - /var/www/html/vendor
-    read_only: true
-    tmpfs:
-      - /tmp:rw,nosuid,nodev,noexec,size=128m
     env_file:
       - ./realnet-admin/.env
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
-    deploy:
-      resources:
-        limits:
-          cpus: "1.0"
-          memory: 512M
-        reservations:
-          memory: 128M
     networks:
       - realnet-network
 
@@ -34,24 +24,12 @@ services:
     build:
       context: ./realnet-app
       dockerfile: Dockerfile
-    expose:
-      - "3000"
-    read_only: true
-    tmpfs:
-      - /tmp:rw,nosuid,nodev,noexec,size=128m
+    ports:
+      - "3000:3000"
     environment:
-      - NODE_ENV=production
-      - INTERNAL_API_URL=http://realnet-admin:8080
-      # Public URL for client-side fetches (must be provided at runtime or build time depending on usage)
-      - NEXT_PUBLIC_API_BASE_URL=https://admin.realnet-web.co.za
-    restart: always
-    deploy:
-      resources:
-        limits:
-          cpus: "1.0"
-          memory: 512M
-        reservations:
-          memory: 128M
+      - NODE_ENV=development
+      - INTERNAL_API_URL=http://realnet-admin
+      - NEXT_PUBLIC_API_BASE_URL=http://localhost:8009
     networks:
       - realnet-network
 
