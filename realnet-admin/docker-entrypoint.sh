@@ -1,6 +1,13 @@
 #!/bin/sh
 set -e
 
+# Verify we are running as root
+if [ "$(id -u)" != "0" ]; then
+    echo "Error: Container must run as root (UID 0). Current UID: $(id -u)"
+    echo "Please ensure 'user:' directive is removed from docker-compose.yml"
+    exit 1
+fi
+
 # Fix permissions for storage and cache (since we start as root)
 echo "Fixing permissions..."
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
@@ -9,22 +16,22 @@ chown -R www-data:www-data /tmp/apache-lock /tmp/apache2-logs /tmp/apache2
 
 # Run migrations
 echo "Running migrations..."
-gosu www-data php artisan migrate --force
+su -s /bin/sh www-data -c "php artisan migrate --force"
 
 # Optimization commands
 echo "Running optimizations..."
-gosu www-data php artisan optimize:clear
-gosu www-data php artisan optimize
-gosu www-data php artisan event:cache
-gosu www-data php artisan filament:optimize
+su -s /bin/sh www-data -c "php artisan optimize:clear"
+su -s /bin/sh www-data -c "php artisan optimize"
+su -s /bin/sh www-data -c "php artisan event:cache"
+su -s /bin/sh www-data -c "php artisan filament:optimize"
 
 # Cache configuration, events, routes, and views
 if [ "$APP_ENV" != "local" ]; then
     echo "Caching configuration..."
-    gosu www-data php artisan config:cache
-    gosu www-data php artisan event:cache
-    gosu www-data php artisan route:cache
-    gosu www-data php artisan view:cache
+    su -s /bin/sh www-data -c "php artisan config:cache"
+    su -s /bin/sh www-data -c "php artisan event:cache"
+    su -s /bin/sh www-data -c "php artisan route:cache"
+    su -s /bin/sh www-data -c "php artisan view:cache"
 fi
 
 # Start Apache

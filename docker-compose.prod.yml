@@ -10,11 +10,11 @@ services:
     expose:
       - "8080"
     restart: always
-    read_only: true
+    # read_only: true
     tmpfs:
-      - /tmp:rw,nosuid,nodev,noexec,size=128m
-      - /run:rw,nosuid,nodev,noexec,size=128m
-      - /var/log/apache2:rw,nosuid,nodev,size=128m
+      - /tmp:rw,size=128m
+      - /run:rw,size=128m
+      - /var/log/apache2:rw,size=128m
       # Laravel needs to write to storage and bootstrap/cache, which are bind mounted or volume mounted?
       # In prod, we usually use named volumes or bind mounts.
       # The user had ./realnet-admin:/var/www/html in local.
