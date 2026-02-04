@@ -55,7 +55,7 @@ services:
     environment:
       - NODE_ENV=production
       - HOSTNAME=0.0.0.0
-      - INTERNAL_API_URL=http://realnet-admin
+      - INTERNAL_API_URL=http://realnet-admin:8080
       # Public URL for client-side fetches
       - NEXT_PUBLIC_API_BASE_URL=https://admin.realnet-web.co.za
     deploy:
