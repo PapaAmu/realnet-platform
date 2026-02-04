@@ -90,71 +90,9 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function BlogPostPage({ params }) {
-  try {
-    const { slug } = await params;
-    const post = await getBlogPost(slug);
-    
-    if (!post) {
-      return (
-        <div className="min-h-screen bg-[#050505] flex items-center justify-center p-4">
-          <div className="text-center max-w-md">
-            <div className="text-8xl mb-6">😞</div>
-            <h1 className="text-3xl font-bold text-white mb-4">Post Not Found</h1>
-            <p className="text-white/60 mb-8 text-lg">
-              The blog post you're looking for doesn't exist or may have been moved.
-            </p>
-            <a
-              href="/updates/blogs"
-              className="inline-block px-8 py-3 bg-violet-500 text-white rounded-lg font-medium hover:bg-violet-600 transition-colors shadow-lg shadow-violet-500/20"
-            >
-              Back to Blog
-            </a>
-          </div>
-        </div>
-      );
-    }
-
-    const safeTags = parseTags(post.tags);
-
-    const structuredData = generateStructuredData({
-      type: 'Article',
-      title: post.title,
-      description: post.excerpt || post.description,
-      url: `https://realnet-web.co.za/updates/blogs/${params.slug}`,
-      image: post.image || 'https://realnet-web.co.za/og-image.jpg',
-      publishedDate: post.created_at || post.published_at,
-      modifiedDate: post.updated_at || post.modified_at,
-      author: post.author || 'Themba Real Lukhele',
-      tags: safeTags,
-    });
-
-    return (
-      <>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-        />
-        <BlogPostPageComponent post={post} />
-      </>
-    );
-  } catch (error) {
-    console.error('Error loading blog post:', error);
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
-        <div className="text-center max-w-md">
-          <div className="text-8xl mb-6">⚠️</div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Error Loading Post</h1>
-          <p className="text-gray-600 mb-8 text-lg">
-            There was an error loading the blog post. Please try again later.
-          </p>
-          <a
-            href="/updates/blogs"
-            className="px-8 py-4 bg-gray-950 text-white rounded-xl hover:bg-gray-800 transition-colors font-semibold text-lg"
-          >
-            Back to Blog
-          </a>
-        </div>
-      </div>
-    );
-  }
+  // We'll let the client component handle fetching to avoid Docker network issues
+  // and ensure consistency with the list page which works.
+  return (
+    <BlogPostPageComponent />
+  );
 }
