@@ -8,9 +8,7 @@ services:
       dockerfile: Dockerfile.prod
     user: "33:33"
     expose:
-      - "80"
-    cap_add:
-      - NET_BIND_SERVICE
+      - "8080"
     restart: always
     read_only: true
     tmpfs:
