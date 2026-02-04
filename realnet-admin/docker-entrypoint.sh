@@ -1,24 +1,30 @@
 #!/bin/sh
 set -e
 
+# Fix permissions for storage and cache (since we start as root)
+echo "Fixing permissions..."
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+mkdir -p /tmp/apache-lock /tmp/apache2-logs /tmp/apache2
+chown -R www-data:www-data /tmp/apache-lock /tmp/apache2-logs /tmp/apache2
+
 # Run migrations
 echo "Running migrations..."
-php artisan migrate --force
+gosu www-data php artisan migrate --force
 
 # Optimization commands
 echo "Running optimizations..."
-php artisan optimize:clear
-php artisan optimize
-php artisan event:cache
-php artisan filament:optimize
+gosu www-data php artisan optimize:clear
+gosu www-data php artisan optimize
+gosu www-data php artisan event:cache
+gosu www-data php artisan filament:optimize
 
 # Cache configuration, events, routes, and views
 if [ "$APP_ENV" != "local" ]; then
     echo "Caching configuration..."
-    php artisan config:cache
-    php artisan event:cache
-    php artisan route:cache
-    php artisan view:cache
+    gosu www-data php artisan config:cache
+    gosu www-data php artisan event:cache
+    gosu www-data php artisan route:cache
+    gosu www-data php artisan view:cache
 fi
 
 # Start Apache
@@ -31,4 +37,5 @@ export APACHE_LOG_DIR=/tmp/apache2-logs
 
 mkdir -p $APACHE_LOCK_DIR $APACHE_RUN_DIR $APACHE_LOG_DIR
 
-exec apache2-foreground
+echo "Switching to user www-data..."
+exec gosu www-data apache2-foreground

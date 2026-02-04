@@ -6,7 +6,7 @@ services:
     build:
       context: ./realnet-admin
       dockerfile: Dockerfile.prod
-    user: "33:33"
+    # user: "33:33" (Handled in entrypoint via gosu)
     expose:
       - "8080"
     restart: always

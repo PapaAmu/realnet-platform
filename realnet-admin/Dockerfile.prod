@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
+    gosu \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
@@ -78,7 +79,7 @@ RUN sed -i \
     /etc/apache2/envvars
 
 # Switch to non-root user
-USER www-data
+# USER www-data (Moved to entrypoint using gosu)
 
 
 # Use the entrypoint script
