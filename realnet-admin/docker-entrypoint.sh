@@ -11,7 +11,6 @@ php artisan optimize:clear
 php artisan optimize
 php artisan event:cache
 php artisan filament:optimize
-php artisan storage:link
 
 # Cache configuration, events, routes, and views
 if [ "$APP_ENV" != "local" ]; then

@@ -31,9 +31,8 @@ RUN a2enmod rewrite
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Copy custom Apache configuration (includes bot blocking and port 8080)
+# Copy custom Apache configuration (includes bot blocking and port 80)
 COPY apache/000-default.conf /etc/apache2/sites-available/000-default.conf
-RUN sed -i 's/80/8080/g' /etc/apache2/ports.conf
 
 # Copy PHP configuration
 COPY opcache.ini /usr/local/etc/php/conf.d/opcache.ini
@@ -57,10 +56,11 @@ RUN composer dump-autoload --optimize
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache \
+    && ln -s /var/www/html/storage/app/public /var/www/html/public/storage
 
-# Expose port 8080
-EXPOSE 8080
+# Expose port 80
+EXPOSE 80
 
 # Copy entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/
