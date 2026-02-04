@@ -10,6 +10,8 @@ fi
 
 # Fix permissions for storage and cache (since we start as root)
 echo "Fixing permissions..."
+# Ensure storage directory structure exists
+mkdir -p /var/www/html/storage/app/public
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 mkdir -p /tmp/apache-lock /tmp/apache2-logs /tmp/apache2
 chown -R www-data:www-data /tmp/apache-lock /tmp/apache2-logs /tmp/apache2
