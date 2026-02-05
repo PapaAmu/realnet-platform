@@ -5,8 +5,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
+import PrimaryButton from "./ui/PrimaryButton";
 import { 
   FaChevronRight, 
   FaTimes 
@@ -20,6 +21,7 @@ export default function Navbar() {
   const [hidden, setHidden] = useState(false);
   const { theme, setTheme, resolvedTheme } = useTheme();
   const pathname = usePathname();
+  const router = useRouter();
   
   // Use refs for scroll values to avoid re-renders
   const lastScrollY = useRef(0);
@@ -134,9 +136,9 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-20">
             
             {/* Logo - Using official logo */}
-            <Link href="/" className="relative z-50 flex items-center gap-3">
+            <Link href="/" className="relative z-50 flex items-center gap-0">
               <div className={`relative w-10 h-10 transition-colors ${
-                isOpen ? 'bg-white rounded-xl' : ''
+                isOpen ? 'bg-gray-100 dark:bg-white rounded-xl' : ''
               }`}>
                 <Image
                   src="/logo.png"
@@ -146,8 +148,8 @@ export default function Navbar() {
                   priority
                 />
               </div>
-              <span className={`font-semibold uppercase text-lg transition-colors ${
-                isOpen ? 'text-primary' : 'text-gray-900 dark:text-white'
+              <span className={`font-semibold uppercase text-xl transition-colors ${
+                isOpen ? 'text-primary' : 'text-primary-700 dark:text-white'
               }`}>RealNet Web</span>
             </Link>
 
@@ -179,7 +181,7 @@ export default function Navbar() {
                         <motion.span
                           layoutId="activeNav"
                           className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
-                            childActive ? 'bg-primary-500' : 'bg-blue-500 dark:bg-primary-400'
+                            childActive ? 'bg-primary-500' : 'bg-primary-500 dark:bg-primary-400'
                           }`}
                           transition={{ type: "spring", stiffness: 380, damping: 30 }}
                         />
@@ -198,13 +200,13 @@ export default function Navbar() {
                                 href={child.href}
                                 className={`flex items-center justify-between p-3 rounded-lg transition-all ${
                                   childIsActive
-                                    ? 'bg-blue-50 dark:bg-primary-500/10 border-l-2 border-blue-500 dark:border-primary-400'
+                                    ? 'bg-primary-50 dark:bg-primary-500/10 border-l-2 border-primary-500 dark:border-primary-400'
                                     : 'hover:bg-gray-50 dark:hover:bg-white/5'
                                 }`}
                               >
                                 <div>
                                   <div className={`text-sm font-medium ${
-                                    childIsActive ? 'text-blue-600 dark:text-primary-400' : 'text-gray-700 dark:text-white/80'
+                                    childIsActive ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-white/80'
                                   }`}>
                                     {child.name}
                                   </div>
@@ -213,7 +215,7 @@ export default function Navbar() {
                                   </div>
                                 </div>
                                 {childIsActive && (
-                                  <span className="w-2 h-2 rounded-full bg-blue-500 dark:bg-primary-400" />
+                                  <span className="w-2 h-2 rounded-full bg-primary-500 dark:bg-primary-400" />
                                 )}
                               </Link>
                             );
@@ -243,13 +245,13 @@ export default function Navbar() {
                 )}
               </button>
 
-              <Link
-                href="/new-project/request-quotation"
-                className="px-5 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full text-sm font-medium hover:opacity-90 transition-opacity flex items-center gap-2"
+              <PrimaryButton 
+                onClick={() => router.push('/new-project/request-quotation')}
+                className="px-5 py-2.5 text-sm font-medium flex items-center gap-2"
               >
                 Get Quote
                 <FiArrowUpRight className="w-3 h-3" />
-              </Link>
+              </PrimaryButton>
             </div>
 
             {/* Mobile Toggle */}
@@ -268,7 +270,7 @@ export default function Navbar() {
                     exit={{ rotate: 90, opacity: 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <FaTimes className="w-5 h-5 text-white" />
+                    <FaTimes className="w-5 h-5 text-gray-900 dark:text-white" />
                   </motion.div>
                 ) : (
                   <motion.div
@@ -337,7 +339,7 @@ export default function Navbar() {
                   {mobileSubmenu ? (
                     <button
                       onClick={() => setMobileSubmenu(null)}
-                      className="text-sm text-blue-600 dark:text-primary-400 font-medium"
+                      className="text-sm text-primary-600 dark:text-primary-400 font-medium"
                     >
                       Back
                     </button>
@@ -378,13 +380,13 @@ export default function Navbar() {
                                   onClick={() => setMobileSubmenu(item)}
                                   className={`w-full flex items-center justify-between p-4 rounded-xl transition-colors ${
                                     childActive 
-                                      ? 'bg-blue-50 dark:bg-primary-500/10 text-blue-600 dark:text-primary-400' 
+                                      ? 'bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400' 
                                       : 'hover:bg-gray-100 dark:hover:bg-white/5 text-gray-900 dark:text-white'
                                   }`}
                                 >
                                   <div className="flex items-center gap-3">
                                     {(active || childActive) && (
-                                      <span className="w-2 h-2 rounded-full bg-blue-500 dark:bg-primary-400" />
+                                      <span className="w-2 h-2 rounded-full bg-primary-500 dark:bg-primary-400" />
                                     )}
                                     <span className="font-medium">{item.name}</span>
                                   </div>
@@ -396,11 +398,11 @@ export default function Navbar() {
                                   onClick={() => setIsOpen(false)}
                                   className={`flex items-center gap-3 p-4 rounded-xl transition-colors ${
                                     active
-                                      ? 'bg-blue-50 dark:bg-primary-500/10 text-blue-600 dark:text-primary-400'
+                                      ? 'bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400'
                                       : 'hover:bg-gray-100 dark:hover:bg-white/5 text-gray-900 dark:text-white'
                                   }`}
                                 >
-                                  {active && <span className="w-2 h-2 rounded-full bg-blue-500 dark:bg-primary-400" />}
+                                  {active && <span className="w-2 h-2 rounded-full bg-primary-500 dark:bg-primary-400" />}
                                   <span className="font-medium">{item.name}</span>
                                 </Link>
                               )}
@@ -430,18 +432,18 @@ export default function Navbar() {
                                 onClick={() => setIsOpen(false)}
                                 className={`block p-4 rounded-xl transition-colors ${
                                   childIsActive
-                                    ? 'bg-blue-50 dark:bg-primary-500/10 border-l-2 border-blue-500 dark:border-primary-400'
+                                    ? 'bg-primary-50 dark:bg-primary-500/10 border-l-2 border-primary-500 dark:border-primary-400'
                                     : 'hover:bg-gray-100 dark:hover:bg-white/5'
                                 }`}
                               >
                                 <div className="flex items-center justify-between mb-1">
                                   <span className={`font-medium ${
-                                    childIsActive ? 'text-blue-600 dark:text-primary-400' : 'text-gray-900 dark:text-white'
+                                    childIsActive ? 'text-primary-600 dark:text-primary-400' : 'text-gray-900 dark:text-white'
                                   }`}>
                                     {child.name}
                                   </span>
                                   {childIsActive && (
-                                    <span className="w-2 h-2 rounded-full bg-blue-500 dark:bg-primary-400" />
+                                    <span className="w-2 h-2 rounded-full bg-primary-500 dark:bg-primary-400" />
                                   )}
                                 </div>
                                 <p className="text-sm text-gray-500 dark:text-white/40">

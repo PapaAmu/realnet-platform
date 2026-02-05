@@ -62,7 +62,7 @@ const Advert = () => {
           >
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 backdrop-blur-sm">
-              <FaRocket className="w-4 h-4 text-blue-600 dark:text-primary-400" />
+              <FaRocket className="w-4 h-4 text-primary-600 dark:text-primary-400" />
               <span className="text-sm text-gray-600 dark:text-white/60 font-medium">Mobile Development</span>
             </div>
 
@@ -71,7 +71,7 @@ const Advert = () => {
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-[1.1] tracking-tight">
                 Native Apps for
                 <br />
-                <span className="text-blue-600 dark:text-primary-400">
+                <span className="text-primary-600 dark:text-primary-400">
                   iOS & Android
                 </span>
               </h2>
@@ -92,7 +92,7 @@ const Advert = () => {
                   transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
                   className="flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-700 dark:text-white/70"
                 >
-                  <feature.icon className="w-4 h-4 text-blue-600 dark:text-primary-400" />
+                  <feature.icon className="w-4 h-4 text-green-600 dark:text-primary-400" />
                   {feature.text}
                 </motion.div>
               ))}

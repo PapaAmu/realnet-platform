@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import PrimaryButton from "../../ui/PrimaryButton";
+import SecondaryButton from "../../ui/SecondaryButton";
 import {
   FaPhone,
   FaEnvelope,
@@ -305,18 +307,18 @@ const Contact = () => {
               <div className="p-6 rounded-xl bg-primary-600/10 border border-primary-500/20">
                 <h3 className="font-semibold text-white mb-4">Quick Actions</h3>
                 <div className="space-y-3">
-                  <a
-                    href="/new-project/request-quotation"
-                    className="flex items-center justify-between p-4 rounded-lg bg-white text-black font-medium hover:bg-white/90 transition-colors"
+                  <PrimaryButton
+                    onClick={() => router.push('/new-project/request-quotation')}
+                    className="w-full flex items-center justify-between p-4 font-medium"
                   >
                     Get Free Quote <FaArrowRight className="w-4 h-4" />
-                  </a>
-                  <a
-                    href="/solutions/web-development"
-                    className="flex items-center justify-between p-4 rounded-lg bg-white/5 text-white border border-white/10 hover:bg-white/10 transition-colors"
+                  </PrimaryButton>
+                  <SecondaryButton
+                    onClick={() => router.push('/solutions/web-development')}
+                    className="w-full flex items-center justify-between p-4"
                   >
                     View Services <FaArrowRight className="w-4 h-4" />
-                  </a>
+                  </SecondaryButton>
                 </div>
               </div>
 

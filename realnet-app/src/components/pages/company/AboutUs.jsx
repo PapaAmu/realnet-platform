@@ -1,9 +1,12 @@
 "use client";
 
 import React, { useRef } from "react";
+import { useRouter } from 'next/navigation';
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import PrimaryButton from "../../ui/PrimaryButton";
+import SecondaryButton from "../../ui/SecondaryButton";
 import { 
   FaUsers, 
   FaLightbulb, 
@@ -24,6 +27,7 @@ import {
 } from "react-icons/fa";
 
 const AboutUs = () => {
+  const router = useRouter();
   const containerRef = useRef(null);
   const heroRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
@@ -189,12 +193,12 @@ const AboutUs = () => {
                 <p className="text-white/70 text-sm">135% procurement recognition • 100% black-owned</p>
               </div>
             </div>
-            <Link 
-              href="/contact-us"
-              className="px-6 py-3 bg-white text-primary-600 rounded-full font-medium hover:bg-white/90 transition-colors flex items-center gap-2"
+            <PrimaryButton 
+              onClick={() => router.push('/contact-us')}
+              className="px-6 py-3 bg-white text-primary-600 font-medium hover:bg-white/90"
             >
               Partner With Us <FaArrowRight className="w-4 h-4" />
-            </Link>
+            </PrimaryButton>
           </div>
         </div>
       </section>
@@ -588,18 +592,18 @@ const AboutUs = () => {
                 </ul>
                 
                 <div className="mt-8 flex gap-4">
-                  <Link
-                    href="/contact-us"
-                    className="flex-1 py-3 bg-primary-600 dark:bg-primary-500 text-white rounded-xl font-medium text-center hover:opacity-90 transition-opacity"
+                  <PrimaryButton
+                    onClick={() => router.push('/contact-us')}
+                    className="flex-1 py-3 font-medium text-center"
                   >
                     Contact Us
-                  </Link>
-                  <Link
-                    href="/new-project/request-quotation"
-                    className="flex-1 py-3 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl font-medium text-center hover:bg-gray-50 dark:hover:bg-white/10 transition-colors"
+                  </PrimaryButton>
+                  <SecondaryButton
+                    onClick={() => router.push('/new-project/request-quotation')}
+                    className="flex-1 py-3 font-medium text-center"
                   >
                     Get Quote
-                  </Link>
+                  </SecondaryButton>
                 </div>
               </div>
             </motion.div>

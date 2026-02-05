@@ -2,7 +2,9 @@
 
 import React, { useRef } from "react";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import PrimaryButton from "./ui/PrimaryButton";
 import { 
   FaServer, 
   FaShieldAlt, 
@@ -13,6 +15,7 @@ import {
 } from "react-icons/fa";
 
 const CompanyBoost = () => {
+  const router = useRouter();
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
   
@@ -116,18 +119,13 @@ const CompanyBoost = () => {
               ))}
             </div>
 
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+            <PrimaryButton 
+              onClick={() => router.push('/about-us')}
+              className="px-8 py-4 font-medium"
             >
-              <Link
-                href="/about-us"
-                className="group inline-flex items-center gap-3 px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-black rounded-full font-medium transition-all duration-300 hover:shadow-2xl hover:shadow-primary-500/20"
-              >
-                <span>More About Us</span>
-                <FaArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
-            </motion.div>
+              More About Us
+              <FaArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </PrimaryButton>
           </motion.div>
 
           {/* Right Column - Image & Features (7 cols) */}

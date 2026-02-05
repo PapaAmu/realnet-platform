@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { 
   FaExternalLinkAlt, 
@@ -11,6 +12,8 @@ import {
 } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
+import PrimaryButton from "../../ui/PrimaryButton";
+import SecondaryButton from "../../ui/SecondaryButton";
 
 // Project data
 const projects = [
@@ -79,6 +82,7 @@ const projects = [
 const categories = ["All", "Technology", "E-commerce", "Healthcare", "Engineering", "Hospitality", "Non-Profit"];
 
 const WebProjects = () => {
+  const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedProject, setSelectedProject] = useState(null);
   const [hoveredProject, setHoveredProject] = useState(null);
@@ -322,18 +326,18 @@ const WebProjects = () => {
             for your business.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/new-project/request-quotation"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors"
+            <PrimaryButton 
+              onClick={() => router.push('/new-project/request-quotation')}
+              className="px-8 py-4 font-medium"
             >
               Start Your Project <FaArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              href="/contact-us"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full font-medium hover:bg-white/10 transition-colors"
+            </PrimaryButton>
+            <SecondaryButton
+              onClick={() => router.push('/contact-us')}
+              className="px-8 py-4 font-medium"
             >
               Contact Us
-            </Link>
+            </SecondaryButton>
           </div>
         </div>
       </section>

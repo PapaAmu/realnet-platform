@@ -1,9 +1,12 @@
 "use client";
 
 import React, { useRef } from "react";
+import { useRouter } from 'next/navigation';
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import PrimaryButton from "../../ui/PrimaryButton";
+import SecondaryButton from "../../ui/SecondaryButton";
 import { 
   FaArrowRight,
   FaCheck,
@@ -14,6 +17,7 @@ import {
 } from "react-icons/fa";
 
 const WebsiteDevelopment = () => {
+  const router = useRouter();
   const heroRef = useRef(null);
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
@@ -151,18 +155,18 @@ const WebsiteDevelopment = () => {
                 transition={{ delay: 0.3 }}
                 className="flex flex-col sm:flex-row gap-4"
               >
-                <Link
-                  href="/new-project/request-quotation"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors"
+                <PrimaryButton 
+                  onClick={() => router.push('/new-project/request-quotation')}
+                  className="px-8 py-4 font-medium"
                 >
                   Start Your Project <FaArrowRight className="w-4 h-4" />
-                </Link>
-                <Link
-                  href="/features/web-development/live-projects"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full font-medium hover:bg-white/10 transition-colors"
+                </PrimaryButton>
+                <SecondaryButton
+                  onClick={() => router.push('/features/web-development/live-projects')}
+                  className="px-8 py-4 font-medium"
                 >
                   View Portfolio
-                </Link>
+                </SecondaryButton>
               </motion.div>
 
               {/* Trust Indicators */}
@@ -453,18 +457,18 @@ const WebsiteDevelopment = () => {
             Join 150+ South African businesses that trust RealNet with their digital success.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/new-project/request-quotation"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors"
+            <PrimaryButton 
+              onClick={() => router.push('/new-project/request-quotation')}
+              className="px-8 py-4 font-medium"
             >
               Get Your Free Quote <FaArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              href="/contact-us"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full font-medium hover:bg-white/10 transition-colors"
+            </PrimaryButton>
+            <SecondaryButton
+              onClick={() => router.push('/contact-us')}
+              className="px-8 py-4 font-medium"
             >
               Schedule a Call
-            </Link>
+            </SecondaryButton>
           </div>
         </div>
       </section>

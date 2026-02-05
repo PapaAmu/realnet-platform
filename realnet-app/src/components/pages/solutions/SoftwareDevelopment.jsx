@@ -1,8 +1,11 @@
 "use client";
 
 import React, { useRef } from "react";
+import { useRouter } from 'next/navigation';
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
+import PrimaryButton from "../../ui/PrimaryButton";
+import SecondaryButton from "../../ui/SecondaryButton";
 import { 
   FaCode, 
   FaCloud, 
@@ -24,6 +27,7 @@ import {
 } from "react-icons/fa";
 
 const WebSoftware = () => {
+  const router = useRouter();
   const containerRef = useRef(null);
   const heroRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
@@ -192,18 +196,18 @@ const WebSoftware = () => {
                 transition={{ delay: 0.3 }}
                 className="flex flex-col sm:flex-row gap-4"
               >
-                <Link
-                  href="/new-project/request-quotation"
-                  className="inline-flex items-center justify-center gap-2 px-6 lg:px-8 py-4 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors text-sm lg:text-base"
+                <PrimaryButton 
+                  onClick={() => router.push('/new-project/request-quotation')}
+                  className="px-6 lg:px-8 py-4 font-medium text-sm lg:text-base"
                 >
                   Discuss Your Project <FaArrowRight className="w-4 h-4" />
-                </Link>
-                <Link
-                  href="/solutions/software-development/architecture-consultation"
-                  className="inline-flex items-center justify-center gap-2 px-6 lg:px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full font-medium hover:bg-white/10 transition-colors text-sm lg:text-base"
+                </PrimaryButton>
+                <SecondaryButton
+                  onClick={() => router.push('/solutions/software-development/architecture-consultation')}
+                  className="px-6 lg:px-8 py-4 font-medium text-sm lg:text-base"
                 >
                   Architecture Review
-                </Link>
+                </SecondaryButton>
               </motion.div>
             </motion.div>
 
@@ -546,18 +550,18 @@ const WebSoftware = () => {
               your operations and drives growth.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-              <Link
-                href="/new-project/request-quotation"
-                className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors text-sm sm:text-base"
+              <PrimaryButton 
+                onClick={() => router.push('/new-project/request-quotation')}
+                className="px-6 sm:px-8 py-3 sm:py-4 font-medium text-sm sm:text-base"
               >
                 Schedule Architecture Call <FaArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                href="/contact-us"
-                className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white/5 text-white border border-white/10 rounded-full font-medium hover:bg-white/10 transition-colors text-sm sm:text-base"
+              </PrimaryButton>
+              <SecondaryButton
+                onClick={() => router.push('/contact-us')}
+                className="px-6 sm:px-8 py-3 sm:py-4 font-medium text-sm sm:text-base"
               >
                 View System Designs
-              </Link>
+              </SecondaryButton>
             </div>
           </motion.div>
         </div>

@@ -92,7 +92,7 @@ const OurStack = () => {
           transition={{ duration: 0.6 }}
           className="max-w-2xl mb-20"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white tracking-tight mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-primary-600 dark:text-primary tracking-tight mb-6">
             Technology Stack
           </h2>
           <p className="text-lg text-gray-600 dark:text-white/50 leading-relaxed">

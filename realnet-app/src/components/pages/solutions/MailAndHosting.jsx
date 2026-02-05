@@ -1,8 +1,11 @@
 "use client";
 
 import React, { useRef } from "react";
+import { useRouter } from 'next/navigation';
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
+import PrimaryButton from "../../ui/PrimaryButton";
+import SecondaryButton from "../../ui/SecondaryButton";
 import { 
   FaEnvelope, 
   FaServer, 
@@ -17,6 +20,7 @@ import {
 } from "react-icons/fa";
 
 const HostingAndEmail = () => {
+  const router = useRouter();
   const containerRef = useRef(null);
   const heroRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
@@ -136,18 +140,18 @@ const HostingAndEmail = () => {
                 transition={{ delay: 0.3 }}
                 className="flex flex-col sm:flex-row gap-4"
               >
-                <Link
-                  href="/new-project/request-quotation"
-                  className="inline-flex items-center justify-center gap-2 px-6 lg:px-8 py-4 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors text-sm lg:text-base"
+                <PrimaryButton 
+                  onClick={() => router.push('/new-project/request-quotation')}
+                  className="px-6 lg:px-8 py-4 font-medium text-sm lg:text-base"
                 >
                   Get Started <FaArrowRight className="w-4 h-4" />
-                </Link>
-                <Link
-                  href="/contact-us"
-                  className="inline-flex items-center justify-center gap-2 px-6 lg:px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full font-medium hover:bg-white/10 transition-colors text-sm lg:text-base"
+                </PrimaryButton>
+                <SecondaryButton
+                  onClick={() => router.push('/contact-us')}
+                  className="px-6 lg:px-8 py-4 font-medium text-sm lg:text-base"
                 >
                   Contact Sales
-                </Link>
+                </SecondaryButton>
               </motion.div>
             </motion.div>
 
@@ -265,12 +269,12 @@ const HostingAndEmail = () => {
                     <div className="text-primary-400 font-medium">Up to 7 accounts</div>
                   </div>
                 </div>
-                <Link
-                  href="/new-project/request-quotation"
-                  className="block w-full py-3 rounded-xl bg-white text-black text-center font-medium hover:bg-white/90 transition-colors text-sm"
+                <PrimaryButton 
+                  onClick={() => router.push('/new-project/request-quotation')}
+                  className="w-full py-3 text-center font-medium text-sm"
                 >
                   Order Email Hosting
-                </Link>
+                </PrimaryButton>
               </div>
             </motion.div>
 
@@ -411,12 +415,12 @@ const HostingAndEmail = () => {
                     <div className="text-cyan-400 font-medium">Basic applications</div>
                   </div>
                 </div>
-                <Link
-                  href="/new-project/request-quotation"
-                  className="block w-full py-3 rounded-xl bg-white text-black text-center font-medium hover:bg-white/90 transition-colors text-sm"
+                <PrimaryButton 
+                  onClick={() => router.push('/new-project/request-quotation')}
+                  className="w-full py-3 text-center font-medium text-sm"
                 >
                   Order VPS Hosting
-                </Link>
+                </PrimaryButton>
               </div>
             </motion.div>
           </div>
@@ -436,12 +440,12 @@ const HostingAndEmail = () => {
             <p className="text-white/50 mb-8">
               Combine email and VPS hosting for a complete business infrastructure solution.
             </p>
-            <Link
-              href="/new-project/request-quotation"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors"
+            <PrimaryButton 
+              onClick={() => router.push('/new-project/request-quotation')}
+              className="px-8 py-4 font-medium"
             >
               Get Custom Quote <FaArrowRight className="w-4 h-4" />
-            </Link>
+            </PrimaryButton>
           </motion.div>
         </div>
       </section>
