@@ -230,7 +230,8 @@ export default function Navbar() {
 
             {/* Desktop Actions */}
             <div className="hidden lg:flex items-center gap-4">
-              <button
+              {/* Theme Toggle Button - Hidden for now */}
+              {/* <button
                 onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
                 className="w-10 h-10 rounded-full bg-gray-100 dark:bg-white/5 flex items-center justify-center text-gray-600 dark:text-white/60 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors"
               >
@@ -243,7 +244,7 @@ export default function Navbar() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                   </svg>
                 )}
-              </button>
+              </button> */}
 
               <PrimaryButton 
                 onClick={() => router.push('/new-project/request-quotation')}
